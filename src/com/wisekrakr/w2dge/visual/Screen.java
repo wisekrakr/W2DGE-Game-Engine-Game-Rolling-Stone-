@@ -27,7 +27,7 @@ public class Screen extends AbstractScreen {
         this.addMouseListener();
         this.addKeyListener();
 
-        changeScene(1);
+        changeScene(0);
     }
 
     @Override

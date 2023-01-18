@@ -3,7 +3,7 @@ package com.wisekrakr.w2dge.math;
 public class Dimension {
 
     public int width;
-    public final int height;
+    public int height;
     public Vector2 center;
 
     public Dimension(int width, int height) {

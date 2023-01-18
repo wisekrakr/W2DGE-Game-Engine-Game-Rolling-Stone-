@@ -20,6 +20,8 @@ public abstract class Scene implements GameLoopImpl {
     Renderer renderer;
     GameObjectFactory factory;
     public GameObject player;
+    public GameObject ground;
+
     String toFollow;
 
     public void Scene(String name) {
@@ -29,7 +31,6 @@ public abstract class Scene implements GameLoopImpl {
         this.renderer = new Renderer(this.camera);
         this.factory = new GameObjectFactory(this.gameObjects, this.renderer);
         this.toFollow = Tags.PLAYER;
-        init();
     }
 
 

@@ -48,10 +48,12 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
             case 0: // LevelEditorScene
                 isInEditorPhase = true;
                 currentScene = new LevelEditorScene("Level editor");
+                currentScene.init();
                 break;
             case 1: // LevelScene
                 isInEditorPhase = false;
                 currentScene = new LevelScene("Level");
+                currentScene.init();
                 break;
             default:
                 System.out.println("This is not a scene");

@@ -8,6 +8,7 @@ import com.wisekrakr.w2dge.game.components.entities.Ground;
 import com.wisekrakr.w2dge.game.components.entities.Player;
 import com.wisekrakr.w2dge.game.components.graphics.Graphics;
 import com.wisekrakr.w2dge.game.components.physics.RigidBody;
+import com.wisekrakr.w2dge.game.components.regions.Grid;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
@@ -72,10 +73,10 @@ public class GameObjectFactory {
      *
      * @return new ground Game object
      */
-    public GameObject ground() {
+    public GameObject ground(int groundY) {
         GameObject ground = new GameObject(
                 Tags.GROUND,
-                new Transform(new Vector2(0, GameConstants.GROUND_Y)),
+                new Transform(new Vector2(0, groundY)),
                 new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT)
         );
 
@@ -84,5 +85,7 @@ public class GameObjectFactory {
         return ground;
     }
 
-
+    public Grid grid(){
+        return new Grid();
+    }
 }

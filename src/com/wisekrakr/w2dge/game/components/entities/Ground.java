@@ -5,8 +5,6 @@ import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.visual.Screen;
-import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
-import com.wisekrakr.w2dge.visual.scene.LevelScene;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
 import java.awt.*;
@@ -17,7 +15,7 @@ public class Ground extends Component<Ground> {
 
     @Override
     public void update(double deltaTime) {
-        if (!Screen.getInstance().isInEditorPhase){
+        if (!Screen.getInstance().isInEditorPhase) {
             Scene scene = Screen.getInstance().getCurrentScene();
             GameObject player = scene.player;
 
@@ -26,7 +24,7 @@ public class Ground extends Component<Ground> {
             }
 
             gameObject.transform.position.x = scene.camera.position.x - GameConstants.CAMERA_OFFSET_GROUND_X;
-        }else{
+        } else {
             gameObject.transform.position.x = Screen.getInstance().getCurrentScene().camera.position.x
                     - GameConstants.CAMERA_OFFSET_GROUND_X;
         }

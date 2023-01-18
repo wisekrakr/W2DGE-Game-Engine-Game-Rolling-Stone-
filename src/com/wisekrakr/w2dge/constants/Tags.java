@@ -7,4 +7,5 @@ public class Tags {
     public static final String SPIKE = "spike";
     public static final String WALL = "wall";
 
+    public static final String GRID = "grid";
 }

@@ -41,7 +41,8 @@ public class GameConstants {
     public static final int ONE_TENTH_TILE_WIDTH = 4;
     public static final int GRID_WIDTH = 42;
     public static final int GRID_HEIGHT = 42;
-
+    public static final int GRID_Y_LINES = 31;
+    public static final int GRID_X_LINES = 20;
 
     // =======================================================
     // Camera constants

@@ -2,13 +2,13 @@ package com.wisekrakr.w2dge.visual.scene;
 
 import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
+import com.wisekrakr.w2dge.game.components.regions.Grid;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
 
 import java.awt.*;
 
 public class LevelScene extends Scene {
-
     public LevelScene(String name) {
         super.Scene(name);
     }
@@ -17,13 +17,15 @@ public class LevelScene extends Scene {
     public void init() {
         player = factory.player(new Vector2(100, 300), Screen.getInstance().isInEditorPhase);
         addGameObjectToScene(player);
-        addGameObjectToScene(factory.ground());
+        addGameObjectToScene(factory.ground(GameConstants.GROUND_Y));
+
     }
 
     @Override
     public void update(double deltaTime) {
         super.update(deltaTime);
         camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y);
+
     }
 
     @Override

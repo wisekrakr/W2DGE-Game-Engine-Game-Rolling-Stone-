@@ -68,19 +68,6 @@ public class GameObject implements GameLoopImpl, ComponentHandler {
         return null;
     }
 
-    public void moveLeft(float speed, double deltaTime) {
-        transform.position.x -= deltaTime * speed;
-    }
-    public void moveRight(float speed, double deltaTime) {
-        transform.position.x += deltaTime * speed;
-    }
-    public void moveDown(float speed, double deltaTime) {
-        transform.position.y -= deltaTime * speed;
-    }
-    public void moveUp(float speed, double deltaTime) {
-        transform.position.y += deltaTime * speed;
-    }
-
     public void centering() {
         this.dimension.center = new Vector2(
                 this.dimension.width * this.transform.scale.x / 2.0f,

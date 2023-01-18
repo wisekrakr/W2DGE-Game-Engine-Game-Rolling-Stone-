@@ -3,6 +3,7 @@ package com.wisekrakr.w2dge.visual.scene;
 import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.math.Vector2;
+import com.wisekrakr.w2dge.visual.Screen;
 
 import java.awt.*;
 
@@ -10,28 +11,20 @@ public class LevelEditorScene extends Scene {
 
     public LevelEditorScene(String name) {
         super.Scene(name);
-        Scene.currentScene = this;
-
-    }
-
-    public static LevelEditorScene getScene() {
-        if (currentScene == null) {
-            currentScene = new LevelEditorScene("Level Editor Scene");
-        }
-        return (LevelEditorScene) currentScene;
     }
 
     @Override
     public void init() {
-        player = factory.player(new Vector2(100, 300));
-        factory.ground();
+        player = factory.player(new Vector2(100, 300), Screen.getInstance().isInEditorPhase);
+
+        addGameObjectToScene(player);
+        addGameObjectToScene(factory.ground());
     }
 
     @Override
     public void update(double deltaTime) {
         super.update(deltaTime);
         camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y);
-
     }
 
     @Override

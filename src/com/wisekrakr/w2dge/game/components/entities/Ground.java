@@ -17,14 +17,20 @@ public class Ground extends Component<Ground> {
 
     @Override
     public void update(double deltaTime) {
-        Scene scene = Screen.getInstance().getCurrentScene();
-        GameObject player = scene.player;
+        if (!Screen.getInstance().isInEditorPhase){
+            Scene scene = Screen.getInstance().getCurrentScene();
+            GameObject player = scene.player;
 
-        if (player.transform.position.y + player.dimension.height > gameObject.transform.position.y) {
-            player.transform.position.y = gameObject.transform.position.y - player.dimension.height;
+            if (player.transform.position.y + player.dimension.height > gameObject.transform.position.y) {
+                player.transform.position.y = gameObject.transform.position.y - player.dimension.height;
+            }
+
+            gameObject.transform.position.x = scene.camera.position.x - GameConstants.CAMERA_OFFSET_GROUND_X;
+        }else{
+            gameObject.transform.position.x = Screen.getInstance().getCurrentScene().camera.position.x
+                    - GameConstants.CAMERA_OFFSET_GROUND_X;
         }
 
-        gameObject.transform.position.x = scene.camera.position.x - GameConstants.CAMERA_OFFSET_GROUND_X;
     }
 
     @Override

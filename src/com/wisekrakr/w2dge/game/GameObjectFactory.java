@@ -30,10 +30,13 @@ public class GameObjectFactory {
      * Creates a new GameObject - PLAYER <br>
      * Consists of {@link Player},{@link RigidBody},{@link Graphics} components.
      * Adds it to the engine to act and draw.
-     * @param position {@link Vector2} position of the game object
+     *
+     * @param position         {@link Vector2} position of the game object
+     * @param isInEditingPhase if false, this Game Object will have full motion. If false, only visual.
      * @return new player Game object
      */
-    public GameObject player(Vector2 position){
+    public GameObject player(Vector2 position, boolean isInEditingPhase) {
+
         GameObject player = new GameObject(
                 Tags.PLAYER,
                 new Transform(new Vector2(position.x, position.y)),
@@ -41,7 +44,6 @@ public class GameObjectFactory {
         );
 
         player.addComponent(new Player());
-        player.addComponent(new RigidBody(new Vector2(GameConstants.SPEED, 0f)));
 
         SpriteSheet layerOne = AssetFinder.spriteSheet("layerOne.png", GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
         SpriteSheet layerTwo = AssetFinder.spriteSheet("layerTwo.png", GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
@@ -57,7 +59,9 @@ public class GameObjectFactory {
                 )
         );
 
-        addToEngine(player);
+        if (!isInEditingPhase) {
+            player.addComponent(new RigidBody(new Vector2(GameConstants.SPEED, 0f)));
+        }
 
         return player;
     }
@@ -65,9 +69,10 @@ public class GameObjectFactory {
     /**
      * Creates a new GameObject - GROUND <br>
      * Consists of the {@link Ground} component. Adds it to the engine to act and draw.
+     *
      * @return new ground Game object
      */
-    public GameObject ground(){
+    public GameObject ground() {
         GameObject ground = new GameObject(
                 Tags.GROUND,
                 new Transform(new Vector2(0, GameConstants.GROUND_Y)),
@@ -76,18 +81,8 @@ public class GameObjectFactory {
 
         ground.addComponent(new Ground());
 
-        addToEngine(ground);
-
         return ground;
     }
 
-    /**
-     * Add game object to total alive game objects.<br>
-     * Add game object to {@link Renderer}.
-     * @param gameObject {@link GameObject}
-     */
-    private void addToEngine(GameObject gameObject){
-        gameObjects.add(gameObject);
-        renderer.add(gameObject);
-    }
+
 }

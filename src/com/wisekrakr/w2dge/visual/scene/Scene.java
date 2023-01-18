@@ -14,7 +14,6 @@ import java.util.List;
 
 public abstract class Scene implements GameLoopImpl {
 
-    static Scene currentScene;
     String name;
     public Camera camera;
     List<GameObject> gameObjects;
@@ -32,7 +31,6 @@ public abstract class Scene implements GameLoopImpl {
         this.toFollow = Tags.PLAYER;
         init();
     }
-
 
 
     @Override
@@ -56,5 +54,17 @@ public abstract class Scene implements GameLoopImpl {
             gameObject.update(deltaTime);
             camera.follow(gameObject, this.toFollow);
         }
+    }
+
+    /**
+     * This will show the game object in the scene (on the screen)<br>
+     * Add game object to total alive game objects.<br>
+     * Add game object to {@link Renderer}.
+     *
+     * @param gameObject {@link GameObject}
+     */
+    protected void addGameObjectToScene(GameObject gameObject) {
+        gameObjects.add(gameObject);
+        renderer.add(gameObject);
     }
 }

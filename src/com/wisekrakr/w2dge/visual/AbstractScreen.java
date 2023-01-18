@@ -14,6 +14,7 @@ import java.awt.*;
 public abstract class AbstractScreen extends JFrame implements Runnable, GameLoopImpl {
 
     public static AbstractScreen currentScreen;
+    public boolean isInEditorPhase = false;
     protected boolean isRunning = true;
     protected MouseListener mouseListener;
     protected KeyListener keyListener;
@@ -45,9 +46,11 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     protected void changeScene(int scene) {
         switch (scene) {
             case 0: // LevelEditorScene
+                isInEditorPhase = true;
                 currentScene = new LevelEditorScene("Level editor");
                 break;
             case 1: // LevelScene
+                isInEditorPhase = false;
                 currentScene = new LevelScene("Level");
                 break;
             default:

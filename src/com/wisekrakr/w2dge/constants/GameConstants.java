@@ -1,19 +1,19 @@
 package com.wisekrakr.w2dge.constants;
 
-public class Dimensions {
+public class GameConstants {
 
     // =======================================================
     // Physics Constants
     // =======================================================
-    public static final int GRAVITY = 2850;
-    public static final int TERMINAL_VELOCITY = 1900;
+    public static final int GRAVITY = 300;
+    public static final int TERMINAL_VELOCITY = 750;
 
     // =======================================================
     // Window properties
     // =======================================================
     public static final int SCREEN_WIDTH = 1280;
     public static final int SCREEN_HEIGHT = 720;
-    public static final String SCREEN_TITLE = "Geometry Dash";
+    public static final String SCREEN_TITLE = "Rolling Stone";
 
     // =======================================================
     // Background image constants
@@ -28,10 +28,11 @@ public class Dimensions {
     // =======================================================
     public static final int PLAYER_WIDTH = 42;
     public static final int PLAYER_HEIGHT = 42;
-    public static final int SPEED = 395;
-    public static final int JUMP_FORCE = -650;
+    public static final int SPEED = 40;
+    public static final int JUMP_FORCE = -65;
     public static final int FLY_FORCE = -45;
-    public static final int FLY_TERMINAL_VELOCITY = 500;
+    public static final int FLY_TERMINAL_VELOCITY = 200;
+
 
     // =======================================================
     // Tile constants
@@ -45,9 +46,12 @@ public class Dimensions {
     // =======================================================
     // Camera constants
     // =======================================================
-    public static final int GROUND_HEIGHT = 3 * Dimensions.TILE_WIDTH;
-    public static final int CAMERA_OFFSET_Y = -385;
-    public static final int CAMERA_OFFSET_X = -400;
+    public static final int GROUND_Y = 650;
+    public static final int GROUND_HEIGHT = 3 * GameConstants.TILE_WIDTH;
+    public static final int CAMERA_OFFSET_Y = 350;
+    public static final int CAMERA_OFFSET_X = 300;
+    public static final int CAMERA_OFFSET_GROUND_Y = 150;
+    public static final int CAMERA_OFFSET_GROUND_X = 10;
     public static final int CAMERA_BOX_TOP_Y = 250;
     public static final int CAMERA_BOX_BOTTOM_Y = 450;
 

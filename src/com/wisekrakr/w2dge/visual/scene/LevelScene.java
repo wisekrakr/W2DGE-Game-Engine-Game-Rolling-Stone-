@@ -6,19 +6,11 @@ import com.wisekrakr.w2dge.math.Vector2;
 
 import java.awt.*;
 
-public class LevelEditorScene extends Scene {
+public class LevelScene extends Scene  {
 
-    public LevelEditorScene(String name) {
+    public LevelScene(String name) {
         super.Scene(name);
         Scene.currentScene = this;
-
-    }
-
-    public static LevelEditorScene getScene() {
-        if (currentScene == null) {
-            currentScene = new LevelEditorScene("Level Editor Scene");
-        }
-        return (LevelEditorScene) currentScene;
     }
 
     @Override
@@ -36,7 +28,7 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void render(Graphics2D g2d) {
-        g2d.setColor(Colors.synthWaveBlue);
+        g2d.setColor(Colors.synthWaveOrange);
         g2d.fillRect(0, 0, GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
 
         this.renderer.render(g2d);

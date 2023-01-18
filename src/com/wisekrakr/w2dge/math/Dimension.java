@@ -2,17 +2,13 @@ package com.wisekrakr.w2dge.math;
 
 public class Dimension {
 
-    public final int width;
+    public int width;
     public final int height;
     public Vector2 center;
 
     public Dimension(int width, int height) {
         this.width = width;
-        this.height = height;
-//        this.center = new Vector2(
-//                (width * 3.0f) / 2.0f ,
-//                (height * 3.0f) / 2.0f
-//        );
+        this.height = height;;
     }
 
     @Override

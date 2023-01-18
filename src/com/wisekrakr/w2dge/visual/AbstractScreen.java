@@ -5,6 +5,7 @@ import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.input.KeyListener;
 import com.wisekrakr.w2dge.input.MouseListener;
 import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
+import com.wisekrakr.w2dge.visual.scene.LevelScene;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
 import javax.swing.*;
@@ -12,6 +13,7 @@ import java.awt.*;
 
 public abstract class AbstractScreen extends JFrame implements Runnable, GameLoopImpl {
 
+    public static AbstractScreen currentScreen;
     protected boolean isRunning = true;
     protected MouseListener mouseListener;
     protected KeyListener keyListener;
@@ -36,11 +38,17 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
         this.setLocationRelativeTo(null);
     }
 
+    public Scene getCurrentScene() {
+        return currentScene;
+    }
 
     protected void changeScene(int scene) {
         switch (scene) {
             case 0: // LevelEditorScene
-                currentScene = new LevelEditorScene("Level Editor");
+                currentScene = new LevelEditorScene("Level editor");
+                break;
+            case 1: // LevelScene
+                currentScene = new LevelScene("Level");
                 break;
             default:
                 System.out.println("This is not a scene");

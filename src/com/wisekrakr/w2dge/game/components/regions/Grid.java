@@ -15,8 +15,6 @@ public class Grid extends Component<Grid> {
 
     Camera camera;
     public Dimension dimension;
-    private int gridYLines = GameConstants.GRID_Y_LINES;
-    private int gridXLines = GameConstants.GRID_X_LINES;
 
 
     public Grid() {
@@ -43,12 +41,14 @@ public class Grid extends Component<Grid> {
         float startX = (float) Math.floor(camera.position.x / dimension.width) * dimension.width - camera.position.x;
         float startY = (float) Math.floor(camera.position.y / dimension.height) * dimension.height - camera.position.y;
 
+        int gridYLines = GameConstants.GRID_Y_LINES;
         for (int column = 0; column < gridYLines; column++) {
             // start drawing from the top left (x=0,0) to the bottom of the screen (SCREEN_HEIGHT)
             g2d.draw(new Line2D.Float(startX, 0, startX, bottom));
             startX += dimension.width;
         }
 
+        int gridXLines = GameConstants.GRID_X_LINES;
         for (int row = 0; row < gridXLines; row++) {
             // if camera is below the ground line, we will draw the horizontal  lines
             if(camera.position.y + startY < ground.transform.position.y){

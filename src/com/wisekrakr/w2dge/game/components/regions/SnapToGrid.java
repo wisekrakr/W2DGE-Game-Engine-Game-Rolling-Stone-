@@ -18,27 +18,22 @@ public class SnapToGrid extends Component<SnapToGrid> {
      */
     private float debounceTimeLeft = 0.0f;
 
-    private final int gridWidth;
-    private final int gridHeight;
-
-    public SnapToGrid(int gridWidth, int gridHeight) {
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
-    }
 
     @Override
     public void update(double deltaTime) {
         Screen screen = Screen.getInstance();
         // snap the mouse and place something in each individual grid line
         if (this.gameObject.getComponent(Sprite.class) != null){
-            float x = (float) Math.floor(screen.mouseListener.position.x + screen.getCurrentScene().camera.position.x +
-                    screen.mouseListener.dx / this.gridWidth);
-            float y = (float) Math.floor(screen.mouseListener.position.y + screen.getCurrentScene().camera.position.y +
-                    screen.mouseListener.dy / this.gridHeight);
+            float x = (float) Math.floor((screen.mouseListener.position.x + screen.getCurrentScene().camera.position.x +
+                    screen.mouseListener.dx) / this.gameObject.dimension.width);
+            float y = (float) Math.floor((screen.mouseListener.position.y + screen.getCurrentScene().camera.position.y +
+                    screen.mouseListener.dy) / this.gameObject.dimension.height);
 
             // transform to world x and y
-            this.gameObject.transform.position.x = x * gridWidth - screen.getCurrentScene().camera.position.x;
-            this.gameObject.transform.position.y = x * gridHeight - screen.getCurrentScene().camera.position.y;
+            this.gameObject.transform.position.x = x * this.gameObject.dimension.width - screen.getCurrentScene().camera.position.x;
+            this.gameObject.transform.position.y = y * this.gameObject.dimension.height - screen.getCurrentScene().camera.position.y;
+
+//            if ()
         }
     }
 
@@ -46,13 +41,11 @@ public class SnapToGrid extends Component<SnapToGrid> {
     public void render(Graphics2D g2d) {
         Sprite sprite = gameObject.getComponent(Sprite.class);
         if (sprite != null){
-            float alpha = 0.5f; // transparent until placement
-            AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+            AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f); // transparent until placement
             g2d.setComposite(composite);
             g2d.drawImage(sprite.image, (int)gameObject.transform.position.x, (int)gameObject.transform.position.y,
-                    gameObject.dimension.width, gameObject.dimension.height,null);
-            alpha = 1.0f;
-            composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
+                    sprite.image.getWidth(), sprite.image.getHeight(),null);
+            composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
             g2d.setComposite(composite);
         }
     }

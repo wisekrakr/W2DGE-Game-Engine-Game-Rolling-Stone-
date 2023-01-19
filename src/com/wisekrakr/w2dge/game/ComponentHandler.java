@@ -2,6 +2,8 @@ package com.wisekrakr.w2dge.game;
 
 import com.wisekrakr.w2dge.game.components.Component;
 
+import java.util.List;
+
 public interface ComponentHandler {
     /**
      * Loops over all {@link GameObject} components.<br>
@@ -15,4 +17,9 @@ public interface ComponentHandler {
     <T extends Component>T getComponent(Class<T>componentClass);
 
     void addComponent(Component component);
+
+    void addComponents(List<Component> components);
+
+    void removeComponent(Component component);
+
 }

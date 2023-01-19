@@ -97,7 +97,8 @@ public class GameObjectFactory {
 
         return new GameObject("Mouse cursor", new Transform(new Vector2()),
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
-                new SnapToGrid(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
-                new Sprite(mouseSprite.image));
+                new SnapToGrid(),
+                new Sprite(mouseSprite.image)
+        );
     }
 }

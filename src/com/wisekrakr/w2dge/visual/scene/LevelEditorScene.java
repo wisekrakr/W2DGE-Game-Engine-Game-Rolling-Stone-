@@ -1,6 +1,5 @@
 package com.wisekrakr.w2dge.visual.scene;
 
-import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.controls.CameraControls;
@@ -41,17 +40,15 @@ public class LevelEditorScene extends Scene {
 
         grid.update(deltaTime);
         cameraControls.update(deltaTime);
-        cursor.update(deltaTime);
     }
 
     @Override
     public void render(Graphics2D g2d) {
-        g2d.setColor(Colors.babyBlue);
+        g2d.setColor(Color.white);
         g2d.fillRect(0, 0, GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
 
         renderer.render(g2d);
         grid.render(g2d);
-        cursor.render(g2d);
     }
 
     @Override

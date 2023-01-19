@@ -60,8 +60,20 @@ public class GameObject implements GameLoopImpl, ComponentHandler {
 
     @Override
     public void addComponent(Component component) {
-        components.add(component);
+        this.components.add(component);
         component.gameObject = this;
+    }
+
+    @Override
+    public void addComponents(List<Component> components) {
+        for (Component c: components){
+            addComponent(c);
+        }
+    }
+
+    @Override
+    public void removeComponent(Component component) {
+        this.components.remove(component);
     }
 
     @Override

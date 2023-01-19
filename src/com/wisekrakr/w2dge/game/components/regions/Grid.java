@@ -24,8 +24,6 @@ public class Grid extends Component<Grid> {
 
     @Override
     public void update(double deltaTime) {
-
-
     }
 
     @Override
@@ -56,5 +54,10 @@ public class Grid extends Component<Grid> {
                 startY += dimension.height;
             }
         }
+    }
+
+    @Override
+    public Component<Grid> copy() {
+        return new Grid();
     }
 }

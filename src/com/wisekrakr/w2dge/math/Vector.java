@@ -6,7 +6,7 @@ package com.wisekrakr.w2dge.math;
  * */
 public interface Vector<T extends Vector<T>> {
     /** @return a copy of this vector */
-    T cpy ();
+    T copy();
 
     /** @return The euclidean length */
     float len ();

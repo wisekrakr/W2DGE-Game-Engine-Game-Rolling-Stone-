@@ -41,7 +41,7 @@ public class Vector2 implements Serializable, Vector<Vector2> {
     }
 
     @Override
-    public Vector2 cpy () {
+    public Vector2 copy() {
         return new Vector2(this);
     }
 

@@ -5,6 +5,7 @@ import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.controls.CameraControls;
 import com.wisekrakr.w2dge.game.components.regions.Grid;
 import com.wisekrakr.w2dge.math.Vector2;
+import com.wisekrakr.w2dge.ui.MenuContainer;
 import com.wisekrakr.w2dge.visual.Screen;
 
 import java.awt.*;
@@ -13,6 +14,7 @@ public class LevelEditorScene extends Scene {
     private Grid grid;
     private CameraControls cameraControls;
     private GameObject cursor;
+    private MenuContainer editingContainer;
 
     public LevelEditorScene(String name) {
         super.Scene(name);
@@ -22,6 +24,7 @@ public class LevelEditorScene extends Scene {
     public void init() {
         grid = new Grid();
         cameraControls = new CameraControls();
+        editingContainer = new MenuContainer();
 
         cursor = factory.mouserCursor();
         player = factory.player(new Vector2(100, 300), Screen.getInstance().isInEditorPhase);
@@ -29,7 +32,7 @@ public class LevelEditorScene extends Scene {
 
         addGameObjectToScene(player);
         addGameObjectToScene(ground);
-        addGameObjectToScene(cursor);
+
     }
 
     @Override
@@ -40,6 +43,9 @@ public class LevelEditorScene extends Scene {
 
         grid.update(deltaTime);
         cameraControls.update(deltaTime);
+        editingContainer.update(deltaTime);
+        cursor.update(deltaTime);
+
     }
 
     @Override
@@ -49,6 +55,10 @@ public class LevelEditorScene extends Scene {
 
         renderer.render(g2d);
         grid.render(g2d);
+        editingContainer.render(g2d);
+
+        // Cursor always rendered last - so it is on top of everything
+        cursor.render(g2d);
     }
 
     @Override

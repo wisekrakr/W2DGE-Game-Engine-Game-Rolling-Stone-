@@ -4,6 +4,7 @@ import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
+import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Camera;
 import com.wisekrakr.w2dge.visual.Screen;
@@ -36,7 +37,9 @@ public abstract class Scene implements GameLoopImpl {
 
     @Override
     public void init() {
-
+        for (GameObject gameObject : gameObjects) {
+            gameObject.init();
+        }
     }
 
     @Override
@@ -69,8 +72,11 @@ public abstract class Scene implements GameLoopImpl {
      *
      * @param gameObject {@link GameObject}
      */
-    protected void addGameObjectToScene(GameObject gameObject) {
+    public void addGameObjectToScene(GameObject gameObject) {
         gameObjects.add(gameObject);
         renderer.add(gameObject);
+        for (Component<?> c: gameObject.getAllComponents()){
+            c.init();
+        }
     }
 }

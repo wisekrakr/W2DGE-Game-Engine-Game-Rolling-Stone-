@@ -7,13 +7,19 @@ import java.awt.geom.AffineTransform;
 
 public class Graphics extends Component<Graphics> {
 
-    public Sprite layerOne, layerTwo, layerThree;
-    private final Sprite[] layers;
+    public Sprite layerOne;
+    public Sprite layerTwo;
+    public Sprite layerThree;
+    private final Color colorOne;
+    private final Color colorTwo;
+    private Sprite[] layers;
 
     public Graphics(Sprite layerOne, Sprite layerTwo, Sprite layerThree, Color colorOne, Color colorTwo) {
         this.layerOne = layerOne;
         this.layerTwo = layerTwo;
         this.layerThree = layerThree;
+        this.colorOne = colorOne;
+        this.colorTwo = colorTwo;
         this.layers = new Sprite[]{this.layerOne, this.layerTwo, this.layerThree};
 
         int threshold = 150;
@@ -35,10 +41,6 @@ public class Graphics extends Component<Graphics> {
         }
     }
 
-    @Override
-    public void init() {
-        super.init();
-    }
 
     /**
      * A method that helps with drawing a {@link com.wisekrakr.w2dge.game.GameObject} rotation. <br>
@@ -63,5 +65,14 @@ public class Graphics extends Component<Graphics> {
         for (Sprite layer : layers) {
             g2d.drawImage(layer.image, transform(), null);
         }
+    }
+
+    @Override
+    public Component<Graphics> copy() {
+        Graphics graphics = new Graphics((Sprite) layerOne.copy(), (Sprite) layerTwo.copy(), (Sprite) layerThree.copy(),
+                new Color(colorOne.getRGB()), new Color(colorTwo.getRGB()));
+        graphics.layers = layers.clone();
+
+        return graphics;
     }
 }

@@ -1,6 +1,8 @@
 package com.wisekrakr.w2dge.constants;
 
 public class GameConstants {
+    private static final int WIDTH = 42;
+    private static final int HEIGHT = 42;
 
     // =======================================================
     // Physics Constants
@@ -26,8 +28,8 @@ public class GameConstants {
     // =======================================================
     // Player constants
     // =======================================================
-    public static final int PLAYER_WIDTH = 42;
-    public static final int PLAYER_HEIGHT = 42;
+    public static final int PLAYER_WIDTH = WIDTH;
+    public static final int PLAYER_HEIGHT = HEIGHT;
     public static final int SPEED = 40;
     public static final int JUMP_FORCE = -65;
     public static final int FLY_FORCE = -45;
@@ -37,11 +39,11 @@ public class GameConstants {
     // =======================================================
     // Tile constants
     // =======================================================
-    public static final int TILE_WIDTH = 42;
-    public static final int TILE_HEIGHT = 42;
+    public static final int TILE_WIDTH = WIDTH;
+    public static final int TILE_HEIGHT = HEIGHT;
     public static final int ONE_TENTH_TILE_WIDTH = 4;
-    public static final int GRID_WIDTH = 42;
-    public static final int GRID_HEIGHT = 42;
+    public static final int GRID_WIDTH = WIDTH;
+    public static final int GRID_HEIGHT = HEIGHT;
     public static final int GRID_Y_LINES = 31;
     public static final int GRID_X_LINES = 20;
 
@@ -61,11 +63,13 @@ public class GameConstants {
     // Level editor UI constants
     // =======================================================
     public static final int BUTTON_WIDTH = 60;
+    public static final int BUTTON_HEIGHT = 60;
     public static final int BIG_BUTTON_WIDTH = 90;
     public static final int MENU_CONTAINER_Y = 535;
-    public static final int BUTTON_OFFSET_X = 400;
-    public static final int BUTTON_OFFSET_Y = 560;
-    public static final int BUTTON_HORIZONTAL_SPACING = 10;
+    public static final int BUTTON_OFFSET_X = 0;
+    public static final int BUTTON_OFFSET_Y = 0;
+    public static final int BUTTON_HORIZONTAL_SPACING = 0;
+    public static final int BUTTON_VERTICAL_SPACING = 0;
 
     public static final int TAB_WIDTH = 75;
     public static final int TAB_HEIGHT = 38;

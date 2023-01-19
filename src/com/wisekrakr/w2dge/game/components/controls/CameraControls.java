@@ -33,4 +33,11 @@ public class CameraControls extends Component<CameraControls> {
         prevPosition.x = screen.mouseListener.position.x + screen.mouseListener.dx;
         prevPosition.y = screen.mouseListener.position.y + screen.mouseListener.dy;
     }
+
+    @Override
+    public Component<CameraControls> copy() {
+        CameraControls cameraControls = new CameraControls();
+        cameraControls.prevPosition = prevPosition.copy();
+        return cameraControls;
+    }
 }

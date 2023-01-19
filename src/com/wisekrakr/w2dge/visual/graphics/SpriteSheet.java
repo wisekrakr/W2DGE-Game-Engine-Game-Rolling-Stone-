@@ -2,6 +2,7 @@ package com.wisekrakr.w2dge.visual.graphics;
 
 import com.wisekrakr.w2dge.assets.AssetManager;
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
+import com.wisekrakr.w2dge.math.Dimension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +39,10 @@ public class SpriteSheet {
                 // top left corner of the image of the y-axis
                 int imgY = (row * tileHeight) + (row * spacing); // sprite height + spacing between sprites
 
-                sprites.add(new Sprite(parent.image.getSubimage(imgX, imgY, tileWidth, tileHeight)));
+                sprites.add(new Sprite(
+                        parent.image.getSubimage(imgX, imgY, tileWidth, tileHeight),
+                        new Dimension(tileWidth, tileHeight),
+                        row, column, count));
 
                 count++;
 

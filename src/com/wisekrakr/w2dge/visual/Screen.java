@@ -22,6 +22,7 @@ public class Screen extends AbstractScreen {
         return (Screen) currentScreen;
     }
 
+
     @Override
     public void init() {
         this.addMouseListener();
@@ -39,7 +40,6 @@ public class Screen extends AbstractScreen {
     public void render(Graphics2D g2d) {
         super.render(g2d);
     }
-
 
     @Override
     public void terminate() {

@@ -1,6 +1,8 @@
 package com.wisekrakr.w2dge.math;
 
-public class Dimension {
+import com.wisekrakr.w2dge.InterprocessImpl;
+
+public class Dimension implements InterprocessImpl<Dimension> {
 
     public int width;
     public int height;
@@ -12,6 +14,15 @@ public class Dimension {
     public Dimension(int width, int height) {
         this.width = width;
         this.height = height;;
+    }
+
+    @Override
+    public Dimension copy() {
+        Dimension dimension = new Dimension(this.width, this.height);
+        if (dimension.center != null){
+            dimension.center = this.center.copy();
+        }
+        return dimension;
     }
 
     @Override

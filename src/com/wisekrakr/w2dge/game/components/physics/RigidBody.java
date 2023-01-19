@@ -24,4 +24,9 @@ public class RigidBody extends Component<RigidBody> {
             velocity.y = Math.signum(velocity.y) * GameConstants.TERMINAL_VELOCITY; // either positive or negative
         }
     }
+
+    @Override
+    public Component<RigidBody> copy() {
+        return new RigidBody(velocity.copy());
+    }
 }

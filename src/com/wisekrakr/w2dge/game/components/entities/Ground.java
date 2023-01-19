@@ -39,4 +39,9 @@ public class Ground extends Component<Ground> {
                 gameObject.dimension.width + 20, gameObject.dimension.height - 1
         );
     }
+
+    @Override
+    public Component<Ground> copy() {
+        return new Ground();
+    }
 }

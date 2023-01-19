@@ -11,4 +11,8 @@ public class Player extends Component<Player> {
         gameObject.centering();
     }
 
+    @Override
+    public Component<Player> copy() {
+        return null;
+    }
 }

@@ -33,6 +33,16 @@ public class AssetFinder {
         return image;
     }
 
+    /**
+     * Returns a sprite sheet from resources/ assets
+     *
+     * @param sheetName File name (not path)
+     * @param width     tile width of a single sprite in sprite sheet
+     * @param height    tile height of a single sprite in sprite sheet
+     * @param columns   nr of columns within the sprite sheet
+     * @param size      nr of sprites within the sprites sheet
+     * @return {@link  SpriteSheet}
+     */
     public static SpriteSheet spriteSheet(String sheetName, int width, int height, int columns, int size) {
         String path = "assets/spritesheets/" + sheetName;
 

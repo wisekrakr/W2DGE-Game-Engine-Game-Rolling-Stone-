@@ -31,7 +31,6 @@ public class GameObjectFactory {
     /**
      * Creates a new GameObject - PLAYER <br>
      * Consists of {@link Player},{@link RigidBody},{@link Graphics} components.
-     * Adds it to the engine to act and draw.
      *
      * @param position         {@link Vector2} position of the game object
      * @param isInEditingPhase if false, this Game Object will have full motion. If false, only visual.
@@ -40,8 +39,7 @@ public class GameObjectFactory {
     public GameObject player(Vector2 position, boolean isInEditingPhase) {
 
         GameObject player = new GameObject(
-                Tags.PLAYER,
-                new Transform(new Vector2(position.x, position.y)),
+                Tags.PLAYER, new Transform(new Vector2(position.x, position.y)),
                 new Dimension(GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT)
         );
 
@@ -52,7 +50,7 @@ public class GameObjectFactory {
         SpriteSheet layerTwo = AssetFinder.spriteSheet("layerTwo.png",
                 GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
         SpriteSheet layerThree = AssetFinder.spriteSheet("layerThree.png",
-                GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT,13, 13 * 5);
+                GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
 
         player.addComponent(
                 new Graphics(
@@ -80,25 +78,23 @@ public class GameObjectFactory {
     public GameObject ground(int groundY) {
 
         return new GameObject(
-                Tags.GROUND,
-                new Transform(new Vector2(0, groundY)),
+                Tags.GROUND, new Transform(new Vector2(0, groundY)),
                 new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT),
                 new Ground()
         );
     }
 
+    /**
+     * Creates a new GameObject - CURSOR<br>
+     * Consists of the following components: {@link SnapToGrid}, {@link Sprite}
+     *
+     * @return new cursor GameObject
+     */
+    public GameObject mouserCursor() {
 
-    public GameObject mouserCursor(){
-
-        SpriteSheet objects = AssetFinder.spriteSheet("spritesheet.png",
-                GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT, 6,12);
-
-        Sprite mouseSprite = objects.sprites.get(0);
-
-        return new GameObject("Mouse cursor", new Transform(new Vector2()),
+        return new GameObject(Tags.CURSOR, new Transform(new Vector2()),
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
-                new SnapToGrid(),
-                new Sprite(mouseSprite.image)
+                new SnapToGrid()
         );
     }
 }

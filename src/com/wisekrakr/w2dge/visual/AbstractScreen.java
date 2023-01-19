@@ -16,8 +16,8 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     public static AbstractScreen currentScreen;
     public boolean isInEditorPhase = false;
     protected boolean isRunning = true;
-    protected MouseListener mouseListener;
-    protected KeyListener keyListener;
+    public MouseListener mouseListener;
+    public KeyListener keyListener;
     protected Scene currentScene = null;
 
     /**

@@ -16,8 +16,10 @@ public class LevelScene extends Scene {
     @Override
     public void init() {
         player = factory.player(new Vector2(100, 300), Screen.getInstance().isInEditorPhase);
+        ground = factory.ground(GameConstants.GROUND_Y);
+
         addGameObjectToScene(player);
-        addGameObjectToScene(factory.ground(GameConstants.GROUND_Y));
+        addGameObjectToScene(ground);
 
     }
 
@@ -25,7 +27,6 @@ public class LevelScene extends Scene {
     public void update(double deltaTime) {
         super.update(deltaTime);
         camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y);
-
     }
 
     @Override

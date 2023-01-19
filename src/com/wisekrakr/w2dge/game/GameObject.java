@@ -23,6 +23,17 @@ public class GameObject implements GameLoopImpl, ComponentHandler {
         this.components = new ArrayList<>();
     }
 
+    public GameObject(String name, Transform transform, Dimension dimension, Component...components) {
+        this.name = name;
+        this.transform = transform;
+        this.dimension = dimension;
+        this.components = new ArrayList<>();
+
+        for (Component c: components){
+            addComponent(c);
+        }
+    }
+
     @Override
     public void init() {
 
@@ -75,4 +86,11 @@ public class GameObject implements GameLoopImpl, ComponentHandler {
         );
     }
 
+    @Override
+    public String toString() {
+        return "GameObject{" +
+                ", name='" + name +
+                ", components= " + components +'\'' +
+                '}';
+    }
 }

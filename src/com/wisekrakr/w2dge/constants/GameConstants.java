@@ -38,6 +38,7 @@ public class GameConstants {
     // Tile constants
     // =======================================================
     public static final int TILE_WIDTH = 42;
+    public static final int TILE_HEIGHT = 42;
     public static final int ONE_TENTH_TILE_WIDTH = 4;
     public static final int GRID_WIDTH = 42;
     public static final int GRID_HEIGHT = 42;

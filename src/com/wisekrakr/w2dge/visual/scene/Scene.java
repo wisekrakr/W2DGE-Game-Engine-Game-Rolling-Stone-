@@ -6,6 +6,7 @@ import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Camera;
+import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.graphics.Renderer;
 
 import java.awt.*;
@@ -21,7 +22,6 @@ public abstract class Scene implements GameLoopImpl {
     GameObjectFactory factory;
     public GameObject player;
     public GameObject ground;
-
     String toFollow;
 
     public void Scene(String name) {
@@ -41,7 +41,9 @@ public abstract class Scene implements GameLoopImpl {
 
     @Override
     public void render(Graphics2D g2d) {
-
+        for (GameObject gameObject : gameObjects) {
+            gameObject.render(g2d);
+        }
     }
 
     @Override
@@ -53,7 +55,10 @@ public abstract class Scene implements GameLoopImpl {
     public void update(double deltaTime) {
         for (GameObject gameObject : gameObjects) {
             gameObject.update(deltaTime);
-            camera.follow(gameObject, this.toFollow);
+
+            if (gameObject.name.equalsIgnoreCase(this.toFollow) && !Screen.getInstance().isInEditorPhase) {
+                camera.follow(gameObject);
+            }
         }
     }
 

@@ -12,13 +12,13 @@ import java.awt.*;
 
 public class Ground extends Component<Ground> {
 
-
     @Override
     public void update(double deltaTime) {
         if (!Screen.getInstance().isInEditorPhase) {
             Scene scene = Screen.getInstance().getCurrentScene();
             GameObject player = scene.player;
 
+            // collision detection for the player with the ground
             if (player.transform.position.y + player.dimension.height > gameObject.transform.position.y) {
                 player.transform.position.y = gameObject.transform.position.y - player.dimension.height;
             }

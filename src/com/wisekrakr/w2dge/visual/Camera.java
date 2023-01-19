@@ -12,16 +12,20 @@ public class Camera {
         this.position = position;
     }
 
-    public void follow(GameObject gameObject, String toFollow) {
-        if (gameObject.name.equalsIgnoreCase(toFollow)) {
-            // camera follows player
-            if (gameObject.transform.position.x - position.x > GameConstants.CAMERA_OFFSET_X) {
-                position.x = gameObject.transform.position.x - GameConstants.CAMERA_OFFSET_X;
-            }
-            if (gameObject.transform.position.y - position.y > GameConstants.CAMERA_OFFSET_Y) {
-                position.y = gameObject.transform.position.y - GameConstants.CAMERA_OFFSET_Y;
-            }
+    /**
+     * Follows a certain {@link GameObject} with a certain {@link com.wisekrakr.w2dge.constants.Tags}
+     * @param gameObject
+     */
+    public void follow(GameObject gameObject) {
+
+        // camera follows player
+        if (gameObject.transform.position.x - position.x > GameConstants.CAMERA_OFFSET_X) {
+            position.x = gameObject.transform.position.x - GameConstants.CAMERA_OFFSET_X;
         }
+        if (gameObject.transform.position.y - position.y > GameConstants.CAMERA_OFFSET_Y) {
+            position.y = gameObject.transform.position.y - GameConstants.CAMERA_OFFSET_Y;
+        }
+
     }
 
     /**
@@ -38,6 +42,5 @@ public class Camera {
                 position.y = GameConstants.CAMERA_OFFSET_GROUND_Y;
             }
         }
-
     }
 }

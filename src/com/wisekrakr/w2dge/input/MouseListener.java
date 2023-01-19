@@ -11,7 +11,10 @@ public class MouseListener extends MouseAdapter {
     public boolean mouseDragged = false;
     public int mouseButton = -1;
     public Vector2 position = new Vector2(-1.0f, -1.0f); // mouse position
-    public float dx = -1.0f, dy = -1.0f; // mouse distance travelled
+    /**
+     * drag distance
+     */
+    public float dx = -1.0f, dy = -1.0f;
 
     @Override
     public void mousePressed(MouseEvent e) {

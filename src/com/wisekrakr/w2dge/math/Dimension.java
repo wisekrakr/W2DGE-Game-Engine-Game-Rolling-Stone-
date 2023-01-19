@@ -6,6 +6,9 @@ public class Dimension {
     public int height;
     public Vector2 center;
 
+    public Dimension() {
+    }
+
     public Dimension(int width, int height) {
         this.width = width;
         this.height = height;;

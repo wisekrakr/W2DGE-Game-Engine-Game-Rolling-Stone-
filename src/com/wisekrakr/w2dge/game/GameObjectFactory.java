@@ -7,8 +7,9 @@ import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.components.entities.Ground;
 import com.wisekrakr.w2dge.game.components.entities.Player;
 import com.wisekrakr.w2dge.game.components.graphics.Graphics;
+import com.wisekrakr.w2dge.game.components.graphics.Sprite;
 import com.wisekrakr.w2dge.game.components.physics.RigidBody;
-import com.wisekrakr.w2dge.game.components.regions.Grid;
+import com.wisekrakr.w2dge.game.components.regions.SnapToGrid;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
@@ -46,9 +47,12 @@ public class GameObjectFactory {
 
         player.addComponent(new Player());
 
-        SpriteSheet layerOne = AssetFinder.spriteSheet("layerOne.png", GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
-        SpriteSheet layerTwo = AssetFinder.spriteSheet("layerTwo.png", GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
-        SpriteSheet layerThree = AssetFinder.spriteSheet("layerThree.png", GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
+        SpriteSheet layerOne = AssetFinder.spriteSheet("layerOne.png",
+                GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
+        SpriteSheet layerTwo = AssetFinder.spriteSheet("layerTwo.png",
+                GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
+        SpriteSheet layerThree = AssetFinder.spriteSheet("layerThree.png",
+                GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT,13, 13 * 5);
 
         player.addComponent(
                 new Graphics(
@@ -74,18 +78,26 @@ public class GameObjectFactory {
      * @return new ground Game object
      */
     public GameObject ground(int groundY) {
-        GameObject ground = new GameObject(
+
+        return new GameObject(
                 Tags.GROUND,
                 new Transform(new Vector2(0, groundY)),
-                new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT)
+                new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT),
+                new Ground()
         );
-
-        ground.addComponent(new Ground());
-
-        return ground;
     }
 
-    public Grid grid(){
-        return new Grid();
+
+    public GameObject mouserCursor(){
+
+        SpriteSheet objects = AssetFinder.spriteSheet("spritesheet.png",
+                GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT, 6,12);
+
+        Sprite mouseSprite = objects.sprites.get(0);
+
+        return new GameObject("Mouse cursor", new Transform(new Vector2()),
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                new SnapToGrid(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                new Sprite(mouseSprite.image));
     }
 }

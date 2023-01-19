@@ -33,9 +33,9 @@ public class AssetFinder {
         return image;
     }
 
-    public static SpriteSheet spriteSheet(String sheetName, int width, int height) {
+    public static SpriteSheet spriteSheet(String sheetName, int width, int height, int columns, int size) {
         String path = "assets/spritesheets/" + sheetName;
 
-        return new SpriteSheet(path, width, height, 2, 13, 13 * 5);
+        return new SpriteSheet(path, width, height, 2, columns, size);
     }
 }

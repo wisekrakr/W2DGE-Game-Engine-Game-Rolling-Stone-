@@ -28,4 +28,5 @@ public abstract class Component<T> implements GameLoopImpl {
     public void terminate() {
 
     }
+
 }

@@ -45,11 +45,11 @@ public class GameObjectFactory {
 
         player.addComponent(new Player());
 
-        SpriteSheet layerOne = AssetFinder.spriteSheet("layerOne.png",
+        SpriteSheet layerOne = AssetFinder.spriteSheet(AssetFinder.ImageType.PLAYER, "layerOne.png",
                 GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
-        SpriteSheet layerTwo = AssetFinder.spriteSheet("layerTwo.png",
+        SpriteSheet layerTwo = AssetFinder.spriteSheet(AssetFinder.ImageType.PLAYER, "layerTwo.png",
                 GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
-        SpriteSheet layerThree = AssetFinder.spriteSheet("layerThree.png",
+        SpriteSheet layerThree = AssetFinder.spriteSheet(AssetFinder.ImageType.PLAYER, "layerThree.png",
                 GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
 
         player.addComponent(
@@ -91,7 +91,6 @@ public class GameObjectFactory {
      * @return new cursor GameObject
      */
     public GameObject mouserCursor() {
-
         return new GameObject(Tags.CURSOR, new Transform(new Vector2()),
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
                 new SnapToGrid()

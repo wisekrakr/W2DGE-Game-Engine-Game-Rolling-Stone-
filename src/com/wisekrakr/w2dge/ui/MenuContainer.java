@@ -27,10 +27,12 @@ public class MenuContainer extends Component<MenuContainer> {
     @Override
     public void init() {
         SpriteSheet groundSprites = AssetFinder.spriteSheet(
-                "spritesheet_tiles_blue.png",
-                GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT, 4, 13
+                AssetFinder.ImageType.TILES,
+                "spritesheet_tiles_blue_10x10.png",
+                GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT, 10, 10
         );
         SpriteSheet buttonSprites = AssetFinder.spriteSheet(
+                AssetFinder.ImageType.BUTTONS,
                 "spritesheet_buttons.png",
                 GameConstants.BUTTON_WIDTH, GameConstants.BUTTON_HEIGHT, 2, 2
         );
@@ -38,11 +40,11 @@ public class MenuContainer extends Component<MenuContainer> {
         // Creates a menu item component that contains sprite
         for (int i = 0; i < groundSprites.sprites.size(); i++) {
             Sprite currentSprite = groundSprites.sprites.get(i);
+
             int x = GameConstants.BUTTON_OFFSET_X + (currentSprite.column * GameConstants.BUTTON_WIDTH) +
                     (currentSprite.column * GameConstants.BUTTON_HORIZONTAL_SPACING);
             int y = GameConstants.BUTTON_OFFSET_Y + (currentSprite.row * GameConstants.BUTTON_HEIGHT) +
                     (currentSprite.row * GameConstants.BUTTON_VERTICAL_SPACING);
-
 
             MenuItem menuItem = new MenuItem(new Transform(new Vector2(x,y)),
                     new Dimension(GameConstants.BUTTON_WIDTH, GameConstants.BUTTON_HEIGHT),
@@ -51,7 +53,7 @@ public class MenuContainer extends Component<MenuContainer> {
 
             GameObject object = new GameObject(
                     "Generated Menu Container", new Transform(new Vector2(x, y)),
-                    new Dimension(GameConstants.BUTTON_WIDTH, GameConstants.BUTTON_HEIGHT),
+                    new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
                     currentSprite.copy(),
                     menuItem
             );

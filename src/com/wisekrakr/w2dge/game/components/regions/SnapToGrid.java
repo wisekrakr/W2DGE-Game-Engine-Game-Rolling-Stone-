@@ -1,5 +1,6 @@
 package com.wisekrakr.w2dge.game.components.regions;
 
+import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
@@ -39,7 +40,9 @@ public class SnapToGrid extends Component<SnapToGrid> {
             this.gameObject.transform.position.y = y * this.gameObject.dimension.height - screen.getCurrentScene().camera.position.y;
 
             // click to add to grid
-            if (screen.mouseListener.mousePressed && screen.mouseListener.mouseButton == MouseEvent.BUTTON1 &&
+            if (screen.mouseListener.position.y < GameConstants.BUTTON_OFFSET_Y &&
+                    screen.mouseListener.mousePressed &&
+                    screen.mouseListener.mouseButton == MouseEvent.BUTTON1 &&
                     debounceTimeLeft < 0) {
 
                 debounceTimeLeft = debounceTime;
@@ -58,7 +61,7 @@ public class SnapToGrid extends Component<SnapToGrid> {
             AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f); // transparent until placement
             g2d.setComposite(composite);
             g2d.drawImage(sprite.image, (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
-                    sprite.image.getWidth(), sprite.image.getHeight(), null);
+                    gameObject.dimension.width, gameObject.dimension.height, null);
             composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
             g2d.setComposite(composite);
         }

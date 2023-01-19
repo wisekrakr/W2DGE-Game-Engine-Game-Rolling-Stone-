@@ -11,9 +11,11 @@ import com.wisekrakr.w2dge.visual.Screen;
 import java.awt.*;
 
 public class LevelEditorScene extends Scene {
+
+    public GameObject cursor;
+
     private Grid grid;
     private CameraControls cameraControls;
-    private GameObject cursor;
     private MenuContainer editingContainer;
 
     public LevelEditorScene(String name) {

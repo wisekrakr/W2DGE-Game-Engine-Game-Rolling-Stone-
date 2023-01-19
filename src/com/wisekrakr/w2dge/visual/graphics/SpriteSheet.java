@@ -1,6 +1,6 @@
 package com.wisekrakr.w2dge.visual.graphics;
 
-import com.wisekrakr.w2dge.assets.AssetManager;
+import com.wisekrakr.w2dge.visual.assets.AssetManager;
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
 import com.wisekrakr.w2dge.math.Dimension;
 

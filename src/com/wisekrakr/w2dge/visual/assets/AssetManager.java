@@ -1,4 +1,4 @@
-package com.wisekrakr.w2dge.assets;
+package com.wisekrakr.w2dge.visual.assets;
 
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
 
@@ -13,6 +13,15 @@ public class AssetManager {
         return AssetManager.sprites.containsKey(fileName);
     }
 
+    public static boolean hasSprite(String fileName){
+        return AssetManager.sprites.containsKey(fileName);
+    }
+
+    /**
+     * Get a sprite out of the sprite pool. If Sprite is not yet in the pool, create it and throw it in the pool.
+     * @param fileName name of the file to load
+     * @return {@link Sprite}
+     */
     public static Sprite getSprite(String fileName){
         File file = new File(fileName);
 

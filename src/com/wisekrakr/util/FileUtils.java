@@ -109,6 +109,8 @@ public class FileUtils {
         }catch (Throwable t){
             throw new IllegalArgumentException("Exporting file interrupted", t);
         }
+
+        System.out.println("Successfully exported level file");
     }
 
     public static void importFileToLevel(String fileName, Scene scene) {

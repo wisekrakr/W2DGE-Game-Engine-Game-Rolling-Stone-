@@ -60,8 +60,11 @@ public class SnapToGrid extends Component<SnapToGrid> {
         if (sprite != null) {
             AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f); // transparent until placement
             g2d.setComposite(composite);
-            g2d.drawImage(sprite.image, (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
-                    gameObject.dimension.width, gameObject.dimension.height, null);
+            g2d.drawImage(sprite.image,
+                    (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
+                    (int) gameObject.dimension.width, (int) gameObject.dimension.height,
+                    null
+            );
             composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
             g2d.setComposite(composite);
         }

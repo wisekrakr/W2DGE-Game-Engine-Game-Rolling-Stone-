@@ -9,8 +9,7 @@ import java.util.List;
 
 public class SpriteSheet {
     public List<Sprite> sprites;
-    public final int tileWidth;
-    public final int tileHeight;
+    public final Dimension dimension;
     public final int spacing;
 
     /**
@@ -22,9 +21,8 @@ public class SpriteSheet {
      * @param columns number of columns in the sprite sheet
      * @param size number of sprites in the sprite sheet
      */
-    public SpriteSheet(String fileName, int tileWidth, int tileHeight, int spacing, int columns, int size) {
-        this.tileWidth = tileWidth;
-        this.tileHeight = tileHeight;
+    public SpriteSheet(String fileName, Dimension dimension, int spacing, int columns, int size) {
+        this.dimension = dimension;
         this.spacing = spacing;
         this.sprites = new ArrayList<>();
 
@@ -35,13 +33,13 @@ public class SpriteSheet {
         while (count < size){
             for (int column = 0; column < columns; column++) {
                 // top left corner of the image of the x-axis
-                int imgX = (column * tileWidth) + (column * spacing); // sprite width + spacing between sprites
+                int imgX = (int) ((column * dimension.width) + (column * spacing)); // sprite width + spacing between sprites
                 // top left corner of the image of the y-axis
-                int imgY = (row * tileHeight) + (row * spacing); // sprite height + spacing between sprites
+                int imgY = (int) ((row * dimension.height) + (row * spacing)); // sprite height + spacing between sprites
 
                 sprites.add(new Sprite(
-                        parent.image.getSubimage(imgX, imgY, tileWidth, tileHeight),
-                        new Dimension(tileWidth, tileHeight),
+                        parent.image.getSubimage(imgX, imgY, (int) dimension.width, (int) dimension.height),
+                        dimension,
                         row, column, count, fileName));
 
                 count++;
@@ -53,9 +51,9 @@ public class SpriteSheet {
             row++;
         }
 
-//        if (!AssetManager.hasSpriteSheet(fileName)){
-//            AssetManager.addSpriteSheet(fileName, this);
-//        }
-        AssetManager.addSpriteSheet(fileName, this);
+        if (!AssetManager.hasSpriteSheet(fileName)){
+            AssetManager.addSpriteSheet(fileName, this);
+        }
+//        AssetManager.addSpriteSheet(fileName, this);
     }
 }

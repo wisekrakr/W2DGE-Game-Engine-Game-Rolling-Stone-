@@ -3,8 +3,8 @@ package com.wisekrakr.w2dge.visual.scene;
 import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
-import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.game.components.physics.Bounds;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Camera;
 import com.wisekrakr.w2dge.visual.Screen;
@@ -56,9 +56,22 @@ public abstract class Scene implements GameLoopImpl {
         for (GameObject gameObject : gameObjects) {
             gameObject.update(deltaTime);
 
-            if (gameObject.name.equalsIgnoreCase(this.toFollow) && !Screen.getInstance().isInEditorPhase) {
-                camera.follow(gameObject);
+            // Camera follows value of toFollow
+            cameraFollow(gameObject);
+
+            // Collision detection
+            Bounds bounds = gameObject.getComponent(Bounds.class);
+            if (gameObject != player && bounds != null){
+                if (Bounds.collision(player.getComponent(Bounds.class), bounds)){
+                    System.out.println("Colliding with: " + gameObject.name);
+                }
             }
+        }
+    }
+
+    private void cameraFollow(GameObject gameObject){
+        if (gameObject.name.equalsIgnoreCase(this.toFollow) && !Screen.getInstance().isInEditorPhase) {
+            camera.follow(gameObject);
         }
     }
 

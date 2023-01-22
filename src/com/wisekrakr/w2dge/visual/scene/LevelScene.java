@@ -1,5 +1,6 @@
 package com.wisekrakr.w2dge.visual.scene;
 
+import com.wisekrakr.util.FileUtils;
 import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
@@ -20,6 +21,8 @@ public class LevelScene extends Scene {
 
         addGameObjectToScene(player);
         addGameObjectToScene(ground);
+
+        FileUtils.importFileToLevel("Test", this);
     }
 
     @Override
@@ -27,7 +30,7 @@ public class LevelScene extends Scene {
         super.update(deltaTime);
         camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y);
 
-        Screen.getInstance().inputListener.update(this);
+        Screen.getInstance().inputListener.update();
     }
 
     @Override

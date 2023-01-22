@@ -1,8 +1,8 @@
 package com.wisekrakr.w2dge.constants;
 
 public class GameConstants {
-    private static final int WIDTH = 42;
-    private static final int HEIGHT = 42;
+    private static final float WIDTH = 42;
+    private static final float HEIGHT = 42;
 
     // =======================================================
     // Physics Constants
@@ -28,9 +28,9 @@ public class GameConstants {
     // =======================================================
     // Player constants
     // =======================================================
-    public static final int PLAYER_WIDTH = WIDTH;
-    public static final int PLAYER_HEIGHT = HEIGHT;
-    public static final int SPEED = 40;
+    public static final float PLAYER_WIDTH = WIDTH;
+    public static final float PLAYER_HEIGHT = HEIGHT;
+    public static final int SPEED = 200;
     public static final int JUMP_FORCE = -65;
     public static final int FLY_FORCE = -45;
     public static final int FLY_TERMINAL_VELOCITY = 200;
@@ -39,11 +39,11 @@ public class GameConstants {
     // =======================================================
     // Tile constants
     // =======================================================
-    public static final int TILE_WIDTH = WIDTH;
-    public static final int TILE_HEIGHT = HEIGHT;
-    public static final int ONE_TENTH_TILE_WIDTH = 4;
-    public static final int GRID_WIDTH = WIDTH;
-    public static final int GRID_HEIGHT = HEIGHT;
+    public static final float TILE_WIDTH = WIDTH;
+    public static final float TILE_HEIGHT = HEIGHT;
+    public static final float ONE_TENTH_TILE_WIDTH = 4;
+    public static final float GRID_WIDTH = WIDTH;
+    public static final float GRID_HEIGHT = HEIGHT;
     public static final int GRID_Y_LINES = 31;
     public static final int GRID_X_LINES = 20;
 
@@ -51,7 +51,7 @@ public class GameConstants {
     // Camera constants
     // =======================================================
     public static final int GROUND_Y = 714;
-    public static final int GROUND_HEIGHT = 3 * GameConstants.TILE_WIDTH;
+    public static final float GROUND_HEIGHT = 3 * GameConstants.TILE_WIDTH;
     public static final int CAMERA_OFFSET_Y = 350;
     public static final int CAMERA_OFFSET_X = 300;
     public static final int CAMERA_OFFSET_GROUND_Y = 200;
@@ -62,17 +62,17 @@ public class GameConstants {
     // =======================================================
     // Level editor UI constants
     // =======================================================
-    public static final int BUTTON_WIDTH = 60;
-    public static final int BUTTON_HEIGHT = 60;
-    public static final int BIG_BUTTON_WIDTH = 90;
+    public static final float BUTTON_WIDTH = 60;
+    public static final float BUTTON_HEIGHT = 60;
+    public static final float BIG_BUTTON_WIDTH = 90;
     public static final int MENU_CONTAINER_Y = 535;
     public static final int BUTTON_OFFSET_X = 400;
     public static final int BUTTON_OFFSET_Y = 540;
     public static final int BUTTON_HORIZONTAL_SPACING = 10;
     public static final int BUTTON_VERTICAL_SPACING = 5;
 
-    public static final int TAB_WIDTH = 75;
-    public static final int TAB_HEIGHT = 38;
+    public static final float TAB_WIDTH = 75;
+    public static final float TAB_HEIGHT = 38;
     public static final int TAB_OFFSET_X = 380;
     public static final int TAB_OFFSET_Y = 497;
     public static final int TAB_HORIZONTAL_SPACING = 10;

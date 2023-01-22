@@ -30,7 +30,6 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
     public GameObject(String name, Transform transform, Dimension dimension, Component<?>... components) {
         this(name, transform, dimension);
-//        this.components = new ArrayList<>();
 
         for (Component<?> c : components) {
             addComponent(c);
@@ -111,7 +110,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
     @Override
     public GameObject copy() {
-        GameObject gameObject = new GameObject("Generated " + this.name, this.transform.copy(), this.dimension.copy());
+        GameObject gameObject = new GameObject(this.name, this.transform.copy(), this.dimension.copy());
         for (Component<?> c : components) {
             Component<?> copy = c.copy();
             if (copy != null) {

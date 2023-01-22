@@ -50,8 +50,6 @@ public class Sprite extends Component<Sprite> {
             e.printStackTrace();
             System.err.println("Could not create Sprite: " + fileName);
         }
-
-//        AssetManager.addSprite(fileName, this);
     }
 
     /**
@@ -62,9 +60,6 @@ public class Sprite extends Component<Sprite> {
     public Sprite(BufferedImage image, String fileName){
         this.image = image;
         this.fileName = fileName;
-
-//        AssetManager.addSprite(fileName, this);
-
     }
 
 
@@ -76,16 +71,13 @@ public class Sprite extends Component<Sprite> {
         this.index = index;
         this.fileName = fileName;
         this.isSubSprite = true;
-
-//        AssetManager.addSprite(fileName, this);
-
     }
 
     @Override
     public void render(Graphics2D g2d) {
         g2d.drawImage(this.image,
                 (int)gameObject.transform.position.x, (int)gameObject.transform.position.y,
-                gameObject.dimension.width, gameObject.dimension.height,
+                (int)gameObject.dimension.width, (int)gameObject.dimension.height,
                 null
         );
     }
@@ -108,8 +100,8 @@ public class Sprite extends Component<Sprite> {
 
         if (isSubSprite){
             builder.append(addStringProperty("FilePath", fileName, tabSize + 1, true, true));
-            builder.append(addIntProperty("tileWidth", dimension.width, tabSize + 1, true, true));
-            builder.append(addIntProperty("tileHeight", dimension.height, tabSize + 1, true, true));
+            builder.append(addFloatProperty("tileWidth", dimension.width, tabSize + 1, true, true));
+            builder.append(addFloatProperty("tileHeight", dimension.height, tabSize + 1, true, true));
             builder.append(addIntProperty("row", row, tabSize + 1, true, true));
             builder.append(addIntProperty("column", column, tabSize + 1, true, true));
             builder.append(addIntProperty("index", index, tabSize + 1, true, false));
@@ -119,13 +111,12 @@ public class Sprite extends Component<Sprite> {
         }
 
         builder.append(addStringProperty("FilePath", fileName, tabSize + 1, true, true));
-        builder.append(addIntProperty("tileWidth", dimension.width, tabSize + 1, true, true));
-        builder.append(addIntProperty("tileHeight", dimension.height, tabSize + 1, true, false));
+        builder.append(addFloatProperty("tileWidth", dimension.width, tabSize + 1, true, true));
+        builder.append(addFloatProperty("tileHeight", dimension.height, tabSize + 1, true, false));
         builder.append(closeObjectProperty(tabSize));
 
         return builder.toString();
     }
-
 
     public static Sprite deserialize() {
         boolean isSubSprite = Parser.consumeBooleanProperty("isSubSprite");
@@ -134,9 +125,9 @@ public class Sprite extends Component<Sprite> {
 
         if (isSubSprite){
             Parser.consume(',');
-            Parser.consumeIntProperty("tileWidth");
+            Parser.consumeFloatProperty("tileWidth");
             Parser.consume(',');
-            Parser.consumeIntProperty("tileHeight");
+            Parser.consumeFloatProperty("tileHeight");
             Parser.consume(',');
             Parser.consumeIntProperty("row");
             Parser.consume(',');

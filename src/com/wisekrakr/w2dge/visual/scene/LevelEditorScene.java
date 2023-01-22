@@ -5,7 +5,7 @@ import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.game.components.controls.CameraControls;
 import com.wisekrakr.w2dge.game.components.regions.Grid;
-import com.wisekrakr.w2dge.game.components.ui.MenuContainer;
+import com.wisekrakr.w2dge.game.components.ui.LevelEditMenuContainer;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
 
@@ -17,7 +17,7 @@ public class LevelEditorScene extends Scene {
 
     private Grid grid;
     private CameraControls cameraControls;
-    private MenuContainer editingContainer;
+    private LevelEditMenuContainer editingContainer;
 
     public LevelEditorScene(String name) {
         super.createScene(name);
@@ -27,7 +27,7 @@ public class LevelEditorScene extends Scene {
     public void init() {
         grid = new Grid();
         cameraControls = new CameraControls();
-        editingContainer = new MenuContainer();
+        editingContainer = new LevelEditMenuContainer();
 
         cursor = GameObjectFactory.mouserCursor();
         player = GameObjectFactory.player(new Vector2(100, 300), Screen.getInstance().isInEditorPhase);

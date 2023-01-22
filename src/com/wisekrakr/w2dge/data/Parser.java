@@ -3,6 +3,7 @@ package com.wisekrakr.w2dge.data;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
+import com.wisekrakr.w2dge.game.components.physics.BoxBounds;
 
 public class Parser {
     private static int offset = 0;
@@ -181,8 +182,11 @@ public class Parser {
         switch (componentTitle) {
             case "Sprite":
                 return Sprite.deserialize();
+            case "BoxBounds":
+                return BoxBounds.deserialize();
             default:
                 System.err.println("Could not find component '" + componentTitle + "' at line: " + Parser.line);
+                System.exit(-1);
         }
 
         return null;

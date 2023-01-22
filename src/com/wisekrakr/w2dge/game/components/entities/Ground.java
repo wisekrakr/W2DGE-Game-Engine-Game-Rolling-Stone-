@@ -36,7 +36,7 @@ public class Ground extends Component<Ground> {
         g2d.setColor(Colors.synthWaveCyan);
         g2d.drawRect(
                 (int) gameObject.transform.position.x - 10, (int) gameObject.transform.position.y,
-                gameObject.dimension.width + 20, gameObject.dimension.height - 1
+                (int) (gameObject.dimension.width + 20), (int) (gameObject.dimension.height - 1)
         );
     }
 

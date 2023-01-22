@@ -1,4 +1,4 @@
-package com.wisekrakr.w2dge.game.components.ui;
+package com.wisekrakr.w2dge.game.components.entities;
 
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
@@ -12,7 +12,7 @@ import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class MenuItem extends Component<MenuItem> {
+public class Block extends Component<Block> {
 
     private final Transform transform;
     private final Dimension dimension;
@@ -22,7 +22,7 @@ public class MenuItem extends Component<MenuItem> {
     public boolean isClicked;
     private int bufferX, bufferY; // menu item margin
 
-    public MenuItem(Transform transform, Dimension dimension, Sprite sprite, Sprite hoverSprite) {
+    public Block(Transform transform, Dimension dimension, Sprite sprite, Sprite hoverSprite) {
         this.transform = transform;
         this.dimension = dimension;
         this.sprite = sprite;
@@ -41,12 +41,12 @@ public class MenuItem extends Component<MenuItem> {
     @Override
     public void update(double deltaTime) {
         Screen screen = Screen.getInstance();
-        if (! isClicked && this.gameObject.inMouseBounds()) {
+        if (!isClicked && this.gameObject.inMouseBounds()) {
             // when clicked
             if (screen.mouseListener.mousePressed && screen.mouseListener.mouseButton == MouseEvent.BUTTON1){
                 GameObject object = gameObject.copy(); // copy GameObject
 
-                object.removeComponent(MenuItem.class); // remove the MenuItem component
+                object.removeComponent(Block.class); // remove the MenuItem component
 
                 LevelEditorScene scene = (LevelEditorScene) screen.getCurrentScene(); // get Level Editor Scene
 
@@ -63,16 +63,16 @@ public class MenuItem extends Component<MenuItem> {
     public void render(Graphics2D g2d) {
         g2d.drawImage(this.sprite.image,
                 (int)this.transform.position.x, (int)this.transform.position.y,
-                this.dimension.width, this.dimension.height, null);
+                (int)this.dimension.width, (int)this.dimension.height, null);
 
         g2d.drawImage(this.subSprite.image,
                 (int)this.transform.position.x + bufferX, (int)this.transform.position.y + bufferY,
-                this.subSprite.dimension.width, this.subSprite.dimension.height, null);
+                (int)this.subSprite.dimension.width, (int)this.subSprite.dimension.height, null);
 
         if (isClicked) {
             g2d.drawImage(hoverSprite.image,
                     (int)this.transform.position.x, (int)this.transform.position.y,
-                    this.subSprite.dimension.width, this.subSprite.dimension.height, null);
+                    (int)this.dimension.width, (int)this.dimension.height, null);
         }
     }
 

@@ -6,6 +6,7 @@ import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.input.GameInputListener;
 import com.wisekrakr.w2dge.input.KeyListener;
 import com.wisekrakr.w2dge.input.MouseListener;
+import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
 import com.wisekrakr.w2dge.visual.scene.LevelScene;
 import com.wisekrakr.w2dge.visual.scene.Scene;
@@ -33,11 +34,11 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
 
     protected Graphics doubleBufferGraphics = null;
 
-    public AbstractScreen(String title, int width, int height, boolean isResizable) {
+    public AbstractScreen(String title, Dimension dimension, boolean isResizable) {
         super(title);
 
         this.setTitle(title);
-        this.setSize(width, height);
+        this.setSize((int) dimension.width, (int) dimension.height);
         this.setResizable(isResizable);
 
         this.setVisible(true);

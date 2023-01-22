@@ -8,7 +8,7 @@ public class Player extends Component<Player> {
     public void update(double deltaTime) {
         super.update(deltaTime);
 
-        gameObject.centering();
+//        gameObject.centering();
     }
 
     @Override

@@ -6,14 +6,14 @@ import com.wisekrakr.w2dge.data.Serializable;
 
 public class Dimension extends Serializable implements  InterprocessImpl<Dimension> {
 
-    public int width;
-    public int height;
+    public float width;
+    public float height;
     public Vector2 center;
 
     public Dimension() {
     }
 
-    public Dimension(int width, int height) {
+    public Dimension(float width, float height) {
         this.width = width;
         this.height = height;;
     }
@@ -32,8 +32,8 @@ public class Dimension extends Serializable implements  InterprocessImpl<Dimensi
         StringBuilder builder = new StringBuilder();
 
         builder.append(beginObjectProperty("Dimension", tabSize));
-        builder.append(addIntProperty("width", width, tabSize + 1, true, true));
-        builder.append(addIntProperty("height", height, tabSize + 1, true, false));
+        builder.append(addFloatProperty("width", width, tabSize + 1, true, true));
+        builder.append(addFloatProperty("height", height, tabSize + 1, true, false));
         builder.append(closeObjectProperty(tabSize));
 
         return builder.toString();
@@ -41,9 +41,9 @@ public class Dimension extends Serializable implements  InterprocessImpl<Dimensi
 
     public static Dimension deserialize() {
         Parser.consumeBeginObjectProperty("Dimension");
-        int width = Parser.consumeIntProperty("width");
+        float width = Parser.consumeFloatProperty("width");
         Parser.consume(',');
-        int height = Parser.consumeIntProperty("height");
+        float height = Parser.consumeFloatProperty("height");
         Parser.consumeEndObjectProperty();
 
         return new Dimension(width, height);

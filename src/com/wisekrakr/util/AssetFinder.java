@@ -1,5 +1,6 @@
 package com.wisekrakr.util;
 
+import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.visual.graphics.SpriteSheet;
 
 public class AssetFinder {
@@ -47,7 +48,7 @@ public class AssetFinder {
      * @param size      nr of sprites within the sprites sheet
      * @return {@link  SpriteSheet}
      */
-    public static SpriteSheet spriteSheet(ImageType type, String sheetName, int width, int height, int columns, int size) {
+    public static SpriteSheet spriteSheet(ImageType type, String sheetName, Dimension dimension, int columns, int size) {
         StringBuilder path = new StringBuilder("assets/spritesheets/");
 
         switch (type){
@@ -74,6 +75,6 @@ public class AssetFinder {
                 System.err.println("Not an image type for sprite sheet");
         }
 
-        return new SpriteSheet(path.append(sheetName).toString(), width, height, 2, columns, size);
+        return new SpriteSheet(path.append(sheetName).toString(), dimension, 2, columns, size);
     }
 }

@@ -8,8 +8,10 @@ import com.wisekrakr.w2dge.game.components.entities.Ground;
 import com.wisekrakr.w2dge.game.components.entities.Player;
 import com.wisekrakr.w2dge.game.components.graphics.Graphics;
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
+import com.wisekrakr.w2dge.game.components.physics.BoxBounds;
 import com.wisekrakr.w2dge.game.components.physics.RigidBody;
 import com.wisekrakr.w2dge.game.components.regions.SnapToGrid;
+import com.wisekrakr.w2dge.game.components.entities.Block;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
@@ -26,20 +28,23 @@ public class GameObjectFactory {
      * @return new player Game object
      */
     public static GameObject player(Vector2 position, boolean isInEditingPhase) {
+        Dimension dimension = new Dimension(GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT);
 
         GameObject player = new GameObject(
-                Tags.PLAYER, new Transform(new Vector2(position.x, position.y)),
-                new Dimension(GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT)
+                Tags.PLAYER,
+                new Transform(new Vector2(position.x, position.y)),
+                dimension,
+                new BoxBounds(dimension)
         );
 
         player.addComponent(new Player());
 
         SpriteSheet layerOne = AssetFinder.spriteSheet(AssetFinder.ImageType.PLAYER, "layerOne.png",
-                GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
+                new Dimension(GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT), 13, 13 * 5);
         SpriteSheet layerTwo = AssetFinder.spriteSheet(AssetFinder.ImageType.PLAYER, "layerTwo.png",
-                GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
+                new Dimension(GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT), 13, 13 * 5);
         SpriteSheet layerThree = AssetFinder.spriteSheet(AssetFinder.ImageType.PLAYER, "layerThree.png",
-                GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT, 13, 13 * 5);
+                new Dimension(GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT), 13, 13 * 5);
 
         player.addComponent(
                 new Graphics(
@@ -76,6 +81,22 @@ public class GameObjectFactory {
 
         return ground;
 
+    }
+
+    public static GameObject block(Sprite currentSprite, int x, int y, SpriteSheet spriteSheet){
+        return new GameObject(
+                "Block",
+                new Transform(new Vector2(x, y)),
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                // Components
+                currentSprite.copy(),
+                new Block(
+                        new Transform(new Vector2(x, y)),
+                        new Dimension(GameConstants.BUTTON_WIDTH, GameConstants.BUTTON_HEIGHT),
+                        spriteSheet.sprites.get(0), spriteSheet.sprites.get(1)
+                ),
+                new BoxBounds(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT))
+        );
     }
 
     /**

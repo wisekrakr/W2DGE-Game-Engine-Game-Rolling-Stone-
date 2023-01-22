@@ -1,14 +1,15 @@
 package com.wisekrakr.w2dge.visual;
 
 import com.wisekrakr.w2dge.constants.GameConstants;
+import com.wisekrakr.w2dge.math.Dimension;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Screen extends AbstractScreen {
 
-    public Screen(String title, int width, int height, boolean isResizable) {
-        super(title, width, height, isResizable);
+    public Screen(String title, Dimension dimension, boolean isResizable) {
+        super(title, dimension, isResizable);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
@@ -16,7 +17,9 @@ public class Screen extends AbstractScreen {
     public static Screen getInstance() {
         if (currentScreen == null) {
             currentScreen = new Screen(
-                    GameConstants.SCREEN_TITLE, GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT, false
+                    GameConstants.SCREEN_TITLE,
+                    new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT),
+                    false
             );
         }
         return (Screen) currentScreen;

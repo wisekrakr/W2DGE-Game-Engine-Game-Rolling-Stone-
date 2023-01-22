@@ -25,19 +25,20 @@ public class GameInputListener {
 
     /**
      * Handles all mouse and keyboard input for {@link com.wisekrakr.w2dge.visual.scene.LevelEditorScene}
+     *
      * @param gameObjects {@link GameObject} to export in save file
-     * @param scene {@link Scene} import the saved level on this scene
+     * @param scene       {@link Scene} import the saved level on this scene
      */
-    public void update(List<GameObject>gameObjects, Scene scene) {
+    public void update(List<GameObject> gameObjects, Scene scene) {
 
         if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F1)) {
             Screen.getInstance().changeScene(Game.SceneType.LEVEL_1);
-        }else  if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F5)) {
+        } else if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F5)) {
             System.out.println("Export file");
             Thread exportThread = new Thread(() -> {
-                while (true){
-                    FileUtils.exportLevelToFile("Test", gameObjects);
-                }
+
+                FileUtils.exportLevelToFile("Test", gameObjects);
+
             }, "Export level thread");
             exportThread.setDaemon(true);
             exportThread.start();
@@ -45,28 +46,21 @@ public class GameInputListener {
         } else if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F9)) {
             System.out.println("Import file");
             new Thread(() -> {
-                while (true){
-                    FileUtils.importFileToLevel("Test", scene);
-                }
-            }).start();
 
+                FileUtils.importFileToLevel("Test", scene);
+
+            }, "Import level thread").start();
         }
     }
 
     /**
      * Handles all mouse and keyboard input for {@link com.wisekrakr.w2dge.visual.scene.LevelScene}
+     *
      * @param scene {@link Scene} import the saved level on this scene
      */
-    public void update(Scene scene){
+    public void update() {
         if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F2)) {
             Screen.getInstance().changeScene(Game.SceneType.EDITOR);
-        }else if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F9)) {
-            System.out.println("Import file");
-            new Thread(() -> {
-                while (true){
-                    FileUtils.importFileToLevel("Test", scene);
-                }
-            }).start();
         }
     }
 }

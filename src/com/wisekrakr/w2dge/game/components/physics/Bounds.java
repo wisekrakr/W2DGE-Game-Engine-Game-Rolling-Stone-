@@ -1,7 +1,6 @@
 package com.wisekrakr.w2dge.game.components.physics;
 
 import com.wisekrakr.w2dge.game.components.Component;
-import com.wisekrakr.w2dge.math.Dimension;
 
 
 public abstract class Bounds extends Component<Bounds> {
@@ -12,13 +11,11 @@ public abstract class Bounds extends Component<Bounds> {
 
     public BoundsType type;
 
-    public abstract Dimension dimension();
-
     public static boolean collision(Bounds b1, Bounds b2){
         if (b1.type.equals(b2.type)){
             switch (b1.type){
                 case BOX:
-                    return BoxBounds.collision(b1, b2);
+                    return BoxBounds.collision((BoxBounds) b1, (BoxBounds) b2);
                 case TRIANGLE:
                     break;
                 default:
@@ -27,6 +24,11 @@ public abstract class Bounds extends Component<Bounds> {
         }
         return false;
     }
+
+    /**
+     * Centers the component, so all physics will go through the middle of this component (x-0 and y-0 are in the center)
+     */
+    public abstract void calculateCenter();
 
     @Override
     public String name() {

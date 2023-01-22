@@ -17,7 +17,6 @@ public class Grid extends Component<Grid> {
     Camera camera;
     public Dimension dimension;
 
-
     public Grid() {
         this.camera = Screen.getInstance().getCurrentScene().camera;
         this.dimension = new Dimension(GameConstants.GRID_WIDTH, GameConstants.GRID_HEIGHT);

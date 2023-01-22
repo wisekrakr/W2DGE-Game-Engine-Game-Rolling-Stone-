@@ -1,8 +1,8 @@
 package com.wisekrakr.w2dge.visual.graphics;
 
-import com.wisekrakr.w2dge.visual.assets.AssetManager;
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
 import com.wisekrakr.w2dge.math.Dimension;
+import com.wisekrakr.w2dge.visual.assets.AssetManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class SpriteSheet {
                 sprites.add(new Sprite(
                         parent.image.getSubimage(imgX, imgY, tileWidth, tileHeight),
                         new Dimension(tileWidth, tileHeight),
-                        row, column, count));
+                        row, column, count, fileName));
 
                 count++;
 
@@ -52,5 +52,7 @@ public class SpriteSheet {
             }
             row++;
         }
+
+        AssetManager.addSpriteSheet(fileName, this);
     }
 }

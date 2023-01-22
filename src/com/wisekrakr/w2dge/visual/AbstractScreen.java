@@ -1,5 +1,6 @@
 package com.wisekrakr.w2dge.visual;
 
+import com.wisekrakr.main.Game;
 import com.wisekrakr.util.Time;
 import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.input.KeyListener;
@@ -40,17 +41,21 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     }
 
     public Scene getCurrentScene() {
-        return currentScene;
+        return Screen.getInstance().currentScene;
     }
 
-    protected void changeScene(int scene) {
+    public void changeScene(Game.SceneType scene) {
         switch (scene) {
-            case 0: // LevelEditorScene
+            case LOADING:
+                break;
+            case MENU:
+                break;
+            case EDITOR: // LevelEditorScene
                 isInEditorPhase = true;
                 currentScene = new LevelEditorScene("Level editor");
                 currentScene.init();
                 break;
-            case 1: // LevelScene
+            case LEVEL_1: // LevelScene
                 isInEditorPhase = false;
                 currentScene = new LevelScene("Level");
                 currentScene.init();
@@ -74,7 +79,7 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
 
     @Override
     public void update(double deltaTime) {
-        this.currentScene.update(deltaTime);
+        Screen.getInstance().currentScene.update(deltaTime);
         render((Graphics2D) getGraphics());
     }
 
@@ -93,7 +98,7 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     private void renderOffScreen(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        this.currentScene.render(g2d);
+        Screen.getInstance().currentScene.render(g2d);
     }
 
     @Override

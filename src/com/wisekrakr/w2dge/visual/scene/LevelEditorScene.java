@@ -1,14 +1,18 @@
 package com.wisekrakr.w2dge.visual.scene;
 
+import com.wisekrakr.util.FileUtils;
 import com.wisekrakr.w2dge.constants.GameConstants;
+import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.controls.CameraControls;
 import com.wisekrakr.w2dge.game.components.regions.Grid;
+import com.wisekrakr.w2dge.game.components.ui.MenuContainer;
 import com.wisekrakr.w2dge.math.Vector2;
-import com.wisekrakr.w2dge.ui.MenuContainer;
 import com.wisekrakr.w2dge.visual.Screen;
+import com.wisekrakr.w2dge.visual.assets.AssetManager;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class LevelEditorScene extends Scene {
 
@@ -34,7 +38,19 @@ public class LevelEditorScene extends Scene {
 
         addGameObjectToScene(player);
         addGameObjectToScene(ground);
+    }
 
+    public static void main(String[] args) {
+        Parser.openFile("Bla");
+
+        System.out.println(Parser.parseInt());
+        System.out.println(Parser.parseInt());
+        System.out.println(Parser.parseDouble());
+        System.out.println(Parser.parseFloat());
+        System.out.println(Parser.parseBoolean());
+        System.out.println(Parser.parseBoolean());
+        System.out.println(Parser.parseString());
+        System.out.println(Parser.parseString());
     }
 
     @Override
@@ -48,7 +64,21 @@ public class LevelEditorScene extends Scene {
         editingContainer.update(deltaTime);
         cursor.update(deltaTime);
 
+        if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F5)) {
+            System.out.println("Export file");
+            FileUtils.exportLevel("Test", gameObjects);
+        }
+
+        if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F9)) {
+            System.out.println("Import file");
+            FileUtils.importLevel("Test", this);
+        }
+
+        if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F1)) {
+            System.out.println(AssetManager.hasSpriteSheet("assets/spritesheets/tiles/spritesheet_tiles_blue_10x10.png"));
+        }
     }
+
 
     @Override
     public void render(Graphics2D g2d) {

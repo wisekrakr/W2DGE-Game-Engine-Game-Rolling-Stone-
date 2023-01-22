@@ -16,4 +16,9 @@ public class BoxBounds extends Component<BoxBounds> {
     public Component<BoxBounds> copy() {
         return new BoxBounds(dimension.copy());
     }
+
+    @Override
+    public String name() {
+        return getClass().getName();
+    }
 }

@@ -12,7 +12,7 @@ public class Player extends Component<Player> {
     }
 
     @Override
-    public Component<Player> copy() {
-        return null;
+    public String name() {
+        return getClass().getName();
     }
 }

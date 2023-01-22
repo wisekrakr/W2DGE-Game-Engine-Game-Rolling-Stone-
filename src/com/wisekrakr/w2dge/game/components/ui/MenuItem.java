@@ -1,4 +1,4 @@
-package com.wisekrakr.w2dge.ui;
+package com.wisekrakr.w2dge.game.components.ui;
 
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
@@ -77,7 +77,7 @@ public class MenuItem extends Component<MenuItem> {
     }
 
     @Override
-    public Component<MenuItem> copy() {
-        return null;
+    public String name() {
+        return getClass().getName();
     }
 }

@@ -1,4 +1,4 @@
-package com.wisekrakr.w2dge.ui;
+package com.wisekrakr.w2dge.game.components.ui;
 
 import com.wisekrakr.util.AssetFinder;
 import com.wisekrakr.w2dge.constants.GameConstants;
@@ -87,7 +87,7 @@ public class MenuContainer extends Component<MenuContainer> {
     }
 
     @Override
-    public Component<MenuContainer> copy() {
-        return null;
+    public String name() {
+        return getClass().getName();
     }
 }

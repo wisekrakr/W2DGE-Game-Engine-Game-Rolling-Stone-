@@ -44,4 +44,9 @@ public class Ground extends Component<Ground> {
     public Component<Ground> copy() {
         return new Ground();
     }
+
+    @Override
+    public String name() {
+        return getClass().getName();
+    }
 }

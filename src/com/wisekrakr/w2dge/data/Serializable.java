@@ -1,7 +1,8 @@
-package com.wisekrakr.util;
+package com.wisekrakr.w2dge.data;
 
-public abstract class Serialize {
+public abstract class Serializable {
     public abstract String serialize(int tabSize);
+
 
     public static String addStringProperty(String name, String value, int tabSize, boolean newline, boolean comma) {
         return addTabs(tabSize) + "\"" + name + "\": " + "\"" + value + "\"" + addEnding(newline, comma);
@@ -32,12 +33,7 @@ public abstract class Serialize {
     }
 
     public static String addTabs(int tabSize) {
-        StringBuilder res = new StringBuilder();
-        for (int i=0; i < tabSize; i++)
-        {
-            res.append("\t");
-        }
-        return res.toString();
+        return "\t".repeat(Math.max(0, tabSize));
     }
 
     public static String addEnding(boolean newline, boolean comma) {

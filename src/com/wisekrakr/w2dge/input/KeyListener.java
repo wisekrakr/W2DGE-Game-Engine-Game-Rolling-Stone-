@@ -15,7 +15,6 @@ public class KeyListener extends KeyAdapter implements java.awt.event.KeyListene
     @Override
     public void keyReleased(KeyEvent e) {
         keyPressed[e.getKeyCode()] = false;
-
     }
 
     public boolean isKeyPressed(int keyCode){

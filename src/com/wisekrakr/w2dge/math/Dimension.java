@@ -1,8 +1,10 @@
 package com.wisekrakr.w2dge.math;
 
 import com.wisekrakr.w2dge.InterprocessImpl;
+import com.wisekrakr.w2dge.data.Parser;
+import com.wisekrakr.w2dge.data.Serializable;
 
-public class Dimension implements InterprocessImpl<Dimension> {
+public class Dimension extends Serializable implements  InterprocessImpl<Dimension> {
 
     public int width;
     public int height;
@@ -22,6 +24,31 @@ public class Dimension implements InterprocessImpl<Dimension> {
         if (dimension.center != null){
             dimension.center = this.center.copy();
         }
+        return dimension;
+    }
+
+    @Override
+    public String serialize(int tabSize) {
+        return beginObjectProperty("Dimension", tabSize) +
+                addIntProperty("width", width, tabSize + 1, true, true) +
+                addIntProperty("height", height, tabSize + 1, true, false) +
+                closeObjectProperty(tabSize);
+    }
+
+
+    public static Dimension deserialize() {
+        Parser.consumeBeginObjectProperty("Dimension");
+
+        int width = Parser.consumeIntProperty("width");
+        Parser.consume(',');
+
+        int height = Parser.consumeIntProperty("height");
+        Parser.consumeEndObjectProperty();
+
+        Dimension dimension = new Dimension(width, height);
+        dimension.width = width;
+        dimension.height = height;
+
         return dimension;
     }
 

@@ -68,8 +68,7 @@ public class SnapToGrid extends Component<SnapToGrid> {
     }
 
     @Override
-    public Component<SnapToGrid> copy() {
-        return null;
+    public String name() {
+        return getClass().getName();
     }
-
 }

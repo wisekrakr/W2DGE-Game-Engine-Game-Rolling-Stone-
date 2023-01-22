@@ -1,8 +1,9 @@
 package com.wisekrakr.w2dge.game.components.graphics;
 
-import com.wisekrakr.w2dge.visual.assets.AssetManager;
+import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.math.Dimension;
+import com.wisekrakr.w2dge.visual.assets.AssetManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -49,24 +50,35 @@ public class Sprite extends Component<Sprite> {
             e.printStackTrace();
             System.err.println("Could not create Sprite: " + fileName);
         }
+
+//        AssetManager.addSprite(fileName, this);
     }
 
     /**
      * Sprite of a {@link com.wisekrakr.w2dge.visual.graphics.SpriteSheet}
      * @param image sprite image
+     * @param fileName name of the file
      */
-    public Sprite(BufferedImage image){
+    public Sprite(BufferedImage image, String fileName){
         this.image = image;
+        this.fileName = fileName;
+
+//        AssetManager.addSprite(fileName, this);
+
     }
 
 
-    public Sprite(BufferedImage image, Dimension dimension, int row, int column, int index) {
+    public Sprite(BufferedImage image, Dimension dimension, int row, int column, int index, String fileName) {
         this.image = image;
         this.dimension = dimension;
         this.row = row;
         this.column = column;
         this.index = index;
+        this.fileName = fileName;
         this.isSubSprite = true;
+
+//        AssetManager.addSprite(fileName, this);
+
     }
 
     @Override
@@ -81,10 +93,77 @@ public class Sprite extends Component<Sprite> {
     @Override
     public Component<Sprite> copy() {
         if (!isSubSprite){
-            return new Sprite(this.image);
+            return new Sprite(this.image, this.fileName);
         }else {
-            return new Sprite(this.image, this.dimension, this.row, this.column, this.index);
+            return new Sprite(this.image, this.dimension, this.row, this.column, this.index, this.fileName);
+        }
+    }
+
+    @Override
+    public String serialize(int tabSize) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(beginObjectProperty("Sprite", tabSize));
+        builder.append(addBooleanProperty("isSubSprite", isSubSprite, tabSize + 1, true, true));
+
+        if (isSubSprite){
+            builder.append(addStringProperty("FilePath", fileName, tabSize + 1, true, true));
+//            builder.append(addIntProperty("tileWidth", dimension.width, tabSize + 1, true, true));
+//            builder.append(addIntProperty("tileHeight", dimension.height, tabSize + 1, true, true));
+            builder.append(addIntProperty("row", row, tabSize + 1, true, true));
+            builder.append(addIntProperty("column", column, tabSize + 1, true, true));
+            builder.append(addIntProperty("index", index, tabSize + 1, true, false));
+            builder.append(closeObjectProperty(tabSize));
+
+            return builder.toString();
         }
 
+        builder.append(addStringProperty("FilePath", fileName, tabSize + 1, true, false));
+//        builder.append(addIntProperty("tileWidth", dimension.width, tabSize + 1, true, true));
+//        builder.append(addIntProperty("tileHeight", dimension.height, tabSize + 1, true, false));
+        builder.append(closeObjectProperty(tabSize));
+
+        return builder.toString();
+    }
+
+
+    public static Sprite deserialize() {
+        boolean isSubSprite = Parser.consumeBooleanProperty("isSubSprite");
+        Parser.consume(',');
+        String filePath = Parser.consumeStringProperty("FilePath");
+
+        if (isSubSprite){
+//            Parser.consume(',');
+//            Parser.consumeIntProperty("tileWidth");
+//            Parser.consume(',');
+//            Parser.consumeIntProperty("tileHeight");
+            Parser.consume(',');
+            Parser.consumeIntProperty("row");
+            Parser.consume(',');
+            Parser.consumeIntProperty("column");
+            Parser.consume(',');
+            int index = Parser.consumeIntProperty("index");
+            if (!AssetManager.hasSpriteSheet(filePath)){
+                System.err.println("SpriteSheet: " + filePath + " has not been loaded yet");
+                System.exit(-1);
+            }
+
+            Parser.consumeEndObjectProperty();
+
+            return (Sprite) AssetManager.getSpriteSheet(filePath).sprites.get(index).copy();
+        }
+
+        if (!AssetManager.hasSprite(filePath)){
+            System.err.println("Sprite: " + filePath + " has not been loaded yet");
+            System.exit(-1);
+        }
+        Parser.consumeEndObjectProperty();
+
+        return (Sprite) AssetManager.getSprite(filePath).copy();
+    }
+
+    @Override
+    public String name() {
+        return getClass().getName();
     }
 }

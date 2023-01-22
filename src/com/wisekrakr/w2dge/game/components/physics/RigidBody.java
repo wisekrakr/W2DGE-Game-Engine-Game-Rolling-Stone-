@@ -29,4 +29,9 @@ public class RigidBody extends Component<RigidBody> {
     public Component<RigidBody> copy() {
         return new RigidBody(velocity.copy());
     }
+
+    @Override
+    public String name() {
+        return getClass().getName();
+    }
 }

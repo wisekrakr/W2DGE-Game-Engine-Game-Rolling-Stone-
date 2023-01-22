@@ -66,6 +66,8 @@ public class GameObjectFactory {
             player.addComponent(new RigidBody(new Vector2(GameConstants.SPEED, 0f)));
         }
 
+        player.setNonSerializable();
+
         return player;
     }
 
@@ -76,12 +78,15 @@ public class GameObjectFactory {
      * @return new ground Game object
      */
     public GameObject ground(int groundY) {
-
-        return new GameObject(
+        GameObject ground = new GameObject(
                 Tags.GROUND, new Transform(new Vector2(0, groundY)),
                 new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT),
-                new Ground()
-        );
+                new Ground());
+
+        ground.setNonSerializable();
+
+        return ground;
+
     }
 
     /**

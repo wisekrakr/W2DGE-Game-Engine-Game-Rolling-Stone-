@@ -75,4 +75,9 @@ public class Graphics extends Component<Graphics> {
 
         return graphics;
     }
+
+    @Override
+    public String name() {
+        return getClass().getName();
+    }
 }

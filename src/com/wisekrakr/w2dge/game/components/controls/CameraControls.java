@@ -40,4 +40,9 @@ public class CameraControls extends Component<CameraControls> {
         cameraControls.prevPosition = prevPosition.copy();
         return cameraControls;
     }
+
+    @Override
+    public String name() {
+        return getClass().getName();
+    }
 }

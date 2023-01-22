@@ -60,4 +60,9 @@ public class Grid extends Component<Grid> {
     public Component<Grid> copy() {
         return new Grid();
     }
+
+    @Override
+    public String name() {
+        return getClass().getName();
+    }
 }

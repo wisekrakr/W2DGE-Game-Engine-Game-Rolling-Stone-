@@ -50,11 +50,11 @@ public class GameConstants {
     // =======================================================
     // Camera constants
     // =======================================================
-    public static final int GROUND_Y = 650;
+    public static final int GROUND_Y = 714;
     public static final int GROUND_HEIGHT = 3 * GameConstants.TILE_WIDTH;
     public static final int CAMERA_OFFSET_Y = 350;
     public static final int CAMERA_OFFSET_X = 300;
-    public static final int CAMERA_OFFSET_GROUND_Y = 150;
+    public static final int CAMERA_OFFSET_GROUND_Y = 200;
     public static final int CAMERA_OFFSET_GROUND_X = 10;
     public static final int CAMERA_BOX_TOP_Y = 250;
     public static final int CAMERA_BOX_BOTTOM_Y = 450;

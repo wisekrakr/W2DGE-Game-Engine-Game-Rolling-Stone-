@@ -3,6 +3,7 @@ package com.wisekrakr.w2dge.visual;
 import com.wisekrakr.main.Game;
 import com.wisekrakr.util.Time;
 import com.wisekrakr.w2dge.GameLoopImpl;
+import com.wisekrakr.w2dge.input.GameInputListener;
 import com.wisekrakr.w2dge.input.KeyListener;
 import com.wisekrakr.w2dge.input.MouseListener;
 import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
@@ -17,8 +18,11 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     public static AbstractScreen currentScreen;
     public boolean isInEditorPhase = false;
     protected boolean isRunning = true;
+
     public MouseListener mouseListener;
     public KeyListener keyListener;
+    public GameInputListener inputListener;
+
     protected Scene currentScene = null;
 
     /**
@@ -52,29 +56,29 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
                 break;
             case EDITOR: // LevelEditorScene
                 isInEditorPhase = true;
-                currentScene = new LevelEditorScene("Level editor");
-                currentScene.init();
+                this.currentScene = new LevelEditorScene("Level editor");
                 break;
             case LEVEL_1: // LevelScene
                 isInEditorPhase = false;
-                currentScene = new LevelScene("Level");
-                currentScene.init();
+                this.currentScene = new LevelScene("Level");
                 break;
             default:
                 System.out.println("This is not a scene");
-                currentScene = null;
+                this.currentScene = null;
         }
+        this.currentScene.init();
     }
 
-    protected void addMouseListener() {
-        this.mouseListener = new MouseListener();
+    protected void addInputListener(){
+        this.inputListener = new GameInputListener();
+
+        this.mouseListener = inputListener.mouseListener;
+        this.keyListener = inputListener.keyListener;
+
         this.addMouseListener(mouseListener); // mouse clicking and dragging
         this.addMouseMotionListener(mouseListener); // mouse movement
-    }
+        this.addKeyListener(keyListener); // keyboard input
 
-    protected void addKeyListener() {
-        this.keyListener = new KeyListener();
-        this.addKeyListener(keyListener);
     }
 
     @Override

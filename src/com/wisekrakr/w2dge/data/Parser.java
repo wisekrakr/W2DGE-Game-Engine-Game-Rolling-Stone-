@@ -1,72 +1,13 @@
 package com.wisekrakr.w2dge.data;
 
-import com.wisekrakr.util.FileUtils;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
 public class Parser {
     private static int offset = 0;
     private static int line = 1;
-    private static byte[] bytes;
-
-    public static void openLevelFile(String filename) {
-        File tmp = new File("assets/levels/" + filename + ".zip");
-        if (!tmp.exists()) {
-//            bytes = new byte[0];
-            return;
-        }
-//        offset = 0;
-//        line = 1;
-
-        try {
-            ZipFile zipFile = new ZipFile("assets/levels/" + filename + ".zip");
-            ZipEntry jsonFile = zipFile.getEntry(filename + ".json");
-            InputStream stream = zipFile.getInputStream(jsonFile);
-
-            // Read input stream into a byte array
-//            byte[] finalBytes = new byte[0];
-//            while (stream.available() != 0) {
-//                byte[] byteBuffer = new byte[stream.available()];
-//                stream.read(byteBuffer);
-//                finalBytes = FileUtils.combine(finalBytes, byteBuffer);
-//            }
-            Parser.bytes = stream.readAllBytes();
-
-            stream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-    }
-
-    public static void openFile(String filename) {
-
-        try {
-            InputStream stream = new FileInputStream(new File("assets/levels/" + filename + ".json"));
-
-            // Read input stream into a byte array
-            byte[] finalBytes = new byte[0];
-            while (stream.available() != 0) {
-                byte[] byteBuffer = new byte[stream.available()];
-                stream.read(byteBuffer);
-                finalBytes = FileUtils.combine(finalBytes, byteBuffer);
-            }
-            Parser.bytes = finalBytes;
-
-            stream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.exit(-1);
-        }
-    }
+    public static byte[] bytes;
 
     public static void skipWhitespace() {
         while (!atEnd() && (peek() == ' ' || peek() == '\n' || peek() == '\t' || peek() == '\r' || (byte) peek() == 0)) {
@@ -141,9 +82,6 @@ public class Parser {
             c = advance();
             builder.append(c);
         }
-//
-//        assert builder.toString().length() != 0 : "Tried to parse double of 0 length at line '" + Parser.line +
-//                "' index: '" + Parser.offset + "'";
 
         return Double.parseDouble(builder.toString());
     }
@@ -235,13 +173,13 @@ public class Parser {
 
     public static Component<?> parseComponent() {
         String componentTitle = Parser.parseString();
+        skipWhitespace();
+        Parser.consume(':');
+        skipWhitespace();
+        Parser.consume('{');
 
         switch (componentTitle) {
             case "Sprite":
-                skipWhitespace();
-                Parser.consume(':');
-                skipWhitespace();
-                Parser.consume('{');
                 return Sprite.deserialize();
             default:
                 System.err.println("Could not find component '" + componentTitle + "' at line: " + Parser.line);
@@ -249,6 +187,7 @@ public class Parser {
 
         return null;
     }
+
 
     //    public static JComponent parseJComponent() {
 //        String componentTitle = Parser.parseString();
@@ -280,31 +219,6 @@ public class Parser {
 //
 //        return null;
 //    }
-    public enum PropertyType {
-        STRING, INTEGER, DOUBLE, FLOAT, BOOLEAN
-    }
-
-    public static Object consumeProperty(String name, PropertyType type) {
-        skipWhitespace();
-        checkString(name);
-        consume(':');
-
-        switch (type) {
-            case STRING:
-                return parseString();
-            case INTEGER:
-                return parseInt();
-            case DOUBLE:
-                return parseDouble();
-            case FLOAT:
-                return parseFloat();
-            case BOOLEAN:
-                return parseBoolean();
-            default:
-                System.err.println("Cannot parse this property " + type);
-        }
-        return null;
-    }
 
     public static String consumeStringProperty(String name) {
         skipWhitespace();

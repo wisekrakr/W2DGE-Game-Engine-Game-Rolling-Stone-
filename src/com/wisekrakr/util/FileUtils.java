@@ -4,16 +4,15 @@ import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 public class FileUtils {
+
     public static byte[] combine(byte[] a, byte[] b){
         int length = a.length + b.length;
         byte[] result = new byte[length];
@@ -22,32 +21,69 @@ public class FileUtils {
         return result;
     }
 
-    public static ByteBuffer fileToByteBuffer(String filepath) {
-        File file = new File(filepath);
+    private static ByteBuffer fileToByteBuffer(String filename) {
         ByteBuffer fontBuffer = null;
 
         try {
-            InputStream is = new FileInputStream(file);
+            ZipFile zipFile = new ZipFile("assets/levels/" + filename + ".zip");
+            ZipEntry jsonFile = zipFile.getEntry(filename + ".json");
+            InputStream stream = zipFile.getInputStream(jsonFile);
 
             // Read input stream into a byte array
             byte[] finalBytes = new byte[0];
-            while (is.available() != 0) {
-                byte[] byteBuffer = new byte[is.available()];
-                is.read(byteBuffer);
+            while (stream.available() != 0) {
+                byte[] byteBuffer = new byte[stream.available()];
+                stream.read(byteBuffer);
                 finalBytes = FileUtils.combine(finalBytes, byteBuffer);
             }
             fontBuffer = ByteBuffer.wrap(finalBytes);
 
-            is.close();
+            stream.close();
         } catch (Exception e) {
             e.printStackTrace();
-//            System.exit(-1);
+            System.exit(-1);
         }
 
         return fontBuffer;
     }
 
-    public static void exportLevel(String fileName, List<GameObject>gameObjects){
+    private static void openLevelFile(String filename) {
+        File tmp = new File("assets/levels/" + filename + ".zip");
+        if (!tmp.exists()) {
+            return;
+        }
+        Parser.bytes = FileUtils.fileToByteBuffer(filename).array();
+    }
+
+    /**
+     * Open any file
+     * @param filename Name of file only
+     * @param dir Directory path
+     * @param ext Extension (.json or .zip, etc)
+     */
+    public static void openFile(String filename, String dir, String ext) {
+
+        try {
+            InputStream stream = new FileInputStream(dir + filename + ext);
+
+            // Read input stream into a byte array
+            byte[] finalBytes = new byte[0];
+            while (stream.available() != 0) {
+                byte[] byteBuffer = new byte[stream.available()];
+                stream.read(byteBuffer);
+                finalBytes = FileUtils.combine(finalBytes, byteBuffer);
+            }
+            Parser.bytes = finalBytes;
+
+            stream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+    }
+
+
+    public static void exportLevelToFile(String fileName, List<GameObject>gameObjects){
         try {
             FileOutputStream fos = new FileOutputStream("assets/levels/" + fileName + ".zip");
             ZipOutputStream zos = new ZipOutputStream(fos);
@@ -75,8 +111,8 @@ public class FileUtils {
         }
     }
 
-    public static void importLevel(String fileName, Scene scene) {
-        Parser.openLevelFile(fileName);
+    public static void importFileToLevel(String fileName, Scene scene) {
+        openLevelFile(fileName);
 
         GameObject gameObject = Parser.parseGameObject();
 

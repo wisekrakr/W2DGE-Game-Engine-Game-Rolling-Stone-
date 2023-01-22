@@ -2,6 +2,7 @@ package com.wisekrakr.w2dge.game.components.regions;
 
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
+import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.visual.Camera;
@@ -33,6 +34,9 @@ public class Grid extends Component<Grid> {
 
         // Look for the GROUND game object
         GameObject ground = Screen.getInstance().getCurrentScene().ground;
+        if (ground == null){
+            ground = GameObjectFactory.ground();
+        }
         float bottom = Math.min(ground.transform.position.y - camera.position.y, GameConstants.SCREEN_HEIGHT);
 
         // Math.floor converts to a solid number - relative to 0,0

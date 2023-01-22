@@ -22,11 +22,9 @@ public class Screen extends AbstractScreen {
         return (Screen) currentScreen;
     }
 
-
     @Override
     public void init() {
-        this.addMouseListener();
-        this.addKeyListener();
+        this.addInputListener();
     }
 
     @Override

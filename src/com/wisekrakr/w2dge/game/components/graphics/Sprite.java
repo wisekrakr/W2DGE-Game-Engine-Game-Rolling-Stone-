@@ -108,8 +108,8 @@ public class Sprite extends Component<Sprite> {
 
         if (isSubSprite){
             builder.append(addStringProperty("FilePath", fileName, tabSize + 1, true, true));
-//            builder.append(addIntProperty("tileWidth", dimension.width, tabSize + 1, true, true));
-//            builder.append(addIntProperty("tileHeight", dimension.height, tabSize + 1, true, true));
+            builder.append(addIntProperty("tileWidth", dimension.width, tabSize + 1, true, true));
+            builder.append(addIntProperty("tileHeight", dimension.height, tabSize + 1, true, true));
             builder.append(addIntProperty("row", row, tabSize + 1, true, true));
             builder.append(addIntProperty("column", column, tabSize + 1, true, true));
             builder.append(addIntProperty("index", index, tabSize + 1, true, false));
@@ -118,9 +118,9 @@ public class Sprite extends Component<Sprite> {
             return builder.toString();
         }
 
-        builder.append(addStringProperty("FilePath", fileName, tabSize + 1, true, false));
-//        builder.append(addIntProperty("tileWidth", dimension.width, tabSize + 1, true, true));
-//        builder.append(addIntProperty("tileHeight", dimension.height, tabSize + 1, true, false));
+        builder.append(addStringProperty("FilePath", fileName, tabSize + 1, true, true));
+        builder.append(addIntProperty("tileWidth", dimension.width, tabSize + 1, true, true));
+        builder.append(addIntProperty("tileHeight", dimension.height, tabSize + 1, true, false));
         builder.append(closeObjectProperty(tabSize));
 
         return builder.toString();
@@ -133,10 +133,10 @@ public class Sprite extends Component<Sprite> {
         String filePath = Parser.consumeStringProperty("FilePath");
 
         if (isSubSprite){
-//            Parser.consume(',');
-//            Parser.consumeIntProperty("tileWidth");
-//            Parser.consume(',');
-//            Parser.consumeIntProperty("tileHeight");
+            Parser.consume(',');
+            Parser.consumeIntProperty("tileWidth");
+            Parser.consume(',');
+            Parser.consumeIntProperty("tileHeight");
             Parser.consume(',');
             Parser.consumeIntProperty("row");
             Parser.consume(',');
@@ -152,6 +152,11 @@ public class Sprite extends Component<Sprite> {
 
             return (Sprite) AssetManager.getSpriteSheet(filePath).sprites.get(index).copy();
         }
+
+        Parser.consume(',');
+        Parser.consumeIntProperty("tileWidth");
+        Parser.consume(',');
+        Parser.consumeIntProperty("tileHeight");
 
         if (!AssetManager.hasSprite(filePath)){
             System.err.println("Sprite: " + filePath + " has not been loaded yet");

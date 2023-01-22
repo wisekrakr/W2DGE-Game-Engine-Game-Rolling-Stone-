@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameObject extends Serializable implements GameLoopImpl, ComponentImpl, GameObjectImpl {
-    public final List<Component<?>> components;
+    public List<Component<?>> components;
     public final String name;
     public Transform transform;
     public final Dimension dimension;
@@ -25,13 +25,12 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
         this.transform = transform;
         this.dimension = dimension;
         this.components = new ArrayList<>();
+        centering();
     }
 
     public GameObject(String name, Transform transform, Dimension dimension, Component<?>... components) {
-        this.name = name;
-        this.transform = transform;
-        this.dimension = dimension;
-        this.components = new ArrayList<>();
+        this(name, transform, dimension);
+//        this.components = new ArrayList<>();
 
         for (Component<?> c : components) {
             addComponent(c);
@@ -149,13 +148,11 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
         builder.append(beginObjectProperty("GameObject", tabSize)); // Game Object
 
-//        builder.append(addStringProperty("Name", name, tabSize + 1, true, true));// Name
-
         builder.append(transform.serialize(tabSize + 1)); // Transform
         builder.append(addEnding(true, true));
 
-//        builder.append(dimension.serialize(tabSize + 1)); // Dimension
-//        builder.append(addEnding(true, true));
+        builder.append(dimension.serialize(tabSize + 1)); // Dimension
+        builder.append(addEnding(true, true));
 
         if (components.size() > 0) {
             builder.append(addStringProperty("Name", name, tabSize + 1, true, true));// Name
@@ -191,21 +188,15 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
     public static GameObject deserialize() {
         Parser.consumeBeginObjectProperty("GameObject");
 
-//        String name = Parser.consumeStringProperty("Name");
-//        Parser.consume(',');
-
         Transform t = Transform.deserialize();
         Parser.consume(',');
-//        Parser.consumeEndObjectProperty();
 
-//        Dimension d = Dimension.deserialize();
-//        Parser.consume(',');
+        Dimension d = Dimension.deserialize();
+        Parser.consume(',');
 
         String name = Parser.consumeStringProperty("Name");
-//        Parser.consume(',');
-//        Parser.consumeEndObjectProperty();
 
-        GameObject gameObject = new GameObject(name, t, new Dimension(42,42));
+        GameObject gameObject = new GameObject(name, t, d);
 
         if (Parser.peek() == ','){
             Parser.consume(',');
@@ -223,7 +214,6 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
         return gameObject;
     }
-
 
 
     /**

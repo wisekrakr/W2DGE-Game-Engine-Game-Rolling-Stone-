@@ -13,22 +13,11 @@ import com.wisekrakr.w2dge.game.components.regions.SnapToGrid;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
-import com.wisekrakr.w2dge.visual.graphics.Renderer;
 import com.wisekrakr.w2dge.visual.graphics.SpriteSheet;
-
-import java.util.List;
 
 public class GameObjectFactory {
 
-    private final List<GameObject> gameObjects;
-    private final Renderer renderer;
-
-    public GameObjectFactory(List<GameObject> gameObjects, Renderer renderer) {
-        this.gameObjects = gameObjects;
-        this.renderer = renderer;
-    }
-
-    /**
+      /**
      * Creates a new GameObject - PLAYER <br>
      * Consists of {@link Player},{@link RigidBody},{@link Graphics} components.
      *
@@ -36,7 +25,7 @@ public class GameObjectFactory {
      * @param isInEditingPhase if false, this Game Object will have full motion. If false, only visual.
      * @return new player Game object
      */
-    public GameObject player(Vector2 position, boolean isInEditingPhase) {
+    public static GameObject player(Vector2 position, boolean isInEditingPhase) {
 
         GameObject player = new GameObject(
                 Tags.PLAYER, new Transform(new Vector2(position.x, position.y)),
@@ -77,9 +66,9 @@ public class GameObjectFactory {
      *
      * @return new ground Game object
      */
-    public GameObject ground(int groundY) {
+    public static GameObject ground() {
         GameObject ground = new GameObject(
-                Tags.GROUND, new Transform(new Vector2(0, groundY)),
+                Tags.GROUND, new Transform(new Vector2(0, GameConstants.GROUND_Y)),
                 new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT),
                 new Ground());
 
@@ -95,7 +84,7 @@ public class GameObjectFactory {
      *
      * @return new cursor GameObject
      */
-    public GameObject mouserCursor() {
+    public static GameObject mouserCursor() {
         return new GameObject(Tags.CURSOR, new Transform(new Vector2()),
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
                 new SnapToGrid()

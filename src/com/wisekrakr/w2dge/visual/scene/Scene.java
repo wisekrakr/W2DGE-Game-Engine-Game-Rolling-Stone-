@@ -20,20 +20,17 @@ public abstract class Scene implements GameLoopImpl {
     public Camera camera;
     List<GameObject> gameObjects;
     Renderer renderer;
-    GameObjectFactory factory;
     public GameObject player;
     public GameObject ground;
     String toFollow;
 
-    public void Scene(String name) {
+    public void createScene(String name) {
         this.name = name;
         this.camera = new Camera(new Vector2());
         this.gameObjects = new ArrayList<>();
         this.renderer = new Renderer(this.camera);
-        this.factory = new GameObjectFactory(this.gameObjects, this.renderer);
         this.toFollow = Tags.PLAYER;
     }
-
 
     @Override
     public void init() {

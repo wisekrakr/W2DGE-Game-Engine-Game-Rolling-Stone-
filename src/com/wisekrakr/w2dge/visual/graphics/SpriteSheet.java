@@ -53,6 +53,9 @@ public class SpriteSheet {
             row++;
         }
 
+//        if (!AssetManager.hasSpriteSheet(fileName)){
+//            AssetManager.addSpriteSheet(fileName, this);
+//        }
         AssetManager.addSpriteSheet(fileName, this);
     }
 }

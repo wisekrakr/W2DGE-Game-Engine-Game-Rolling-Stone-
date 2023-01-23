@@ -7,8 +7,8 @@ public class GameConstants {
     // =======================================================
     // Physics Constants
     // =======================================================
-    public static final int GRAVITY = 300;
-    public static final int TERMINAL_VELOCITY = 750;
+    public static final int GRAVITY = 2000;
+    public static final int TERMINAL_VELOCITY = 2000;
 
     // =======================================================
     // Window properties
@@ -24,14 +24,18 @@ public class GameConstants {
     public static final int BG_HEIGHT = 512;
     public static final int GROUND_BG_WIDTH = 256;
     public static final int GROUND_BG_HEIGHT = 256;
+    public static final float BG_SPEED = 80f;
+    public static final float BG_LESSER_SPEED = 35f;
+
 
     // =======================================================
     // Player constants
     // =======================================================
     public static final float PLAYER_WIDTH = WIDTH;
     public static final float PLAYER_HEIGHT = HEIGHT;
-    public static final int SPEED = 200;
-    public static final int JUMP_FORCE = -65;
+    public static final int PLAYER_SPEED = 350;
+    public static final float ROTATION_SPEED = 10f;
+    public static final float JUMP_FORCE = -650f;
     public static final int FLY_FORCE = -45;
     public static final int FLY_TERMINAL_VELOCITY = 200;
 

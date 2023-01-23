@@ -6,7 +6,6 @@ import com.wisekrakr.w2dge.data.Serializable;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
-import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
 
 import java.awt.*;
@@ -25,7 +24,6 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
         this.transform = transform;
         this.dimension = dimension;
         this.components = new ArrayList<>();
-        centering();
     }
 
     public GameObject(String name, Transform transform, Dimension dimension, Component<?>... components) {
@@ -64,7 +62,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
     @Override
     public void addComponent(Component<?> component) {
-        if (component != null){
+        if (component != null) {
             this.components.add(component);
             component.gameObject = this;
         }
@@ -130,16 +128,8 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
     }
 
     @Override
-    public void centering() {
-        this.dimension.center = new Vector2(
-                this.dimension.width * this.transform.scale.x / 2.0f,
-                this.dimension.height * this.transform.scale.y / 2.0f
-        );
-    }
-
-    @Override
     public String serialize(int tabSize) {
-        if (!isSerializable){
+        if (!isSerializable) {
             return "";
         }
 
@@ -156,25 +146,25 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
         if (components.size() > 0) {
             builder.append(addStringProperty("Name", name, tabSize + 1, true, true));// Name
             builder.append(beginObjectProperty("Components", tabSize + 1));// Components
-        }else {
+        } else {
             builder.append(addStringProperty("Name", name, tabSize + 1, true, false));// Name
         }
 
         int i = 0;
-        for (Component<?> c: components){
+        for (Component<?> c : components) {
             String str = c.serialize(tabSize + 2); // get component string
-            if (str.compareTo("") != 0){ // if not empty
+            if (str.compareTo("") != 0) { // if not empty
                 builder.append(str); // add to StringBuilder
-                if (i != components.size() - 1){
+                if (i != components.size() - 1) {
                     builder.append(addEnding(true, true)); // if there are more components - keep it
-                }else {
+                } else {
                     builder.append(addEnding(true, false));// if there are no more components - close it
                 }
             }
             i++;
         }
 
-        if (components.size() > 0){
+        if (components.size() > 0) {
             builder.append(closeObjectProperty(tabSize + 1));
         }
 
@@ -197,12 +187,12 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
         GameObject gameObject = new GameObject(name, t, d);
 
-        if (Parser.peek() == ','){
+        if (Parser.peek() == ',') {
             Parser.consume(',');
             Parser.consumeBeginObjectProperty("Components");
             gameObject.addComponent(Parser.parseComponent());
 
-            while (Parser.peek() == ','){
+            while (Parser.peek() == ',') {
                 Parser.consume(',');
                 gameObject.addComponent(Parser.parseComponent());
             }
@@ -219,10 +209,9 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
      * When a Game Object is flagged with this, it will not create serializable content when we save the current content
      * on the screen in a JSON file
      */
-    public void setNonSerializable(){
+    public void setNonSerializable() {
         this.isSerializable = false;
     }
-
 
     @Override
     public String toString() {

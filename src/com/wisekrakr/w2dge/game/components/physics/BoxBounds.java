@@ -1,15 +1,18 @@
 package com.wisekrakr.w2dge.game.components.physics;
 
 import com.wisekrakr.w2dge.data.Parser;
+import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.math.CollisionManager;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Vector2;
 
 
-public class BoxBounds extends Bounds {
+public class BoxBounds extends Bounds<BoxBounds> {
 
     public Dimension dimension;
     public Dimension halfDimension;
+    public Vector2 center;
 
     public BoxBounds(Dimension dimension) {
         this.dimension = dimension;
@@ -18,24 +21,20 @@ public class BoxBounds extends Bounds {
     }
 
     @Override
-    public void init() {
-        calculateCenter();
-    }
-
-    @Override
-    public void calculateCenter() {
-        this.dimension.center = new Vector2(
+    protected void calculateCenter() {
+        this.center = new Vector2(
                 this.gameObject.transform.position.x + this.halfDimension.width,
                 this.gameObject.transform.position.y + this.halfDimension.height
         );
     }
 
-    public static boolean collision(BoxBounds b1, BoxBounds b2) {
+    @Override
+    public boolean collision(BoxBounds b1, BoxBounds b2) {
         b1.calculateCenter();
         b2.calculateCenter();
 
-        float dx = b2.dimension.center.x - b1.dimension.center.x;
-        float dy = b2.dimension.center.y - b1.dimension.center.y;
+        float dx = b2.center.x - b1.center.x;
+        float dy = b2.center.y - b1.center.y;
 
         float combinedHalfWidth = b1.halfDimension.width + b2.halfDimension.width;
         float combinedHalfHeight = b1.halfDimension.height + b2.halfDimension.height;
@@ -47,12 +46,18 @@ public class BoxBounds extends Bounds {
         return false;
     }
 
-    public Dimension getDimension() {
-        return this.dimension;
+
+    @Override
+    public void resolveColliding(GameObject player, CollisionManager.HitType type) {
+        BoxBounds playerBounds = player.getComponent(BoxBounds.class);
+        playerBounds.calculateCenter();
+        this.calculateCenter();
+
+        CollisionManager.collisionResolver(this.gameObject, player, type);
     }
 
     @Override
-    public Component<Bounds> copy() {
+    public Component<BoxBounds> copy() {
         return new BoxBounds(dimension.copy());
     }
 

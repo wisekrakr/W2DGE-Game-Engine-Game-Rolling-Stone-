@@ -1,21 +1,29 @@
 package com.wisekrakr.w2dge.game.components.physics;
 
+import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.math.CollisionManager;
 
 
-public abstract class Bounds extends Component<Bounds> {
+public abstract class Bounds<T> extends Component<T> implements BoundsImpl {
 
-    public enum BoundsType{
+    public enum BoundsType {
         BOX, TRIANGLE
     }
 
     public BoundsType type;
 
-    public static boolean collision(Bounds b1, Bounds b2){
-        if (b1.type.equals(b2.type)){
-            switch (b1.type){
+    @Override
+    public void init() {
+        calculateCenter();
+    }
+
+    @Override
+    public boolean checkCollision(Bounds<?> b1, Bounds<?> b2) {
+        if (b1.type.equals(b2.type)) {
+            switch (b1.type) {
                 case BOX:
-                    return BoxBounds.collision((BoxBounds) b1, (BoxBounds) b2);
+                    return collision((BoxBounds) b1, (BoxBounds) b2);
                 case TRIANGLE:
                     break;
                 default:
@@ -25,10 +33,18 @@ public abstract class Bounds extends Component<Bounds> {
         return false;
     }
 
+    @Override
+    public void resolveCollision(Bounds<?> bounds, GameObject player, CollisionManager.HitType type) {
+        if (bounds.type == BoundsType.BOX) {
+            BoxBounds box = (BoxBounds) bounds;
+            box.resolveColliding(player, type);
+        }
+    }
+
     /**
      * Centers the component, so all physics will go through the middle of this component (x-0 and y-0 are in the center)
      */
-    public abstract void calculateCenter();
+    protected abstract void calculateCenter();
 
     @Override
     public String name() {

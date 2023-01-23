@@ -5,7 +5,7 @@ import com.wisekrakr.w2dge.visual.graphics.SpriteSheet;
 
 public class AssetFinder {
     public enum ImageType {
-        BACKGROUND, BUTTONS, PLAYER, OBSTACLES, OTHERS, TILES
+        BACKGROUND, BUTTONS, PLAYER, OBSTACLES, OTHERS, TILES, GROUNDS
     }
 
     public static String image(ImageType type, String imageName) {
@@ -14,6 +14,9 @@ public class AssetFinder {
 
             case BACKGROUND:
                 path.append("background/");
+                break;
+            case GROUNDS:
+                path.append("grounds/");
                 break;
             case BUTTONS:
                 path.append("buttons/");

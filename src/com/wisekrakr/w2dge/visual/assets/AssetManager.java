@@ -1,6 +1,7 @@
 package com.wisekrakr.w2dge.visual.assets;
 
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
+import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.visual.graphics.SpriteSheet;
 
 import java.io.File;
@@ -29,6 +30,8 @@ public class AssetManager {
 
         if (!AssetManager.hasSprite(file.getAbsolutePath())) {
             Sprite sprite = new Sprite(file.getAbsolutePath());
+            //TODO i don't like this sitting here - Dimension should not be initialized here
+            sprite.dimension = new Dimension(sprite.image.getWidth(), sprite.image.getHeight());
             AssetManager.addSprite(fileName, sprite);
         }
         return AssetManager.sprites.get(file.getAbsolutePath());

@@ -25,6 +25,7 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void init() {
+
         grid = new Grid();
         cameraControls = new CameraControls();
         editingContainer = new LevelEditMenuContainer();
@@ -35,6 +36,11 @@ public class LevelEditorScene extends Scene {
 
         addGameObjectToScene(player);
         addGameObjectToScene(ground);
+
+        postInit();
+
+//        Screen.currentScreen.inputListener.setController(this.player);
+
     }
 
     @Override
@@ -54,6 +60,8 @@ public class LevelEditorScene extends Scene {
 
     @Override
     public void render(Graphics2D g2d) {
+        super.render(g2d);
+
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
 

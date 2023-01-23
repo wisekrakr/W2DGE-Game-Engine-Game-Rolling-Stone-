@@ -3,6 +3,7 @@ package com.wisekrakr.w2dge.input;
 import com.wisekrakr.main.Game;
 import com.wisekrakr.util.FileUtils;
 import com.wisekrakr.w2dge.game.GameObject;
+import com.wisekrakr.w2dge.game.components.entities.Player;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
@@ -17,10 +18,15 @@ public class GameInputListener {
 
     public MouseListener mouseListener;
     public KeyListener keyListener;
+    public GameObject player;
 
     public GameInputListener() {
         this.mouseListener = new MouseListener();
         this.keyListener = new KeyListener();
+    }
+
+    public void setController(GameObject player) {
+        this.player = player;
     }
 
     /**
@@ -55,12 +61,23 @@ public class GameInputListener {
 
     /**
      * Handles all mouse and keyboard input for {@link com.wisekrakr.w2dge.visual.scene.LevelScene}
-     *
-     * @param scene {@link Scene} import the saved level on this scene
      */
     public void update() {
         if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F2)) {
             Screen.getInstance().changeScene(Game.SceneType.EDITOR);
+        }
+
+        // UI controls
+        if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_ESCAPE)) {
+            System.exit(1);
+        }
+
+        // Player controls
+        Player p = player.getComponent(Player.class);
+
+        if (p.grounded && Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_SPACE)){
+            p.jump();
+            p.grounded = false;
         }
     }
 }

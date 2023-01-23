@@ -162,4 +162,13 @@ public class Sprite extends Component<Sprite> {
     public String name() {
         return getClass().getName();
     }
+
+    @Override
+    public String toString() {
+        return "Sprite{" +
+                "image=" + image +
+                ", fileName='" + fileName + '\'' +
+                ", dimension=" + dimension +
+                '}';
+    }
 }

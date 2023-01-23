@@ -49,6 +49,10 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
         return Screen.getInstance().currentScene;
     }
 
+    public Camera getCamera(){
+        return Screen.getInstance().getCurrentScene().camera;
+    }
+
     public void changeScene(Game.SceneType scene) {
         switch (scene) {
             case LOADING:
@@ -79,7 +83,11 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
         this.addMouseListener(mouseListener); // mouse clicking and dragging
         this.addMouseMotionListener(mouseListener); // mouse movement
         this.addKeyListener(keyListener); // keyboard input
+    }
 
+    @Override
+    public void init() {
+        addInputListener();
     }
 
     @Override

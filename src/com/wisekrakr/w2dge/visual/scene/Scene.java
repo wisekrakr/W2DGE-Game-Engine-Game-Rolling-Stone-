@@ -4,7 +4,7 @@ import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
-import com.wisekrakr.w2dge.game.components.physics.Bounds;
+import com.wisekrakr.w2dge.math.CollisionManager;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Camera;
 import com.wisekrakr.w2dge.visual.Screen;
@@ -19,6 +19,7 @@ public abstract class Scene implements GameLoopImpl {
     String name;
     public Camera camera;
     List<GameObject> gameObjects;
+    CollisionManager collisionManager;
     Renderer renderer;
     public GameObject player;
     public GameObject ground;
@@ -32,11 +33,11 @@ public abstract class Scene implements GameLoopImpl {
         this.toFollow = Tags.PLAYER;
     }
 
-    @Override
-    public void init() {
+    public void postInit() {
         for (GameObject gameObject : gameObjects) {
             gameObject.init();
         }
+        collisionManager = new CollisionManager(gameObjects);
     }
 
     @Override
@@ -46,30 +47,42 @@ public abstract class Scene implements GameLoopImpl {
         }
     }
 
-    @Override
-    public void terminate() {
-
-    }
 
     @Override
     public void update(double deltaTime) {
-        for (GameObject gameObject : gameObjects) {
-            gameObject.update(deltaTime);
+        collisionManager.update(deltaTime);
 
-            // Camera follows value of toFollow
-            cameraFollow(gameObject);
-
-            // Collision detection
-            Bounds bounds = gameObject.getComponent(Bounds.class);
-            if (gameObject != player && bounds != null){
-                if (Bounds.collision(player.getComponent(Bounds.class), bounds)){
-                    System.out.println("Colliding with: " + gameObject.name);
-                }
-            }
-        }
+//        for (GameObject gameObject : gameObjects) {
+//            gameObject.update(deltaTime);
+//
+//            // Camera follows value of toFollow
+//            cameraFollow(gameObject);
+//
+//            // Collision detection
+//            Bounds bounds = gameObject.getComponent(Bounds.class);
+//            if (gameObject != player && bounds != null) {
+//                if (bounds.checkCollision(player.getComponent(Bounds.class), bounds)) {
+//
+//                    // Handle player collision with different Game Objects
+//
+//                    // Collision detection for the player with the ground
+//                    if (gameObject.name.equalsIgnoreCase(Tags.GROUND)) {
+//                        player.transform.position.y = gameObject.transform.position.y -
+//                                player.getComponent(BoxBounds.class).dimension.height;
+//
+//                        player.getComponent(Player.class).grounded = true;
+//                    }
+//                    // Collision detection for the player with a block
+//                    else if (gameObject.name.equalsIgnoreCase(Tags.BLOCK)) {
+//                        bounds.resolveCollision(bounds, player);
+//                    }
+//                }
+//            }
+//        }
     }
 
-    private void cameraFollow(GameObject gameObject){
+
+    public void cameraFollow(GameObject gameObject){
         if (gameObject.name.equalsIgnoreCase(this.toFollow) && !Screen.getInstance().isInEditorPhase) {
             camera.follow(gameObject);
         }
@@ -85,8 +98,13 @@ public abstract class Scene implements GameLoopImpl {
     public void addGameObjectToScene(GameObject gameObject) {
         gameObjects.add(gameObject);
         renderer.add(gameObject);
-        for (Component<?> c: gameObject.getAllComponents()){
+        for (Component<?> c : gameObject.getAllComponents()) {
             c.init();
         }
+    }
+
+    @Override
+    public void terminate() {
+
     }
 }

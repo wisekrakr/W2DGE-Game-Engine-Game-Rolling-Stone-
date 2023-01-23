@@ -27,7 +27,7 @@ public class Screen extends AbstractScreen {
 
     @Override
     public void init() {
-        this.addInputListener();
+        super.init();
     }
 
     @Override

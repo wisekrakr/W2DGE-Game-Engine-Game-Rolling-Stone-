@@ -8,7 +8,7 @@ public class Dimension extends Serializable implements  InterprocessImpl<Dimensi
 
     public float width;
     public float height;
-    public Vector2 center;
+//    public Vector2 center;
 
     public Dimension() {
     }
@@ -21,9 +21,9 @@ public class Dimension extends Serializable implements  InterprocessImpl<Dimensi
     @Override
     public Dimension copy() {
         Dimension dimension = new Dimension(this.width, this.height);
-        if (dimension.center != null){
-            dimension.center = this.center.copy();
-        }
+//        if (dimension.center != null){
+//            dimension.center = this.center.copy();
+//        }
         return dimension;
     }
 
@@ -51,8 +51,9 @@ public class Dimension extends Serializable implements  InterprocessImpl<Dimensi
 
     @Override
     public String toString() {
-        return "Dimension: {width= " + this.width + " - height= " + this.height+"} \n" +
-            "Center: {x=" + this.center.x + " - y= " + this.center.y +"}";
+        return "Dimension: {width= " + this.width + " - height= " + this.height+"} \n" ;
+//                +
+//            "Center: {x=" + this.center.x + " - y= " + this.center.y +"}";
     };
 
 }

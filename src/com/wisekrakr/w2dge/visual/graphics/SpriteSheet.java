@@ -11,12 +11,12 @@ public class SpriteSheet {
     public List<Sprite> sprites;
     public final Dimension dimension;
     public final int spacing;
+    public String path;
 
     /**
      * Loops through all the sprites within a sprite sheet.
      * @param fileName Name of the sprite sheet file
-     * @param tileWidth width of a tile in the sprite sheet
-     * @param tileHeight height of a tile in the sprite sheet
+     * @param dimension width & height of a tile in the sprite sheet
      * @param spacing spacing between sprites in the sprite sheet
      * @param columns number of columns in the sprite sheet
      * @param size number of sprites in the sprite sheet

@@ -7,52 +7,80 @@ import com.wisekrakr.w2dge.visual.Camera;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Renderer {
 
-    List<GameObject>gameObjects;
-    Camera camera;
-    private List<GameObject> uiGameObjects;
+    private final Map<Integer, List<GameObject>> gameObjects;
+    private final Camera camera;
+    private final List<GameObject> uiGameObjects;
 
     public Renderer(Camera camera) {
         this.camera = camera;
-        this.gameObjects = new ArrayList<>();
+        this.gameObjects = new HashMap<>();
         this.uiGameObjects = new ArrayList<>();
     }
 
-    public void add(GameObject gameObject){
-        this.gameObjects.add(gameObject);
+    public void add(GameObject gameObject) {
+        this.gameObjects.computeIfAbsent(gameObject.zIndex, index -> new ArrayList<>());
+        this.gameObjects.get(gameObject.zIndex).add(gameObject);
     }
 
-    public void remove(GameObject gameObject){
-        this.gameObjects.remove(gameObject);
+    public void remove(GameObject gameObject) {
+        this.gameObjects.remove(gameObject.zIndex);
     }
 
-    public void render(Graphics2D g2d){
+    public void render(Graphics2D g2d) {
+        int lowestZIndex = Integer.MAX_VALUE;
+        int highestZIndex = Integer.MIN_VALUE;
 
-        for (GameObject gameObject: gameObjects){
-
-            if (uiGameObjects.contains(gameObject)){
-                gameObject.render(g2d);
-            }else {
-                Transform oldTransform = new Transform(gameObject.transform.position);
-                oldTransform.rotation = gameObject.transform.rotation;
-                oldTransform.scale = new Vector2(gameObject.transform.scale.x, gameObject.transform.scale.y);
-
-                gameObject.transform.position = new Vector2(
-                        gameObject.transform.position.x - camera.position.x,
-                        gameObject.transform.position.y - camera.position.y
-                );
-
-                gameObject.render(g2d);
-                gameObject.transform = oldTransform;
+        // making sure everything is in the proper order
+        // looping through lowest and highest zIndexes
+        for (Integer i: gameObjects.keySet()){
+            if (i < lowestZIndex){
+                lowestZIndex = i;
             }
+            if (i > highestZIndex){
+                highestZIndex = i;
+            }
+        }
+
+        int currentZIndex = lowestZIndex;
+
+        while (currentZIndex <= highestZIndex){
+            // if there is no container yet
+            if (gameObjects.get(currentZIndex) == null){
+                // increment and keep searching
+                currentZIndex++;
+                continue;
+            }
+
+            for (GameObject gameObject : gameObjects.get(currentZIndex)) {
+                if (uiGameObjects.contains(gameObject)) {
+                    gameObject.render(g2d);
+                } else {
+                    Transform oldTransform = new Transform(gameObject.transform.position);
+                    oldTransform.rotation = gameObject.transform.rotation;
+                    oldTransform.scale = new Vector2(gameObject.transform.scale.x, gameObject.transform.scale.y);
+
+                    gameObject.transform.position = new Vector2(
+                            gameObject.transform.position.x - camera.position.x,
+                            gameObject.transform.position.y - camera.position.y
+                    );
+
+                    gameObject.render(g2d);
+                    gameObject.transform = oldTransform;
+                }
+            }
+            currentZIndex++;
         }
     }
 
     /**
      * Add to a List of ui game objects that will be rendered differently in the {@link Renderer#render(Graphics2D)} method
+     *
      * @param uiObject {@link GameObject}
      */
     public void partOfUI(GameObject uiObject) {

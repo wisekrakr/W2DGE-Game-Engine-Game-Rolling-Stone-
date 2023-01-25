@@ -7,6 +7,7 @@ import com.wisekrakr.w2dge.math.Vector2;
 public class Camera {
 
     public Vector2 position;
+    public float rotation;
 
     public Camera(Vector2 position) {
         this.position = position;
@@ -20,10 +21,10 @@ public class Camera {
 
         // camera follows player
         if (gameObject.transform.position.x - position.x > GameConstants.CAMERA_OFFSET_X) {
-            position.x = gameObject.transform.position.x - GameConstants.CAMERA_OFFSET_X;
+            position.x = (float) (gameObject.transform.position.x + (rotation * Math.PI / 180) - GameConstants.CAMERA_OFFSET_X);
         }
         if (gameObject.transform.position.y - position.y > GameConstants.CAMERA_OFFSET_Y) {
-            position.y = gameObject.transform.position.y - GameConstants.CAMERA_OFFSET_Y;
+            position.y = (float) (gameObject.transform.position.y + (rotation * Math.PI / 180) - GameConstants.CAMERA_OFFSET_Y);
         }
 
     }
@@ -33,14 +34,18 @@ public class Camera {
      */
     public void bounds(Integer offsetX, Integer offsetY) {
         if (offsetX != null){
-            if (position.x > GameConstants.CAMERA_OFFSET_GROUND_X) {
-                position.x = GameConstants.CAMERA_OFFSET_GROUND_X;
+            if (position.x > offsetX) {
+                position.x = offsetX;
             }
         }
         if (offsetY != null){
-            if (position.y > GameConstants.CAMERA_OFFSET_GROUND_Y) {
-                position.y = GameConstants.CAMERA_OFFSET_GROUND_Y;
+            if (position.y > offsetY) {
+                position.y = offsetY;
             }
         }
+    }
+
+    public void rotate(){
+        this.rotation += 90;
     }
 }

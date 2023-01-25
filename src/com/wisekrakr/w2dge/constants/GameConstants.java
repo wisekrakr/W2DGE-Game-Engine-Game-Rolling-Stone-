@@ -31,6 +31,8 @@ public class GameConstants {
     // =======================================================
     // Player constants
     // =======================================================
+    public static final float PLAYER_START_X = 0;
+    public static final float PLAYER_START_Y = 100;
     public static final float PLAYER_WIDTH = WIDTH;
     public static final float PLAYER_HEIGHT = HEIGHT;
     public static final int PLAYER_SPEED = 350;
@@ -66,19 +68,19 @@ public class GameConstants {
     // =======================================================
     // Level editor UI constants
     // =======================================================
-    public static final float BUTTON_WIDTH = 60;
-    public static final float BUTTON_HEIGHT = 60;
+    public static final float BUTTON_WIDTH = 58;
+    public static final float BUTTON_HEIGHT = 58;
     public static final float BIG_BUTTON_WIDTH = 90;
-    public static final int MENU_CONTAINER_Y = 535;
-    public static final int BUTTON_OFFSET_X = 400;
-    public static final int BUTTON_OFFSET_Y = 540;
-    public static final int BUTTON_HORIZONTAL_SPACING = 10;
+    public static final int MENU_CONTAINER_Y = 460;
+    public static final int BUTTON_OFFSET_X = 300;
+    public static final int BUTTON_OFFSET_Y = 480;
+    public static final int BUTTON_HORIZONTAL_SPACING = 8;
     public static final int BUTTON_VERTICAL_SPACING = 5;
 
     public static final float TAB_WIDTH = 75;
     public static final float TAB_HEIGHT = 38;
-    public static final int TAB_OFFSET_X = 380;
-    public static final int TAB_OFFSET_Y = 497;
+    public static final int TAB_OFFSET_X = 300;
+    public static final int TAB_OFFSET_Y = 422;
     public static final int TAB_HORIZONTAL_SPACING = 10;
 
     // =======================================================

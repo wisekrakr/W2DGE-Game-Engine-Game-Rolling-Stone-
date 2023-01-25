@@ -93,6 +93,7 @@ public class FileUtils {
             int i = 0;
 
             for (GameObject g: gameObjects){
+
                 String str = g.serialize(0); // object turned into String
 
                 if (str.compareTo("") != 0){ // if line is empty

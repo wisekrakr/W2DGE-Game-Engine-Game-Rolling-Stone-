@@ -1,5 +1,6 @@
 package com.wisekrakr.w2dge.visual.scene;
 
+import com.wisekrakr.main.Game;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
@@ -21,6 +22,9 @@ public class LevelEditorScene extends Scene {
 
     public LevelEditorScene(String name) {
         super.createScene(name);
+
+        this.type = Game.SceneType.EDITOR;
+
     }
 
     @Override
@@ -28,7 +32,7 @@ public class LevelEditorScene extends Scene {
 
         grid = new Grid();
         cameraControls = new CameraControls();
-        editingContainer = new LevelEditMenuContainer();
+        editingContainer = new LevelEditMenuContainer(this);
 
         cursor = GameObjectFactory.mouserCursor();
         player = GameObjectFactory.player(new Vector2(100, 300), Screen.getInstance().isInEditorPhase);
@@ -47,7 +51,7 @@ public class LevelEditorScene extends Scene {
     public void update(double deltaTime) {
         super.update(deltaTime);
 
-        camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y);
+        camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y + 100);
 
         grid.update(deltaTime);
         cameraControls.update(deltaTime);

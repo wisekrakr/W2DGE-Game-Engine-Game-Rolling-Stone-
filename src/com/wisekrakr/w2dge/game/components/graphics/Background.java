@@ -1,6 +1,5 @@
 package com.wisekrakr.w2dge.game.components.graphics;
 
-import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
@@ -40,7 +39,7 @@ public class Background extends Component<Background> {
         this.timeStep++; // keeps a hold on what background it is on
 
         this.gameObject.transform.position.x -= deltaTime * speed;
-        this.gameObject.transform.position.x = (float) Math.floor(this.gameObject.transform.position.x);
+        this.gameObject.transform.position.x = (float) Math.floor(this.gameObject.transform.position.x); // make an int
 
         // if the background is no longer visible
         if (this.gameObject.transform.position.x < -dimension.width) {
@@ -49,8 +48,10 @@ public class Background extends Component<Background> {
             int otherTimeStep = 0; // time step the other backgrounds are on
 
             for (GameObject background : backgrounds) {
-                maxX = background.transform.position.x; // set to this background x
-                otherTimeStep = background.getComponent(Background.class).timeStep; // set to this background time step
+                if (background.transform.position.x > maxX){
+                    maxX = background.transform.position.x; // set to this background x
+                    otherTimeStep = background.getComponent(Background.class).timeStep; // set to this background time step
+                }
             }
 
             if (otherTimeStep == this.timeStep) {
@@ -85,7 +86,7 @@ public class Background extends Component<Background> {
                     (int) this.dimension.width, GameConstants.SCREEN_HEIGHT,
                     null
             );
-            g2d.setColor(Colors.charcoal);
+            g2d.setColor(Screen.getInstance().getCurrentScene().groundColor);
             g2d.fillRect((int) this.gameObject.transform.position.x, y, (int) this.dimension.width, GameConstants.SCREEN_HEIGHT);
         }
     }
@@ -132,9 +133,6 @@ public class Background extends Component<Background> {
         return builder.toString();
     }
 
-    public static Background deserialize() {
-        return null;
-    }
 
 
     @Override

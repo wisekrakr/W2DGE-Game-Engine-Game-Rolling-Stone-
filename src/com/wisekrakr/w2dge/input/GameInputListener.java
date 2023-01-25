@@ -3,6 +3,7 @@ package com.wisekrakr.w2dge.input;
 import com.wisekrakr.main.Game;
 import com.wisekrakr.util.FileUtils;
 import com.wisekrakr.w2dge.game.GameObject;
+import com.wisekrakr.w2dge.game.components.entities.Block;
 import com.wisekrakr.w2dge.game.components.entities.Player;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.scene.Scene;
@@ -36,26 +37,30 @@ public class GameInputListener {
      * @param scene       {@link Scene} import the saved level on this scene
      */
     public void update(List<GameObject> gameObjects, Scene scene) {
+        inputsOnAllScenes();
 
-        if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F1)) {
-            Screen.getInstance().changeScene(Game.SceneType.LEVEL_1);
-        } else if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F5)) {
-            System.out.println("Export file");
-            Thread exportThread = new Thread(() -> {
+        Screen screen = Screen.getInstance();
 
-                FileUtils.exportLevelToFile("Test", gameObjects);
+        switch (screen.keyListener.keyCode) {
+            case KeyEvent.VK_F1 -> screen.changeScene(Game.SceneType.LEVEL_1);
+            case KeyEvent.VK_F5 -> {
+                System.out.println("Export file");
+                Thread exportThread = new Thread(() -> {
 
-            }, "Export level thread");
-            exportThread.setDaemon(true);
-            exportThread.start();
+                    FileUtils.exportLevelToFile("Test", gameObjects);
 
-        } else if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F9)) {
-            System.out.println("Import file");
-            new Thread(() -> {
+                }, "Export level thread");
+                exportThread.setDaemon(true);
+                exportThread.start();
+            }
+            case KeyEvent.VK_F9 -> {
+                System.out.println("Import file");
+                new Thread(() -> {
 
-                FileUtils.importFileToLevel("Test", scene);
+                    FileUtils.importFileToLevel("Test", scene);
 
-            }, "Import level thread").start();
+                }, "Import level thread").start();
+            }
         }
     }
 
@@ -63,21 +68,53 @@ public class GameInputListener {
      * Handles all mouse and keyboard input for {@link com.wisekrakr.w2dge.visual.scene.LevelScene}
      */
     public void update() {
-        if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_F2)) {
-            Screen.getInstance().changeScene(Game.SceneType.EDITOR);
-        }
+        inputsOnAllScenes();
 
-        // UI controls
-        if (Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_ESCAPE)) {
-            System.exit(1);
-        }
-
-        // Player controls
+        Screen screen = Screen.getInstance();
         Player p = player.getComponent(Player.class);
 
-        if (p.grounded && Screen.getInstance().keyListener.isKeyPressed(KeyEvent.VK_SPACE)){
-            p.jump();
-            p.grounded = false;
+
+        switch (screen.keyListener.keyCode) {
+            // UI controls
+            case KeyEvent.VK_F2 -> screen.changeScene(Game.SceneType.EDITOR);
+            case KeyEvent.VK_P -> {
+                Game.isPaused = !Game.isPaused;
+//
+//                if (!Game.isPaused){
+//                    // todo show pause scene
+//                    screen.changeScene(Game.SceneType.PAUSE);
+//                }else{
+//                    screen.changeScene(Game.SceneType.LEVEL_1);
+//                }
+            }
+            // Player controls
+            case KeyEvent.VK_SPACE -> {
+                if (p.grounded) {
+                    p.jump();
+                    p.grounded = false;
+                }
+            }
+            // Camera controls
+            case KeyEvent.VK_R -> screen.getCurrentScene().resetToStart();
+            // Level controls
+            case KeyEvent.VK_G -> {
+                for (GameObject gameObject : screen.getCurrentScene().gameObjects) {
+                    if (gameObject.getComponent(Block.class) != null) {
+                        // todo block change color
+                    }
+                }
+            }
         }
+    }
+
+
+    private void inputsOnAllScenes() {
+        // UI controls
+        Screen screen = Screen.getInstance();
+
+        switch (screen.keyListener.keyCode) {
+            case KeyEvent.VK_ESCAPE -> System.exit(1);
+        }
+
     }
 }

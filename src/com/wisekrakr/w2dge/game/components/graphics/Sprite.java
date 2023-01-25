@@ -95,7 +95,7 @@ public class Sprite extends Component<Sprite> {
     public String serialize(int tabSize) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append(beginObjectProperty("Sprite", tabSize));
+        builder.append(beginObjectProperty(Names.SPRITE, tabSize));
         builder.append(addBooleanProperty("isSubSprite", isSubSprite, tabSize + 1, true, true));
 
         if (isSubSprite){

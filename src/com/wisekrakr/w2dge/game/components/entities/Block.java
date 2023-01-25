@@ -1,79 +1,82 @@
 package com.wisekrakr.w2dge.game.components.entities;
 
-import com.wisekrakr.w2dge.game.GameObject;
+import com.wisekrakr.w2dge.constants.Colors;
+import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.Sprite;
-import com.wisekrakr.w2dge.game.components.regions.SnapToGrid;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
-import com.wisekrakr.w2dge.visual.Screen;
-import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public class Block extends Component<Block> {
 
     private final Transform transform;
     private final Dimension dimension;
     private final Sprite sprite;
-    private final Sprite hoverSprite;
-    private Sprite subSprite;
-    public boolean isClicked;
-    private int bufferX, bufferY; // menu item margin
 
-    public Block(Transform transform, Dimension dimension, Sprite sprite, Sprite hoverSprite) {
+
+    public Block(Transform transform, Dimension dimension, Sprite sprite) {
         this.transform = transform;
         this.dimension = dimension;
         this.sprite = sprite;
-        this.hoverSprite = hoverSprite;
-        this.isClicked = false;
     }
 
     @Override
-    public void init() {
-        subSprite = gameObject.getComponent(Sprite.class);
-
-        this.bufferX = (int)((this.dimension.width / 2.0f) - (this.subSprite.dimension.width / 2.0f));
-        this.bufferY = (int)((this.dimension.height / 2.0f) - (this.subSprite.dimension.height / 2.0f));
+    public Component<Block> copy() {
+        return new Block(transform.copy(), dimension.copy(), (Sprite) sprite.copy());
     }
 
     @Override
-    public void update(double deltaTime) {
-        Screen screen = Screen.getInstance();
-        if (!isClicked && this.gameObject.inMouseBounds()) {
-            // when clicked
-            if (screen.mouseListener.mousePressed && screen.mouseListener.mouseButton == MouseEvent.BUTTON1){
-                GameObject object = gameObject.copy(); // copy GameObject
+    public String serialize(int tabSize) {
 
-                object.removeComponent(Block.class); // remove the MenuItem component
+        StringBuilder builder = new StringBuilder();
 
-                LevelEditorScene scene = (LevelEditorScene) screen.getCurrentScene(); // get Level Editor Scene
+        builder.append(beginObjectProperty(Names.BLOCK, tabSize)); // Game Object
 
-                object.addComponent(scene.cursor.getComponent(SnapToGrid.class)); // add SnapToGrid component to copied object
+        builder.append(transform.serialize(tabSize + 1)); // Transform
+        builder.append(addEnding(true, true));
 
-                scene.cursor = object; // new Level Editor Scene Mouse Cursor
+        builder.append(dimension.serialize(tabSize + 1)); // Dimension
+        builder.append(addEnding(true, true));
 
-                isClicked = true;
-            }
-        }
+        builder.append(sprite.serialize(tabSize + 1)); // Sprite
+        builder.append(addEnding(true, true));
+
+        builder.append(closeObjectProperty(tabSize));
+
+        return builder.toString();
     }
 
-    @Override
-    public void render(Graphics2D g2d) {
-        g2d.drawImage(this.sprite.image,
-                (int)this.transform.position.x, (int)this.transform.position.y,
-                (int)this.dimension.width, (int)this.dimension.height, null);
+    public static Block deserialize() {
 
-        g2d.drawImage(this.subSprite.image,
-                (int)this.transform.position.x + bufferX, (int)this.transform.position.y + bufferY,
-                (int)this.subSprite.dimension.width, (int)this.subSprite.dimension.height, null);
+        Transform t = Transform.deserialize();
+        Parser.consume(',');
 
-        if (isClicked) {
-            g2d.drawImage(hoverSprite.image,
-                    (int)this.transform.position.x, (int)this.transform.position.y,
-                    (int)this.dimension.width, (int)this.dimension.height, null);
-        }
+        Dimension d = Dimension.deserialize();
+        Parser.consume(',');
+
+        Parser.consumeBeginObjectProperty("Sprite");
+        Sprite s = Sprite.deserialize();
+        Parser.consume(',');
+
+        Parser.consumeEndObjectProperty();
+
+        return new Block(t, d, s);
+    }
+
+    public void changeColor() {
+        Graphics2D g2d = sprite.image.createGraphics();
+
+        g2d.drawImage(
+                this.sprite.image,
+                (int) this.gameObject.transform.position.x, (int) this.gameObject.transform.position.y,
+                (int) this.dimension.width, (int) this.dimension.height,
+                null
+        );
+        g2d.setColor(Colors.synthWaveRed);
+        g2d.fillRect((int) this.gameObject.transform.position.x, (int) this.gameObject.transform.position.y,
+                (int) this.dimension.width, (int) this.dimension.height);
     }
 
     @Override

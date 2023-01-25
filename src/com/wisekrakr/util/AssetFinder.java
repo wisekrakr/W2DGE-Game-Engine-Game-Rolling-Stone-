@@ -5,7 +5,7 @@ import com.wisekrakr.w2dge.visual.graphics.SpriteSheet;
 
 public class AssetFinder {
     public enum ImageType {
-        BACKGROUND, BUTTONS, PLAYER, OBSTACLES, OTHERS, TILES, GROUNDS
+        BACKGROUND, BUTTONS, PLAYER, OBSTACLES, OTHERS, TILES, GROUNDS, UI
     }
 
     public static String image(ImageType type, String imageName) {
@@ -29,6 +29,9 @@ public class AssetFinder {
                 break;
             case TILES:
                 path.append("tiles/");
+                break;
+            case UI:
+                path.append("ui/");
                 break;
             case OTHERS:
                 path.append("others/");
@@ -68,6 +71,9 @@ public class AssetFinder {
             case OBSTACLES:
                 path.append("obstacles/");
                 break;
+            case UI:
+                path.append("ui/");
+                break;
             case OTHERS:
                 path.append("others/");
                 break;
@@ -77,7 +83,8 @@ public class AssetFinder {
             default:
                 System.err.println("Not an image type for sprite sheet");
         }
-
-        return new SpriteSheet(path.append(sheetName).toString(), dimension, 2, columns, size);
+        SpriteSheet spriteSheet = new SpriteSheet(path.append(sheetName).toString(), dimension, 2, columns, size);
+        spriteSheet.path = path.append(sheetName).toString();
+        return spriteSheet;
     }
 }

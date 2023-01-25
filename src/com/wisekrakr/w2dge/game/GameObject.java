@@ -18,16 +18,19 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
     public Transform transform;
     public final Dimension dimension;
     private boolean isSerializable = true;
+    public int zIndex;
+    public boolean colorChanger = false;
 
-    public GameObject(String name, Transform transform, Dimension dimension) {
+    public GameObject(String name, Transform transform, Dimension dimension, int zIndex) {
         this.name = name;
         this.transform = transform;
         this.dimension = dimension;
+        this.zIndex = zIndex;
         this.components = new ArrayList<>();
     }
 
-    public GameObject(String name, Transform transform, Dimension dimension, Component<?>... components) {
-        this(name, transform, dimension);
+    public GameObject(String name, Transform transform, Dimension dimension, int zIndex, Component<?>... components) {
+        this(name, transform, dimension, zIndex);
 
         for (Component<?> c : components) {
             addComponent(c);
@@ -108,7 +111,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
     @Override
     public GameObject copy() {
-        GameObject gameObject = new GameObject(this.name, this.transform.copy(), this.dimension.copy());
+        GameObject gameObject = new GameObject(this.name, this.transform.copy(), this.dimension.copy(), this.zIndex);
         for (Component<?> c : components) {
             Component<?> copy = c.copy();
             if (copy != null) {
@@ -135,7 +138,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(beginObjectProperty("GameObject", tabSize)); // Game Object
+        builder.append(beginObjectProperty(Names.GAMEOBJECT, tabSize)); // Game Object
 
         builder.append(transform.serialize(tabSize + 1)); // Transform
         builder.append(addEnding(true, true));
@@ -143,11 +146,13 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
         builder.append(dimension.serialize(tabSize + 1)); // Dimension
         builder.append(addEnding(true, true));
 
+        builder.append(addStringProperty("Name", name, tabSize + 1, true, true));// Name
+
         if (components.size() > 0) {
-            builder.append(addStringProperty("Name", name, tabSize + 1, true, true));// Name
+            builder.append(addIntProperty("zIndex", zIndex, tabSize + 1, true, true));
             builder.append(beginObjectProperty("Components", tabSize + 1));// Components
         } else {
-            builder.append(addStringProperty("Name", name, tabSize + 1, true, false));// Name
+            builder.append(addIntProperty("zIndex", zIndex, tabSize + 1, true, false));
         }
 
         int i = 0;
@@ -175,7 +180,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
     }
 
     public static GameObject deserialize() {
-        Parser.consumeBeginObjectProperty("GameObject");
+        Parser.consumeBeginObjectProperty(Names.GAMEOBJECT);
 
         Transform t = Transform.deserialize();
         Parser.consume(',');
@@ -184,8 +189,11 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
         Parser.consume(',');
 
         String name = Parser.consumeStringProperty("Name");
+        Parser.consume(',');
 
-        GameObject gameObject = new GameObject(name, t, d);
+        int zIndex = Parser.consumeIntProperty("zIndex");
+
+        GameObject gameObject = new GameObject(name, t, d, zIndex);
 
         if (Parser.peek() == ',') {
             Parser.consume(',');

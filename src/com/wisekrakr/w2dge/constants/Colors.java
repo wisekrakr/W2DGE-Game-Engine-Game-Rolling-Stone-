@@ -2,6 +2,8 @@ package com.wisekrakr.w2dge.constants;
 
 
 import java.awt.*;
+import java.util.List;
+import java.util.Random;
 
 public class Colors {
     public static final Color synthWaveYellow = new Color(255, 211, 25);
@@ -18,4 +20,15 @@ public class Colors {
     public static final Color synthWaveBeige = new Color(226, 160, 153);
     public static final Color charcoal = new Color(54, 69, 79);
 
+    private static final List<Color> colors = List.of(
+            Colors.babyBlue, Colors.darkPurple, Colors.midnightBlue, Colors.synthWaveBeige, Colors.synthWaveBlue,
+            Colors.synthWaveOrange, Colors.blueGreen, Colors.charcoal, Colors.iris, Colors.synthWaveCyan,
+            Colors.synthWaveMagenta, Colors.synthWaveRed, Colors.synthWaveYellow
+    );
+
+    private static final Random colorPicker = new Random();
+
+    public static Color randomColor(){
+        return colors.get(colorPicker.nextInt(colors.size()));
+    }
 }

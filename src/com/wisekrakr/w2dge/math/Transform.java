@@ -27,7 +27,7 @@ public class Transform extends Serializable implements  InterprocessImpl<Transfo
     public String serialize(int tabSize) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append(beginObjectProperty("Transform", tabSize));
+        builder.append(beginObjectProperty(Names.TRANSFORM, tabSize));
 
         builder.append(beginObjectProperty("Position", tabSize + 1));
         builder.append(position.serialize(tabSize + 2));
@@ -47,7 +47,7 @@ public class Transform extends Serializable implements  InterprocessImpl<Transfo
 
 
     public static Transform deserialize() {
-        Parser.consumeBeginObjectProperty("Transform");
+        Parser.consumeBeginObjectProperty(Names.TRANSFORM);
 
         Parser.consumeBeginObjectProperty("Position");
         Vector2 position = Vector2.deserialize();

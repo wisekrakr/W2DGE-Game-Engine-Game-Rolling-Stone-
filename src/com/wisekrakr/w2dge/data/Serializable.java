@@ -1,6 +1,16 @@
 package com.wisekrakr.w2dge.data;
 
 public abstract class Serializable {
+    public static class Names {
+        public static final String GAMEOBJECT  = "GameObject";
+        public static final String SPRITE  = "Sprite";
+        public static final String BOXBOUNDS  = "BoxBounds";
+        public static final String BLOCK = "Block";
+        public static final String TRANSFORM  = "Transform";
+        public static final String DIMENSION  = "Dimension";
+        public static final String VECTOR2  = "Vector2";
+    }
+
     public abstract String serialize(int tabSize);
 
 

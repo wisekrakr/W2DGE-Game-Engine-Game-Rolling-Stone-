@@ -1,6 +1,9 @@
 package com.wisekrakr.w2dge.visual.scene;
 
+import com.wisekrakr.main.Game;
 import com.wisekrakr.w2dge.GameLoopImpl;
+import com.wisekrakr.w2dge.constants.Colors;
+import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
@@ -16,28 +19,36 @@ import java.util.List;
 
 public abstract class Scene implements GameLoopImpl {
 
-    String name;
+    private String name;
+    public Game.SceneType type;
     public Camera camera;
-    List<GameObject> gameObjects;
-    CollisionManager collisionManager;
-    Renderer renderer;
+    public List<GameObject> gameObjects;
+    private CollisionManager collisionManager;
+    public Renderer renderer;
     public GameObject player;
     public GameObject ground;
-    String toFollow;
+    private String toFollow;
+
+    public Color bgColor;
+    public Color groundColor;
+    private Color originalBgColor;
+    private Color originalGroundColor;
 
     public void createScene(String name) {
         this.name = name;
         this.camera = new Camera(new Vector2());
         this.gameObjects = new ArrayList<>();
         this.renderer = new Renderer(this.camera);
+        this.collisionManager = new CollisionManager();
         this.toFollow = Tags.PLAYER;
+
+        backgroundColor(this.originalBgColor = Colors.randomColor(), this.originalGroundColor = Colors.randomColor());
     }
 
     public void postInit() {
         for (GameObject gameObject : gameObjects) {
             gameObject.init();
         }
-        collisionManager = new CollisionManager(gameObjects);
     }
 
     @Override
@@ -47,42 +58,34 @@ public abstract class Scene implements GameLoopImpl {
         }
     }
 
-
     @Override
     public void update(double deltaTime) {
-        collisionManager.update(deltaTime);
+        for (GameObject gameObject : gameObjects) {
+            gameObject.update(deltaTime);
+            cameraFollow(gameObject);
+            collisionManager.update(gameObject);
+        }
+    }
 
-//        for (GameObject gameObject : gameObjects) {
-//            gameObject.update(deltaTime);
-//
-//            // Camera follows value of toFollow
-//            cameraFollow(gameObject);
-//
-//            // Collision detection
-//            Bounds bounds = gameObject.getComponent(Bounds.class);
-//            if (gameObject != player && bounds != null) {
-//                if (bounds.checkCollision(player.getComponent(Bounds.class), bounds)) {
-//
-//                    // Handle player collision with different Game Objects
-//
-//                    // Collision detection for the player with the ground
-//                    if (gameObject.name.equalsIgnoreCase(Tags.GROUND)) {
-//                        player.transform.position.y = gameObject.transform.position.y -
-//                                player.getComponent(BoxBounds.class).dimension.height;
-//
-//                        player.getComponent(Player.class).grounded = true;
-//                    }
-//                    // Collision detection for the player with a block
-//                    else if (gameObject.name.equalsIgnoreCase(Tags.BLOCK)) {
-//                        bounds.resolveCollision(bounds, player);
-//                    }
-//                }
-//            }
-//        }
+    public void resetToStart() {
+        this.player.transform.position.x = GameConstants.PLAYER_START_X;
+        this.player.transform.position.y = GameConstants.PLAYER_START_Y;
+        this.camera.position.x = 0;
     }
 
 
-    public void cameraFollow(GameObject gameObject){
+    public void backgroundColor(Color bgColor, Color groundColor) {
+        if (bgColor != null) {
+            this.bgColor = bgColor;
+        } else if (groundColor != null) {
+            this.groundColor = groundColor;
+        } else {
+            this.bgColor = originalBgColor;
+            this.groundColor = originalGroundColor;
+        }
+    }
+
+    private void cameraFollow(GameObject gameObject) {
         if (gameObject.name.equalsIgnoreCase(this.toFollow) && !Screen.getInstance().isInEditorPhase) {
             camera.follow(gameObject);
         }
@@ -103,8 +106,19 @@ public abstract class Scene implements GameLoopImpl {
         }
     }
 
+    /**
+     * Removes a game object from the game objects list of this scene and {@link Renderer}
+     *
+     * @param gameObject
+     */
+    public void removeGameObjectToScene(GameObject gameObject) {
+        gameObjects.remove(gameObject);
+        renderer.remove(gameObject);
+    }
+
     @Override
     public void terminate() {
 
     }
+
 }

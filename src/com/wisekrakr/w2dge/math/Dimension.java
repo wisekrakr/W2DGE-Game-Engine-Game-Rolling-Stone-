@@ -20,18 +20,14 @@ public class Dimension extends Serializable implements  InterprocessImpl<Dimensi
 
     @Override
     public Dimension copy() {
-        Dimension dimension = new Dimension(this.width, this.height);
-//        if (dimension.center != null){
-//            dimension.center = this.center.copy();
-//        }
-        return dimension;
+        return new Dimension(this.width, this.height);
     }
 
     @Override
     public String serialize(int tabSize) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append(beginObjectProperty("Dimension", tabSize));
+        builder.append(beginObjectProperty(Names.DIMENSION, tabSize));
         builder.append(addFloatProperty("width", width, tabSize + 1, true, true));
         builder.append(addFloatProperty("height", height, tabSize + 1, true, false));
         builder.append(closeObjectProperty(tabSize));
@@ -40,7 +36,7 @@ public class Dimension extends Serializable implements  InterprocessImpl<Dimensi
     }
 
     public static Dimension deserialize() {
-        Parser.consumeBeginObjectProperty("Dimension");
+        Parser.consumeBeginObjectProperty(Names.DIMENSION);
         float width = Parser.consumeFloatProperty("width");
         Parser.consume(',');
         float height = Parser.consumeFloatProperty("height");

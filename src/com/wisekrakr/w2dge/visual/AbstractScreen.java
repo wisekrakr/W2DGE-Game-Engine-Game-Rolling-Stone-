@@ -9,6 +9,7 @@ import com.wisekrakr.w2dge.input.MouseListener;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
 import com.wisekrakr.w2dge.visual.scene.LevelScene;
+import com.wisekrakr.w2dge.visual.scene.PauseScene;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
 import javax.swing.*;
@@ -24,7 +25,8 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     public KeyListener keyListener;
     public GameInputListener inputListener;
 
-    protected Scene currentScene = null;
+    public Scene currentScene = null;
+    public Scene lastScene = null;
 
     /**
      * The image we use to draw objects on to, and then we'll draw at once in one draw call onto the actual screen,
@@ -54,22 +56,40 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     }
 
     public void changeScene(Game.SceneType scene) {
+        if (this.currentScene != null){
+            if (!this.currentScene.type.equals(Game.SceneType.EDITOR)){
+                this.lastScene = this.currentScene;
+            }
+        }
+
+
         switch (scene) {
-            case LOADING:
-                break;
-            case MENU:
-                break;
-            case EDITOR: // LevelEditorScene
+            case PAUSE -> {
+                isInEditorPhase = false;
+                this.currentScene = new PauseScene("Pause");
+            }
+            case LOADING ->{
+
+            }
+            case MENU->{
+
+            }
+            // LevelEditorScene
+            case EDITOR->{
                 isInEditorPhase = true;
                 this.currentScene = new LevelEditorScene("Level editor");
-                break;
-            case LEVEL_1: // LevelScene
+            }
+            // LevelScene
+            case LEVEL_1 ->{
                 isInEditorPhase = false;
                 this.currentScene = new LevelScene("Level");
-                break;
-            default:
+            }
+
+            default->{
                 System.out.println("This is not a scene");
                 this.currentScene = null;
+            }
+
         }
         this.currentScene.init();
     }

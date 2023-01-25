@@ -1,6 +1,5 @@
 package com.wisekrakr.w2dge.math;
 
-import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.entities.Player;
@@ -10,53 +9,31 @@ import com.wisekrakr.w2dge.game.components.physics.RigidBody;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
-import java.awt.*;
-import java.util.List;
-
-public class CollisionManager implements GameLoopImpl {
+public class CollisionManager  {
 
     public enum HitType {
         SPIKE, BOX, GROUND
     }
 
-    private final List<GameObject> gameObjects;
-
-    public CollisionManager(List<GameObject> gameObjects) {
-        this.gameObjects = gameObjects;
-    }
-
-    @Override
-    public void init() {
-
-    }
-
-    @Override
-    public void update(double deltaTime) {
+    public void update(GameObject gameObject){
         Scene scene = Screen.getInstance().getCurrentScene();
         GameObject player = scene.player;
 
-        for (GameObject gameObject : gameObjects) {
-            gameObject.update(deltaTime);
+        // Collision detection
+        Bounds<?> bounds = gameObject.getComponent(Bounds.class);
 
-            // Camera follows value of toFollow
-            scene.cameraFollow(gameObject);
+        if (gameObject != player && bounds != null) {
+            if (bounds.checkCollision(player.getComponent(Bounds.class), bounds)) {
 
-            // Collision detection
-            Bounds<?> bounds = gameObject.getComponent(Bounds.class);
+                // Handle player collision with different Game Objects
 
-            if (gameObject != player && bounds != null) {
-                if (bounds.checkCollision(player.getComponent(Bounds.class), bounds)) {
-
-                    // Handle player collision with different Game Objects
-
-                    // Collision detection for the player with the ground
-                    if (gameObject.name.equalsIgnoreCase(Tags.GROUND)) {
-                        bounds.resolveCollision(bounds, player, HitType.GROUND);
-                    }
-                    // Collision detection for the player with a block
-                    else if (gameObject.name.equalsIgnoreCase(Tags.BLOCK)) {
-                        bounds.resolveCollision(bounds, player, HitType.BOX);
-                    }
+                // Collision detection for the player with the ground
+                if (gameObject.name.equalsIgnoreCase(Tags.GROUND)) {
+                    bounds.resolveCollision(bounds, player, HitType.GROUND);
+                }
+                // Collision detection for the player with a block
+                else if (gameObject.name.equalsIgnoreCase(Tags.BLOCK)) {
+                    bounds.resolveCollision(bounds, player, HitType.BOX);
                 }
             }
         }
@@ -92,7 +69,7 @@ public class CollisionManager implements GameLoopImpl {
                         player.getComponent(Player.class).grounded = true;
                     } else {
                         // Collision on the bottom of the player
-                        player.getComponent(Player.class).die();
+                        player.getComponent(Player.class).reset();
                     }
                     // Collision on the left or the right
                 } else {
@@ -101,7 +78,7 @@ public class CollisionManager implements GameLoopImpl {
                         player.getComponent(RigidBody.class).velocity.y = 0; //stop falling
                         player.getComponent(Player.class).grounded = true;
                     }else {
-                        player.getComponent(Player.class).die();
+                        player.getComponent(Player.class).reset();
                     }
                 }
                 break;
@@ -115,16 +92,5 @@ public class CollisionManager implements GameLoopImpl {
             default:
                 System.err.println("Collision Error: not a valid Hit Type: " + type);
         }
-    }
-
-
-    @Override
-    public void render(Graphics2D g2d) {
-
-    }
-
-    @Override
-    public void terminate() {
-
     }
 }

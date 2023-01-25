@@ -3,7 +3,8 @@ package com.wisekrakr.w2dge.game;
 import com.wisekrakr.util.AssetFinder;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.constants.Tags;
-import com.wisekrakr.w2dge.game.components.entities.Block;
+import com.wisekrakr.w2dge.constants.ZIndexes;
+import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.entities.Ground;
 import com.wisekrakr.w2dge.game.components.entities.Player;
 import com.wisekrakr.w2dge.game.components.graphics.Background;
@@ -11,9 +12,12 @@ import com.wisekrakr.w2dge.game.components.graphics.Sprite;
 import com.wisekrakr.w2dge.game.components.physics.BoxBounds;
 import com.wisekrakr.w2dge.game.components.physics.RigidBody;
 import com.wisekrakr.w2dge.game.components.regions.SnapToGrid;
+import com.wisekrakr.w2dge.game.components.ui.LevelEditMenuContainer;
+import com.wisekrakr.w2dge.game.components.ui.MenuItem;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
+import com.wisekrakr.w2dge.visual.graphics.Renderer;
 import com.wisekrakr.w2dge.visual.graphics.SpriteSheet;
 
 public class GameObjectFactory {
@@ -33,6 +37,7 @@ public class GameObjectFactory {
                 Tags.PLAYER,
                 new Transform(new Vector2(position.x, position.y)),
                 dimension,
+                ZIndexes.CENTER,
                 new BoxBounds(dimension)
         );
 
@@ -57,6 +62,7 @@ public class GameObjectFactory {
         GameObject ground = new GameObject(
                 Tags.GROUND, new Transform(new Vector2(0, GameConstants.GROUND_Y)),
                 new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT),
+                ZIndexes.CENTER_PLUS,
                 new Ground(),
                 new BoxBounds(new Dimension(GameConstants.SCREEN_WIDTH, GameConstants.GROUND_Y))
         );
@@ -64,7 +70,6 @@ public class GameObjectFactory {
         ground.setNonSerializable();
 
         return ground;
-
     }
 
     public static GameObject background(GameObject[] backgrounds, String filename, GameObject ground, boolean follow, int index) {
@@ -77,13 +82,12 @@ public class GameObjectFactory {
         int x = (int) (index * bg.sprite.dimension.width);
         int y = 0;
 
-        return new GameObject(Tags.BACKGROUND, new Transform(new Vector2(x, y)), bg.dimension, bg);
-
+        return new GameObject(Tags.BACKGROUND, new Transform(new Vector2(x, y)), bg.dimension, ZIndexes.BACKGROUND, bg);
     }
 
-    public static GameObject groundBg(GameObject[] backgrounds, GameObject ground, boolean follow, int index) {
+    public static GameObject groundBg(GameObject[] backgrounds, String filename, GameObject ground, boolean follow, int index) {
         Background bg = new Background(
-                AssetFinder.image(AssetFinder.ImageType.GROUNDS, "ground01.png"),
+                AssetFinder.image(AssetFinder.ImageType.GROUNDS, filename),
                 backgrounds,
                 ground.getComponent(Ground.class),
                 follow
@@ -91,23 +95,72 @@ public class GameObjectFactory {
         int x = (int) (index * bg.sprite.dimension.width);
         int y = (int) bg.sprite.dimension.height;
 
-        return new GameObject(Tags.GROUND_BACKGROUND, new Transform(new Vector2(x, y)), bg.dimension, bg);
+        return new GameObject(Tags.GROUND_BACKGROUND, new Transform(new Vector2(x, y)), bg.dimension,
+                ZIndexes.BACKGROUND_PLUS, bg);
     }
 
-    public static GameObject block(Sprite currentSprite, int x, int y, SpriteSheet spriteSheet) {
-        return new GameObject(
+    /**
+     * Creates a new MenuItem - MENU_ITEM -> is non-serializable<br>
+     * Contains the following Components: {@link Sprite}, {@link com.wisekrakr.w2dge.game.components.ui.MenuItem},
+     * {@link BoxBounds}<br>
+     * This GameObject has the TAG -> BLOCK, because the moment the menu item is placed on the scene it is no longer
+     * a menu item but an object in the game --> named BLOCK
+     * @param currentSprite
+     * @param position
+     * @param spriteSheet
+     * @param renderer
+     * @return
+     */
+    public static GameObject menuItem(Sprite currentSprite, Vector2 position, SpriteSheet spriteSheet, Renderer renderer,
+                                      LevelEditMenuContainer parentContainer) {
+        GameObject menuItem = new GameObject(
                 Tags.BLOCK,
-                new Transform(new Vector2(x, y)),
+                new Transform(position),
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                ZIndexes.BACK,
                 // Components
                 currentSprite.copy(),
-                new Block(
-                        new Transform(new Vector2(x, y)),
-                        new Dimension(GameConstants.BUTTON_WIDTH, GameConstants.BUTTON_HEIGHT),
-                        spriteSheet.sprites.get(0), spriteSheet.sprites.get(1)
-                ),
+
                 new BoxBounds(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT))
         );
+        menuItem.addComponent(
+                new MenuItem(
+                        new Transform(position),
+                        new Dimension(GameConstants.BUTTON_WIDTH, GameConstants.BUTTON_HEIGHT),
+                        spriteSheet.sprites.get(0), spriteSheet.sprites.get(1),
+                        parentContainer
+                )
+        );
+
+        renderer.partOfUI(menuItem);
+        menuItem.setNonSerializable();
+
+        return menuItem;
+    }
+
+    /**
+     * Creates a new GameObject with name TAB -> object is non-serializable
+     *
+     * @param currentSprite
+     * @param position
+     * @param renderer
+     * @return
+     */
+    public static GameObject menuItemTab(Sprite currentSprite, Vector2 position, Renderer renderer, Component<?>... components){
+        GameObject tab = new GameObject(
+                Tags.TAB,
+                new Transform(position),
+                new Dimension(GameConstants.TAB_WIDTH, GameConstants.TAB_HEIGHT),
+                ZIndexes.FRONT,
+                currentSprite.copy()
+        );
+
+        for (Component<?>component: components){
+            tab.addComponent(component);
+        }
+        renderer.partOfUI(tab);
+        tab.setNonSerializable();
+        return tab;
     }
 
     /**
@@ -119,6 +172,7 @@ public class GameObjectFactory {
     public static GameObject mouserCursor() {
         return new GameObject(Tags.CURSOR, new Transform(new Vector2()),
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                ZIndexes.FRONT,
                 new SnapToGrid()
         );
     }

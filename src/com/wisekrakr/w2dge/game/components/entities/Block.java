@@ -68,15 +68,14 @@ public class Block extends Component<Block> {
     public void changeColor() {
         Graphics2D g2d = sprite.image.createGraphics();
 
-        g2d.drawImage(
-                this.sprite.image,
-                (int) this.gameObject.transform.position.x, (int) this.gameObject.transform.position.y,
-                (int) this.dimension.width, (int) this.dimension.height,
+        g2d.setColor(Colors.synthWaveRed);
+        AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f); // transparent until placement
+        g2d.setComposite(composite);
+        g2d.drawImage(sprite.image,
+                (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
+                (int) gameObject.dimension.width, (int) gameObject.dimension.height,
                 null
         );
-        g2d.setColor(Colors.synthWaveRed);
-        g2d.fillRect((int) this.gameObject.transform.position.x, (int) this.gameObject.transform.position.y,
-                (int) this.dimension.width, (int) this.dimension.height);
     }
 
     @Override

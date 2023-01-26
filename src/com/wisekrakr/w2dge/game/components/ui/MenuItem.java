@@ -13,38 +13,18 @@ import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public class MenuItem extends Component<MenuItem> {
+public class MenuItem extends LevelEditMenuItem<MenuItem> {
 
-    private final Transform transform;
-    private final Dimension dimension;
-    private final Sprite sprite, hoverSprite;
-    private Sprite subSprite;
-    public boolean isSelected;
-    private int bufferX, bufferY;// menu item margin
+    private final Sprite hoverSprite;
 
-    private final LevelEditMenuContainer parentContainer;
-
-    public MenuItem(Transform transform, Dimension dimension, Sprite sprite, Sprite hoverSprite, LevelEditMenuContainer parentContainer) {
-        this.transform = transform;
-        this.dimension = dimension;
-        this.sprite = sprite;
+    public MenuItem(Transform transform, Dimension dimension, LevelEditMenuContainer parentContainer, Sprite sprite, Sprite hoverSprite) {
+        super(transform, dimension, parentContainer, sprite);
         this.hoverSprite = hoverSprite;
-        this.isSelected = false;
-        this.parentContainer = parentContainer;
-    }
-
-    @Override
-    public void init() {
-        this.subSprite = this.gameObject.getComponent(Sprite.class);
-        this.bufferX = (int) ((this.dimension.width / 2.0f) - (this.subSprite.dimension.width / 2.0f));
-        this.bufferY = (int) ((this.dimension.height / 2.0f) - (this.subSprite.dimension.height / 2.0f));
     }
 
     @Override
     public void update(double deltaTime) {
         Screen screen = Screen.getInstance();
-
-        init();
 
         // when clicked
         if (screen.mouseListener.mousePressed && screen.mouseListener.mouseButton == MouseEvent.BUTTON1) {
@@ -71,14 +51,18 @@ public class MenuItem extends Component<MenuItem> {
 
     @Override
     public void render(Graphics2D g2d) {
+        int bufferX = (int) ((this.dimension.width / 2.0f) - (this.gameObject.getComponent(Sprite.class).dimension.width / 2.0f));
+        int bufferY = (int) ((this.dimension.height / 2.0f) - (this.gameObject.getComponent(Sprite.class).dimension.height / 2.0f));
+
         g2d.drawImage(this.sprite.image,
                 (int) this.transform.position.x, (int) this.transform.position.y,
                 (int) this.dimension.width, (int) this.dimension.height, null);
 
-        g2d.drawImage(this.subSprite.image,
+        g2d.drawImage(this.gameObject.getComponent(Sprite.class).image,
                 (int) this.transform.position.x + bufferX, (int) this.transform.position.y + bufferY,
-                (int) this.subSprite.dimension.width, (int) this.subSprite.dimension.height, null);
-
+                (int) this.gameObject.getComponent(Sprite.class).dimension.width,
+                (int) this.gameObject.getComponent(Sprite.class).dimension.height,
+                null);
 
         if (isSelected) {
             g2d.drawImage(hoverSprite.image,
@@ -89,8 +73,7 @@ public class MenuItem extends Component<MenuItem> {
 
     @Override
     public Component<MenuItem> copy() {
-        return new MenuItem(transform.copy(), dimension.copy(), (Sprite) sprite.copy(), (Sprite) hoverSprite.copy(),
-                parentContainer);
+        return new MenuItem(transform.copy(), dimension.copy(), parentContainer, (Sprite) sprite.copy(), (Sprite) hoverSprite.copy());
     }
 
     @Override

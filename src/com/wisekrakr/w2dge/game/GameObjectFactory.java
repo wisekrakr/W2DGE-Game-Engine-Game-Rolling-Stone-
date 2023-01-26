@@ -12,13 +12,10 @@ import com.wisekrakr.w2dge.game.components.graphics.Sprite;
 import com.wisekrakr.w2dge.game.components.physics.BoxBounds;
 import com.wisekrakr.w2dge.game.components.physics.RigidBody;
 import com.wisekrakr.w2dge.game.components.regions.SnapToGrid;
-import com.wisekrakr.w2dge.game.components.ui.LevelEditMenuContainer;
-import com.wisekrakr.w2dge.game.components.ui.MenuItem;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.graphics.Renderer;
-import com.wisekrakr.w2dge.visual.graphics.SpriteSheet;
 
 public class GameObjectFactory {
 
@@ -102,38 +99,29 @@ public class GameObjectFactory {
     /**
      * Creates a new MenuItem - MENU_ITEM -> is non-serializable<br>
      * Contains the following Components: {@link Sprite}, {@link com.wisekrakr.w2dge.game.components.ui.MenuItem},
-     * {@link BoxBounds}<br>
-     * This GameObject has the TAG -> BLOCK, because the moment the menu item is placed on the scene it is no longer
-     * a menu item but an object in the game --> named BLOCK
-     * @param currentSprite
+     * <br>
+     * This GameObject has the TAG -> GAME_ITEM, because the moment the menu item is placed on the scene it is no longer
+     * a menu item but an object in the game --> named GAME_ITEM
+     *
      * @param position
-     * @param spriteSheet
      * @param renderer
+     * @param components
      * @return
      */
-    public static GameObject menuItem(Sprite currentSprite, Vector2 position, SpriteSheet spriteSheet, Renderer renderer,
-                                      LevelEditMenuContainer parentContainer) {
+    public static GameObject menuItem(Vector2 position, Renderer renderer, Component<?>...components) {
         GameObject menuItem = new GameObject(
-                Tags.BLOCK,
+                Tags.GAME_ITEM,
                 new Transform(position),
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
-                ZIndexes.BACK,
-                // Components
-                currentSprite.copy(),
-
-                new BoxBounds(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT))
-        );
-        menuItem.addComponent(
-                new MenuItem(
-                        new Transform(position),
-                        new Dimension(GameConstants.BUTTON_WIDTH, GameConstants.BUTTON_HEIGHT),
-                        spriteSheet.sprites.get(0), spriteSheet.sprites.get(1),
-                        parentContainer
-                )
+                ZIndexes.BACK
         );
 
         renderer.partOfUI(menuItem);
         menuItem.setNonSerializable();
+
+        for (Component<?> component : components) {
+            menuItem.addComponent(component);
+        }
 
         return menuItem;
     }
@@ -141,25 +129,23 @@ public class GameObjectFactory {
     /**
      * Creates a new GameObject with name TAB -> object is non-serializable
      *
-     * @param currentSprite
+     * @param sprite
      * @param position
      * @param renderer
      * @return
      */
-    public static GameObject menuItemTab(Sprite currentSprite, Vector2 position, Renderer renderer, Component<?>... components){
-        GameObject tab = new GameObject(
-                Tags.TAB,
-                new Transform(position),
-                new Dimension(GameConstants.TAB_WIDTH, GameConstants.TAB_HEIGHT),
-                ZIndexes.FRONT,
-                currentSprite.copy()
-        );
+    public static GameObject menuItemTab(Vector2 position, Renderer renderer,
+                                         Component<?>... components) {
+        GameObject tab = new GameObject(Tags.TAB, new Transform(position),
+                new Dimension(GameConstants.TAB_WIDTH, GameConstants.TAB_HEIGHT), ZIndexes.FRONT);
 
-        for (Component<?>component: components){
-            tab.addComponent(component);
-        }
         renderer.partOfUI(tab);
         tab.setNonSerializable();
+
+        for (Component<?> component : components) {
+            tab.addComponent(component);
+        }
+
         return tab;
     }
 

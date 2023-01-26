@@ -14,18 +14,23 @@ import java.util.List;
 
 public class GameObject extends Serializable implements GameLoopImpl, ComponentImpl, GameObjectImpl {
     public List<Component<?>> components;
-    public final String name;
+    public String name;
     public Transform transform;
-    public final Dimension dimension;
+    public Dimension dimension;
     private boolean isSerializable = true;
     public int zIndex;
-    public boolean colorChanger = false;
 
-    public GameObject(String name, Transform transform, Dimension dimension, int zIndex) {
+    public GameObject(String name, Transform transform, int zIndex) {
         this.name = name;
         this.transform = transform;
-        this.dimension = dimension;
+        this.dimension = new Dimension();
         this.zIndex = zIndex;
+        this.components = new ArrayList<>();
+    }
+
+    public GameObject(String name, Transform transform, Dimension dimension, int zIndex) {
+        this(name, transform, zIndex);
+        this.dimension = dimension;
         this.components = new ArrayList<>();
     }
 
@@ -60,7 +65,11 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
     @Override
     public void terminate() {
-        // TODO a way to dispose of an Object
+        for (Component<?> component : components) {
+            component.terminate();
+
+            this.removeComponent(component.getClass());
+        }
     }
 
     @Override

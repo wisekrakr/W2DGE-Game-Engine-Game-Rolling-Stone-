@@ -2,19 +2,15 @@ package com.wisekrakr.w2dge.visual.scene;
 
 import com.wisekrakr.main.Game;
 import com.wisekrakr.util.FileUtils;
-import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
-import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class LevelScene extends Scene {
 
-    JLabel label;
 
     public LevelScene(String name) {
         super.createScene(name);
@@ -23,10 +19,7 @@ public class LevelScene extends Scene {
 
     @Override
     public void init() {
-        label = new JLabel("Testies");
-        label.setBounds(300,300,100,100);
-        label.setForeground(Colors.babyBlue);
-
+        super.init();
 
         this.player = GameObjectFactory.player(
                 new Vector2(GameConstants.PLAYER_START_X, GameConstants.PLAYER_START_Y),
@@ -39,33 +32,10 @@ public class LevelScene extends Scene {
 
         Screen.currentScreen.inputListener.setController(this.player);
 
-        initBackgrounds();
-        postInit();
+        initBackgrounds(7, "bg_04-hd.png", "ground_02");
 
         FileUtils.importFileToLevel("Test", this);
 
-    }
-
-    private void initBackgrounds() {
-
-        int nrOfBackgrounds = 7;
-        GameObject[] backgrounds = new GameObject[nrOfBackgrounds];
-        GameObject[] groundBackgrounds = new GameObject[nrOfBackgrounds];
-
-        for (int i = 0; i < nrOfBackgrounds; i++) {
-            GameObject background = GameObjectFactory.background(backgrounds, "bg04.png", ground, false, i);
-            renderer.partOfUI(background);
-
-            backgrounds[i] = background;
-
-            GameObject groundBg = GameObjectFactory.groundBg(groundBackgrounds, "ground02.png", ground, true, i);
-            renderer.partOfUI(groundBg);
-
-            groundBackgrounds[i] = groundBg;
-
-            addGameObjectToScene(background);
-            addGameObjectToScene(groundBg);
-        }
     }
 
     @Override

@@ -40,7 +40,7 @@ public class SnapToGrid extends Component<SnapToGrid> {
             this.gameObject.transform.position.y = y * this.gameObject.dimension.height - screen.getCurrentScene().camera.position.y;
 
             // click to add to grid
-            if (screen.mouseListener.position.y < GameConstants.BUTTON_OFFSET_Y &&
+            if (screen.mouseListener.position.y < GameConstants.TAB_OFFSET_Y &&
                     screen.mouseListener.mousePressed &&
                     screen.mouseListener.mouseButton == MouseEvent.BUTTON1 &&
                     debounceTimeLeft < 0) {

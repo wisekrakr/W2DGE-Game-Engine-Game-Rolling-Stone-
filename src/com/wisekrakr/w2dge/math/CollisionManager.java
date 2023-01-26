@@ -32,7 +32,7 @@ public class CollisionManager  {
                     bounds.resolveCollision(bounds, player, HitType.GROUND);
                 }
                 // Collision detection for the player with a block
-                else if (gameObject.name.equalsIgnoreCase(Tags.BLOCK)) {
+                else if (gameObject.name.equalsIgnoreCase(Tags.GAME_ITEM)) {
                     bounds.resolveCollision(bounds, player, HitType.BOX);
                 }
             }

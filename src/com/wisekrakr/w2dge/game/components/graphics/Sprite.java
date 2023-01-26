@@ -60,6 +60,7 @@ public class Sprite extends Component<Sprite> {
     public Sprite(BufferedImage image, String fileName){
         this.image = image;
         this.fileName = fileName;
+        this.dimension = new Dimension(image.getWidth(), image.getHeight());
     }
 
 
@@ -77,7 +78,7 @@ public class Sprite extends Component<Sprite> {
     public void render(Graphics2D g2d) {
         g2d.drawImage(this.image,
                 (int)gameObject.transform.position.x, (int)gameObject.transform.position.y,
-                (int)gameObject.dimension.width, (int)gameObject.dimension.height,
+                image.getWidth(), image.getHeight(),
                 null
         );
     }

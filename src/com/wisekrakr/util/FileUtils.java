@@ -123,6 +123,7 @@ public class FileUtils {
             scene.addGameObjectToScene(gameObject);
 
             gameObject = Parser.parseGameObject();
+
         }
     }
 }

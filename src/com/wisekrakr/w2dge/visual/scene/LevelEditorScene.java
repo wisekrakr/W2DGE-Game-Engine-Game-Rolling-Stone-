@@ -24,11 +24,11 @@ public class LevelEditorScene extends Scene {
         super.createScene(name);
 
         this.type = Game.SceneType.EDITOR;
-
     }
 
     @Override
     public void init() {
+        super.init();
 
         grid = new Grid();
         cameraControls = new CameraControls();
@@ -40,11 +40,6 @@ public class LevelEditorScene extends Scene {
 
         addGameObjectToScene(player);
         addGameObjectToScene(ground);
-
-        postInit();
-
-//        Screen.currentScreen.inputListener.setController(this.player);
-
     }
 
     @Override

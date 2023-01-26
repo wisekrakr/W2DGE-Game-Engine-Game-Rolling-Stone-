@@ -67,6 +67,8 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
             case PAUSE -> {
                 isInEditorPhase = false;
                 this.currentScene = new PauseScene("Pause");
+                this.currentScene.init();
+
             }
             case LOADING ->{
 
@@ -78,20 +80,21 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
             case EDITOR->{
                 isInEditorPhase = true;
                 this.currentScene = new LevelEditorScene("Level editor");
+                this.currentScene.init();
             }
             // LevelScene
             case LEVEL_1 ->{
                 isInEditorPhase = false;
                 this.currentScene = new LevelScene("Level");
+                this.currentScene.init();
             }
-
             default->{
                 System.out.println("This is not a scene");
                 this.currentScene = null;
             }
 
         }
-        this.currentScene.init();
+
     }
 
     protected void addInputListener(){

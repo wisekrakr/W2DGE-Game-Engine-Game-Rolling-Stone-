@@ -6,6 +6,7 @@ import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
+import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.math.CollisionManager;
 import com.wisekrakr.w2dge.math.Vector2;
@@ -45,7 +46,8 @@ public abstract class Scene implements GameLoopImpl {
         backgroundColor(this.originalBgColor = Colors.randomColor(), this.originalGroundColor = Colors.randomColor());
     }
 
-    public void postInit() {
+    @Override
+    public void init() {
         for (GameObject gameObject : gameObjects) {
             gameObject.init();
         }
@@ -101,6 +103,7 @@ public abstract class Scene implements GameLoopImpl {
     public void addGameObjectToScene(GameObject gameObject) {
         gameObjects.add(gameObject);
         renderer.add(gameObject);
+
         for (Component<?> c : gameObject.getAllComponents()) {
             c.init();
         }
@@ -114,6 +117,27 @@ public abstract class Scene implements GameLoopImpl {
     public void removeGameObjectToScene(GameObject gameObject) {
         gameObjects.remove(gameObject);
         renderer.remove(gameObject);
+    }
+
+    public void initBackgrounds(int nrOfBackgrounds, String filenameBackground, String filenameGround) {
+
+        GameObject[] backgrounds = new GameObject[nrOfBackgrounds];
+        GameObject[] groundBackgrounds = new GameObject[nrOfBackgrounds];
+
+        for (int i = 0; i < nrOfBackgrounds; i++) {
+            GameObject background = GameObjectFactory.background(backgrounds, filenameBackground, ground, false, i);
+            renderer.partOfUI(background);
+
+            backgrounds[i] = background;
+
+            GameObject groundBg = GameObjectFactory.groundBg(groundBackgrounds, filenameGround, ground, true, i);
+            renderer.partOfUI(groundBg);
+
+            groundBackgrounds[i] = groundBg;
+
+            addGameObjectToScene(background);
+            addGameObjectToScene(groundBg);
+        }
     }
 
     @Override

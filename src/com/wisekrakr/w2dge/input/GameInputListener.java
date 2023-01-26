@@ -79,8 +79,10 @@ public class GameInputListener {
             case KeyEvent.VK_F2 -> screen.changeScene(Game.SceneType.EDITOR);
             case KeyEvent.VK_P -> {
                 Game.isPaused = !Game.isPaused;
-//
-//                if (!Game.isPaused){
+
+
+
+                //                if (!Game.isPaused){
 //                    // todo show pause scene
 //                    screen.changeScene(Game.SceneType.PAUSE);
 //                }else{
@@ -101,6 +103,8 @@ public class GameInputListener {
                 for (GameObject gameObject : screen.getCurrentScene().gameObjects) {
                     if (gameObject.getComponent(Block.class) != null) {
                         // todo block change color
+                        gameObject.getComponent(Block.class).changeColor();
+                        System.out.println("changeye");
                     }
                 }
             }

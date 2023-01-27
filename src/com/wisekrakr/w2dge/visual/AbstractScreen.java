@@ -17,16 +17,16 @@ import java.awt.*;
 
 public abstract class AbstractScreen extends JFrame implements Runnable, GameLoopImpl {
 
-    public static AbstractScreen currentScreen;
+    protected static AbstractScreen currentScreen;
     public boolean isInEditorPhase = false;
     protected boolean isRunning = true;
 
-    public MouseListener mouseListener;
-    public KeyListener keyListener;
-    public GameInputListener inputListener;
+    protected MouseListener mouseListener;
+    protected KeyListener keyListener;
+    protected GameInputListener inputListener;
 
-    public Scene currentScene = null;
-    public Scene lastScene = null;
+    protected Scene currentScene = null;
+    protected Scene lastScene = null;
 
     /**
      * The image we use to draw objects on to, and then we'll draw at once in one draw call onto the actual screen,
@@ -47,17 +47,12 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
         this.setLocationRelativeTo(null);
     }
 
-    public Camera getCamera(){
-        return Screen.getScene().camera;
-    }
-
     public void changeScene(Game.SceneType scene) {
         if (this.currentScene != null){
             if (!this.currentScene.type.equals(Game.SceneType.EDITOR)){
                 this.lastScene = this.currentScene;
             }
         }
-
 
         switch (scene) {
             case PAUSE -> {
@@ -111,7 +106,7 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
 
     @Override
     public void update(double deltaTime) {
-        Screen.getInstance().currentScene.update(deltaTime);
+        Screen.getScene().update(deltaTime);
         render((Graphics2D) getGraphics());
     }
 
@@ -130,7 +125,7 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     private void renderOffScreen(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        Screen.getInstance().currentScene.render(g2d);
+        Screen.getScene().render(g2d);
     }
 
     @Override

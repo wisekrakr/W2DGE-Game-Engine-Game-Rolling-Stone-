@@ -6,10 +6,11 @@ public abstract class Serializable {
         public static final String SPRITE  = "Sprite";
         public static final String BOX_BOUNDS = "BoxBounds";
         public static final String TRIANGLE_BOUNDS = "TriangleBounds";
-        public static final String GAME_ITEM = "Game Item";
+        public static final String GAME_ITEM = "GameItem";
         public static final String TRANSFORM  = "Transform";
         public static final String DIMENSION  = "Dimension";
         public static final String VECTOR2  = "Vector2";
+        public static final String ELEVATE = "Elevate";
     }
 
     public abstract String serialize(int tabSize);
@@ -37,6 +38,11 @@ public abstract class Serializable {
 
     public static String beginObjectProperty(String name, int tabSize) {
         return addTabs(tabSize) + "\"" + name + "\": {" + addEnding(true, false);
+    }
+
+    public static String beginAndEndObjectProperty(String name, int tabSize) {
+        return addTabs(tabSize) + "\"" + name + "\": { \n" +
+                " }";
     }
 
     public static String closeObjectProperty(int tabSize) {

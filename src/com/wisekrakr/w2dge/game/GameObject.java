@@ -4,6 +4,7 @@ import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.data.Serializable;
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.input.GameInputListener;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.visual.Screen;
@@ -132,11 +133,11 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
     @Override
     public boolean inMouseBounds() {
-        Screen screen = Screen.getInstance();
-        return screen.mouseListener.position.x > this.transform.position.x &&
-                screen.mouseListener.position.x <= this.transform.position.x + this.dimension.width &&
-                screen.mouseListener.position.y > this.transform.position.y &&
-                screen.mouseListener.position.y <= this.transform.position.y + this.dimension.height;
+        GameInputListener inputListener = Screen.getInputListener();
+        return inputListener.mouseListener.position.x > this.transform.position.x &&
+                inputListener.mouseListener.position.x <= this.transform.position.x + this.dimension.width &&
+                inputListener.mouseListener.position.y > this.transform.position.y &&
+                inputListener.mouseListener.position.y <= this.transform.position.y + this.dimension.height;
     }
 
     @Override

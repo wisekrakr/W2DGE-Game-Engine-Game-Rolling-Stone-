@@ -116,21 +116,21 @@ public class AssetManager {
         layerThree = AssetFinder.spriteSheet(AssetFinder.ImageType.PLAYER, "layerThree.png",
                 new Dimension(GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT), 13, 13 * 5);
 
-        groundSheet = new SpriteSheet("assets/spritesheets/tiles/spritesheet_tiles_11x22.png",
-                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT), 4,
-                11, 22);
+//        groundSheet = new SpriteSheet("assets/spritesheets/tiles/spritesheet_tiles_11x22.png",
+//                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT), 4,
+//                11, 22);
 //        groundSheet = AssetFinder.spriteSheet(
 //                AssetFinder.ImageType.TILES,
 //                "spritesheet_tiles_blue_10x10.png",
 //                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
 //                10, 10
 //        );
-//        groundSheet = AssetFinder.spriteSheet(
-//                AssetFinder.ImageType.TILES,
-//                "ground.png",
-//                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
-//                6, 12
-//        );
+        groundSheet = AssetFinder.spriteSheet(
+                AssetFinder.ImageType.TILES,
+                "ground.png",
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                6, 12
+        );
 
         buttonSheet = AssetFinder.spriteSheet(
                 AssetFinder.ImageType.BUTTONS,

@@ -5,6 +5,7 @@ import com.wisekrakr.util.FileUtils;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
 import com.wisekrakr.w2dge.game.components.entities.PlayerComponent;
+import com.wisekrakr.w2dge.game.components.ui.MenuItemControlComponent;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
@@ -15,20 +16,7 @@ import java.util.List;
  * Initializes both {@link MouseListener} & {@link KeyListener}<br>
  * Handles all mouse and keyboard input in the {@link GameInputListener#update(List, Scene)} method
  */
-public class GameInputListener {
-
-    public MouseListener mouseListener;
-    public KeyListener keyListener;
-    public GameObject player;
-
-    public GameInputListener() {
-        this.mouseListener = new MouseListener();
-        this.keyListener = new KeyListener();
-    }
-
-    public void setController(GameObject player) {
-        this.player = player;
-    }
+public class GameInputListener extends AbstractGameInputListener{
 
     /**
      * Handles all mouse and keyboard input for {@link com.wisekrakr.w2dge.visual.scene.LevelEditorScene}
@@ -39,10 +27,9 @@ public class GameInputListener {
     public void update(List<GameObject> gameObjects, Scene scene) {
         inputsOnAllScenes();
 
-        Screen screen = Screen.getInstance();
-
-        switch (screen.keyListener.keyCode) {
-            case KeyEvent.VK_F1 -> screen.changeScene(Game.SceneType.LEVEL_1);
+        // Keyboard inputs
+        switch (Screen.getInputListener().keyListener.keyCode) {
+            case KeyEvent.VK_F1 -> Screen.getInstance().changeScene(Game.SceneType.LEVEL_1);
             case KeyEvent.VK_F5 -> {
                 System.out.println("Export file");
                 Thread exportThread = new Thread(() -> {
@@ -61,6 +48,12 @@ public class GameInputListener {
 
                 }, "Import level thread").start();
             }
+            case KeyEvent.VK_ESCAPE -> Screen.getScene().levelEditMouseCursor.getComponent(MenuItemControlComponent.class).clearSelected();
+
+            case KeyEvent.VK_W -> Screen.getScene().camera.position.y -= 3;
+            case KeyEvent.VK_S -> Screen.getScene().camera.position.y += 3;
+            case KeyEvent.VK_A -> Screen.getScene().camera.position.x -= 3;
+            case KeyEvent.VK_D -> Screen.getScene().camera.position.x += 3;
         }
     }
 
@@ -70,25 +63,12 @@ public class GameInputListener {
     public void update() {
         inputsOnAllScenes();
 
-        Screen screen = Screen.getInstance();
         PlayerComponent p = player.getComponent(PlayerComponent.class);
 
-
-        switch (screen.keyListener.keyCode) {
+        switch (Screen.getInputListener().keyListener.keyCode) {
             // UI controls
-            case KeyEvent.VK_F2 -> screen.changeScene(Game.SceneType.EDITOR);
-            case KeyEvent.VK_P -> {
-                Game.isPaused = !Game.isPaused;
-
-
-
-                //                if (!Game.isPaused){
-//                    // todo show pause scene
-//                    screen.changeScene(Game.SceneType.PAUSE);
-//                }else{
-//                    screen.changeScene(Game.SceneType.LEVEL_1);
-//                }
-            }
+            case KeyEvent.VK_F2 -> Screen.getInstance().changeScene(Game.SceneType.EDITOR);
+            case KeyEvent.VK_P -> Game.isPaused = !Game.isPaused;
             // Player controls
             case KeyEvent.VK_SPACE -> {
                 if (p.grounded) {
@@ -100,11 +80,10 @@ public class GameInputListener {
             case KeyEvent.VK_R -> player.getComponent(PlayerComponent.class).reset();
             // Level controls
             case KeyEvent.VK_G -> {
-                for (GameObject gameObject : screen.currentScene.gameObjects) {
+                for (GameObject gameObject : Screen.getScene().getGameObjects()) {
                     if (gameObject.getComponent(GameItemComponent.class) != null) {
-                        // todo block change color
-                        gameObject.getComponent(GameItemComponent.class).changeColor();
-                        System.out.println("changeye");
+                        // todo change color game item
+                        gameObject.getComponent(GameItemComponent.class).changeColor = true;
                     }
                 }
             }
@@ -114,11 +93,8 @@ public class GameInputListener {
 
     private void inputsOnAllScenes() {
         // UI controls
-        Screen screen = Screen.getInstance();
-
-        switch (screen.keyListener.keyCode) {
-            case KeyEvent.VK_ESCAPE -> System.exit(1);
+        switch (Screen.getInputListener().keyListener.keyCode) {
+            case KeyEvent.VK_Q -> System.exit(1);
         }
-
     }
 }

@@ -46,7 +46,6 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
         BoxBoundsComponent playerBounds = gameObject.getComponent(BoxBoundsComponent.class);
         playerBounds.initialCalculations();
         this.initialCalculations();
-
         CollisionManager.collisionResolver(this.gameObject, gameObject, type);
     }
 
@@ -149,6 +148,7 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
 
         return code;
     }
+
 
     /**
      * The user can determine initial calculations for the Component <br>

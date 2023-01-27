@@ -1,37 +1,33 @@
 package com.wisekrakr.w2dge.game.components.controls;
 
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.input.GameInputListener;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
-
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 public class CameraControlsComponent extends Component<CameraControlsComponent> {
 
     private Vector2 prevPosition;
 
     public CameraControlsComponent() {
-        this.prevPosition = new Vector2(0,0);
+        this.prevPosition = new Vector2(0, 0);
     }
 
     @Override
     public void update(double deltaTime) {
-        Screen screen = Screen.getInstance();
+        GameInputListener inputListener = Screen.getInputListener();
 
-        // Shift - Right Button = dragging camera
-        if(screen.mouseListener.mousePressed &&
-                screen.mouseListener.mouseButton == MouseEvent.BUTTON3 &&
-                screen.keyListener.isKeyPressed(KeyEvent.VK_SHIFT)){
-            float dx = screen.mouseListener.position.x + screen.mouseListener.dx - prevPosition.x;
-            float dy = screen.mouseListener.position.y + screen.mouseListener.dy - prevPosition.y;
+        // Right Button = dragging camera
+        if (inputListener.middleMousePressed()) {
+            float dx = inputListener.mouseListener.position.x + inputListener.mouseListener.dx - prevPosition.x;
+            float dy = inputListener.mouseListener.position.y + inputListener.mouseListener.dy - prevPosition.y;
 
-            screen.currentScene.camera.position.x -= dx;
-            screen.currentScene.camera.position.y -= dy;
+            Screen.getScene().camera.position.x -= dx;
+            Screen.getScene().camera.position.y -= dy;
         }
 
-        prevPosition.x = screen.mouseListener.position.x + screen.mouseListener.dx;
-        prevPosition.y = screen.mouseListener.position.y + screen.mouseListener.dy;
+        prevPosition.x = inputListener.mouseListener.position.x + inputListener.mouseListener.dx;
+        prevPosition.y = inputListener.mouseListener.position.y + inputListener.mouseListener.dy;
     }
 
     @Override

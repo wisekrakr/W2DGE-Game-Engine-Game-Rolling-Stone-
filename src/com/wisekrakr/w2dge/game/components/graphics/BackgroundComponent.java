@@ -68,7 +68,7 @@ public class BackgroundComponent extends Component<BackgroundComponent> {
 
     @Override
     public void render(Graphics2D g2d) {
-        Camera camera = Screen.getInstance().getCamera();
+        Camera camera = Screen.getScene().camera;
         if (this.followGround) {
             g2d.drawImage(
                     this.spriteComponent.image,

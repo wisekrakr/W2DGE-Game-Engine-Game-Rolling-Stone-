@@ -5,6 +5,7 @@ import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
 import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
+import com.wisekrakr.w2dge.game.components.physics.ElevateComponent;
 import com.wisekrakr.w2dge.game.components.physics.TriangleBoundsComponent;
 
 public class Parser {
@@ -190,6 +191,9 @@ public class Parser {
             }
             case Serializable.Names.TRIANGLE_BOUNDS -> {
                 return TriangleBoundsComponent.deserialize();
+            }
+            case Serializable.Names.ELEVATE -> {
+                return ElevateComponent.deserialize();
             }
             case Serializable.Names.GAME_ITEM -> {
                 return GameItemComponent.deserialize();

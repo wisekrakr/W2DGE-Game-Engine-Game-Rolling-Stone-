@@ -2,7 +2,6 @@ package com.wisekrakr.w2dge.visual.scene;
 
 import com.wisekrakr.main.Game;
 import com.wisekrakr.w2dge.constants.GameConstants;
-import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.game.components.controls.CameraControlsComponent;
 import com.wisekrakr.w2dge.game.components.regions.GridComponent;
@@ -13,8 +12,6 @@ import com.wisekrakr.w2dge.visual.Screen;
 import java.awt.*;
 
 public class LevelEditorScene extends Scene {
-
-    public GameObject cursor;
 
     private GridComponent gridComponent;
     private CameraControlsComponent cameraControlsComponent;
@@ -32,14 +29,17 @@ public class LevelEditorScene extends Scene {
 
         gridComponent = new GridComponent();
         cameraControlsComponent = new CameraControlsComponent();
-        editingContainer = new MenuContainerComponent(this);
+        editingContainer = new MenuContainerComponent();
 
-        cursor = GameObjectFactory.mouserCursor();
-        player = GameObjectFactory.player(new Vector2(100, 300), Screen.getInstance().isInEditorPhase);
+        levelEditMouseCursor = GameObjectFactory.mouserCursor();
+        player = GameObjectFactory.player(new Vector2(GameConstants.PLAYER_START_X, GameConstants.PLAYER_START_Y),
+                Screen.getInstance().isInEditorPhase);
         ground = GameObjectFactory.ground();
 
         addGameObjectToScene(player);
         addGameObjectToScene(ground);
+
+//        FileUtils.importFileToLevel("Test", this);
 
     }
 
@@ -52,11 +52,9 @@ public class LevelEditorScene extends Scene {
         gridComponent.update(deltaTime);
         cameraControlsComponent.update(deltaTime);
         editingContainer.update(deltaTime);
-        cursor.update(deltaTime);
+        levelEditMouseCursor.update(deltaTime);
 
-        Screen.getInstance().inputListener.update(gameObjects, this);
-
-
+        Screen.getInputListener().update(getGameObjects(), this);
     }
 
 
@@ -67,12 +65,12 @@ public class LevelEditorScene extends Scene {
         g2d.setColor(Color.white);
         g2d.fillRect(0, 0, GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
 
-        renderer.render(g2d);
+        getRenderer().render(g2d);
         gridComponent.render(g2d);
         editingContainer.render(g2d);
 
         // Cursor always rendered last - so it is on top of everything
-        cursor.render(g2d);
+        levelEditMouseCursor.render(g2d);
     }
 
     @Override

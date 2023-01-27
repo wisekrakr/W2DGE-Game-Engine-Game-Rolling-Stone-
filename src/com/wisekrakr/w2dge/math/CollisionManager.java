@@ -3,12 +3,8 @@ package com.wisekrakr.w2dge.math;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.entities.PlayerComponent;
-import com.wisekrakr.w2dge.game.components.physics.BoundsComponent;
-import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
-import com.wisekrakr.w2dge.game.components.physics.RigidBodyComponent;
-import com.wisekrakr.w2dge.game.components.physics.TriangleBoundsComponent;
+import com.wisekrakr.w2dge.game.components.physics.*;
 import com.wisekrakr.w2dge.visual.Screen;
-import com.wisekrakr.w2dge.visual.scene.Scene;
 
 public class CollisionManager {
 
@@ -17,8 +13,7 @@ public class CollisionManager {
     }
 
     public void update(GameObject gameObject) {
-        Scene scene = Screen.getScene();
-        GameObject player = scene.player;
+        GameObject player = Screen.getScene().player;
 
         // Collision detection
         BoundsComponent<?> boundsComponent = gameObject.getComponent(BoundsComponent.class);
@@ -27,12 +22,10 @@ public class CollisionManager {
             if (boundsComponent.checkCollision(player.getComponent(BoundsComponent.class), gameObject.getComponent(BoundsComponent.class))) {
 
                 // Handle player collision with different Game Objects
-
                 // Collision detection for the player with the ground
                 if (gameObject.name.equalsIgnoreCase(Tags.GROUND)) {
                     boundsComponent.resolveCollision(gameObject.getComponent(BoundsComponent.class), player, HitType.GROUND);
                 }
-
                 // Collision detection for the player with a game item
                 else if (gameObject.name.equalsIgnoreCase(Tags.GAME_ITEM)) {
                     if (gameObject.getComponent(BoxBoundsComponent.class) != null) {
@@ -40,12 +33,10 @@ public class CollisionManager {
                     } else if (gameObject.getComponent(TriangleBoundsComponent.class) != null) {
                         boundsComponent.resolveCollision(gameObject.getComponent(BoundsComponent.class), player, HitType.TRIANGLE);
                     }
-
                 }
             }
         }
     }
-
 
     public static void collisionResolver(GameObject parent, GameObject player, HitType type) {
         switch (type) {
@@ -64,23 +55,30 @@ public class CollisionManager {
                 float overlapX = combinedHalfWidth - Math.abs(dx);
                 float overlapY = combinedHalfHeight - Math.abs(dy);
                 if (overlapX >= overlapY) {
-                    if (dy > 0) {
+                    if (dy > 0.5f) {
                         // Collision on the bottom of the player
-                        // Collision on the top of the player
                         player.transform.position.y = parent.transform.position.y - parent.dimension.height;
                         player.getComponent(RigidBodyComponent.class).velocity.y = 0; //stop falling
                         player.getComponent(PlayerComponent.class).grounded = true;
                     } else {
-                        // Collision on the bottom of the player
+                        // Collision on the top of the player
                         player.getComponent(PlayerComponent.class).reset();
                     }
                     // Collision on the left or the right
                 } else {
-                    if (dx < 0 && dy <= 0.3) {
+                    if (dx < 0 && dy <= 0.3f) {
                         player.transform.position.y = parent.transform.position.y - parent.dimension.height;
                         player.getComponent(RigidBodyComponent.class).velocity.y = 0; //stop falling
                         player.getComponent(PlayerComponent.class).grounded = true;
                     } else {
+                        // todo elevate blocks
+//                        if (parent.getComponent(ElevateComponent.class) != null){
+//                            player.getComponent(PlayerComponent.class).elevate = true;
+//                        }else{
+////                            player.getComponent(PlayerComponent.class).reset();
+//                            player.getComponent(PlayerComponent.class).elevate = false;
+//                        }
+
                         player.getComponent(PlayerComponent.class).reset();
                     }
                 }

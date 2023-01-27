@@ -2,20 +2,18 @@ package com.wisekrakr.w2dge.game.components.ui;
 
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
-import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
-import com.wisekrakr.w2dge.game.components.regions.SnapToGridComponent;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.scene.LevelEditorScene;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
 
 public class MenuItemComponent extends LevelEditMenuItemComponent<MenuItemComponent> {
 
     private final SpriteComponent hoverSpriteComponent;
+
 
     public MenuItemComponent(Transform transform, Dimension dimension, MenuContainerComponent parentContainer, SpriteComponent spriteComponent, SpriteComponent hoverSpriteComponent) {
         super(transform, dimension, parentContainer, spriteComponent);
@@ -24,23 +22,20 @@ public class MenuItemComponent extends LevelEditMenuItemComponent<MenuItemCompon
 
     @Override
     public void update(double deltaTime) {
-        Screen screen = Screen.getInstance();
 
         // when clicked
-        if (screen.mouseListener.mousePressed && screen.mouseListener.mouseButton == MouseEvent.BUTTON1) {
+        if (Screen.getInputListener().leftMousePressed()) {
             if (!isSelected && this.gameObject.inMouseBounds()) {
 
                 GameObject object = gameObject.copy(); // copy GameObject
 
                 object.removeComponent(MenuItemComponent.class); // remove the MenuItem component
 
-                object.addComponent(new GameItemComponent(transform.copy(), dimension.copy(), (SpriteComponent) spriteComponent.copy())); // add the Block component
+                LevelEditorScene scene = (LevelEditorScene) Screen.getScene(); // get Level Editor Scene
 
-                LevelEditorScene scene = (LevelEditorScene) screen.currentScene; // get Level Editor Scene
+                object.addComponent(scene.levelEditMouseCursor.getComponent(MenuItemControlComponent.class)); // add SnapToGrid component to copied object
 
-                object.addComponent(scene.cursor.getComponent(SnapToGridComponent.class)); // add SnapToGrid component to copied object
-
-                scene.cursor = object; // new Level Editor Scene Mouse Cursor
+                scene.levelEditMouseCursor = object; // new Level Editor Scene Mouse Cursor
 
                 isSelected = true;
 

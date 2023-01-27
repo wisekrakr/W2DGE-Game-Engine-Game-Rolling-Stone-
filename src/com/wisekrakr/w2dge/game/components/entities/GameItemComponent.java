@@ -1,6 +1,5 @@
 package com.wisekrakr.w2dge.game.components.entities;
 
-import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
@@ -8,18 +7,38 @@ import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class GameItemComponent extends Component<GameItemComponent> {
 
     private final Transform transform;
     private final Dimension dimension;
     private final SpriteComponent spriteComponent;
-
+    public boolean changeColor = false;
 
     public GameItemComponent(Transform transform, Dimension dimension, SpriteComponent spriteComponent) {
         this.transform = transform;
         this.dimension = dimension;
         this.spriteComponent = spriteComponent;
+
+    }
+
+
+    @Override
+    public void render(Graphics2D g2d) {
+        SpriteComponent sprite = (SpriteComponent) spriteComponent.copy();
+        BufferedImage image = sprite.image;
+        if (changeColor) {
+            Graphics2D g2dd = image.createGraphics();
+            g2dd.setColor(Color.GREEN);
+            g2dd.fillRect(
+                    (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
+                    (int) gameObject.dimension.width, (int) gameObject.dimension.height
+            );
+            g2dd.drawImage(sprite.image, 0, 0, null);
+
+            changeColor = false;
+        }
     }
 
     @Override
@@ -65,18 +84,6 @@ public class GameItemComponent extends Component<GameItemComponent> {
         return new GameItemComponent(t, d, s);
     }
 
-    public void changeColor() {
-        Graphics2D g2d = spriteComponent.image.createGraphics();
-
-        g2d.setColor(Colors.synthWaveRed);
-        AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f); // transparent until placement
-        g2d.setComposite(composite);
-        g2d.drawImage(spriteComponent.image,
-                (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
-                (int) gameObject.dimension.width, (int) gameObject.dimension.height,
-                null
-        );
-    }
 
     @Override
     public String name() {

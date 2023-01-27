@@ -28,7 +28,8 @@ public class PauseScene extends Scene{
     @Override
     public void update(double deltaTime) {
         super.update(deltaTime);
-        Screen.getInstance().inputListener.update();
+
+        Screen.getInputListener().update();
     }
 
     @Override
@@ -40,6 +41,6 @@ public class PauseScene extends Scene{
 
         label.update(g2d);
 
-        this.renderer.render(g2d);
+        getRenderer().render(g2d);
     }
 }

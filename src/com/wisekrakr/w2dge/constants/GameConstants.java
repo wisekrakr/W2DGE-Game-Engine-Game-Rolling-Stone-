@@ -1,5 +1,7 @@
 package com.wisekrakr.w2dge.constants;
 
+import java.awt.*;
+
 public class GameConstants {
     private static final float WIDTH = 42;
     private static final float HEIGHT = 42;
@@ -33,8 +35,8 @@ public class GameConstants {
     // =======================================================
     public static final float PLAYER_START_X = 500;
     public static final float PLAYER_START_Y = 350;
-    public static final float PLAYER_WIDTH = WIDTH - 2;
-    public static final float PLAYER_HEIGHT = HEIGHT - 2;
+    public static final float PLAYER_WIDTH = WIDTH;
+    public static final float PLAYER_HEIGHT = HEIGHT;
     public static final int PLAYER_SPEED = 350;
     public static final float ROTATION_SPEED = 10f;
     public static final float JUMP_FORCE = -650f;
@@ -82,6 +84,10 @@ public class GameConstants {
     public static final int TAB_OFFSET_X = 300;
     public static final int TAB_OFFSET_Y = 422;
     public static final int TAB_HORIZONTAL_SPACING = 10;
+
+    public static final Stroke THICK_LINE = new BasicStroke(2.0f);
+    public static final Stroke LINE = new BasicStroke(1.0f);
+
 
     // =======================================================
     // Miscellaneous

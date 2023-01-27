@@ -18,15 +18,16 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Scene implements GameLoopImpl {
+public abstract class Scene implements GameLoopImpl,SceneImpl {
 
     private String name;
     public Game.SceneType type;
     public Camera camera;
-    public List<GameObject> gameObjects;
+    private List<GameObject> gameObjects;
     private CollisionManager collisionManager;
-    public Renderer renderer;
-    public DebugRenderer debugRenderer;
+    private Renderer renderer;
+    private DebugRenderer debugRenderer;
+    public GameObject levelEditMouseCursor;
     public GameObject player;
     public GameObject ground;
     private String toFollow;
@@ -43,7 +44,7 @@ public abstract class Scene implements GameLoopImpl {
         this.debugRenderer = new DebugRenderer();
         this.renderer = new Renderer(this.camera, debugRenderer);
         this.collisionManager = new CollisionManager();
-        this.toFollow = Tags.PLAYER;
+        setToFollow(Tags.PLAYER);
 
         backgroundColor(this.originalBgColor = Colors.randomColor(), this.originalGroundColor = Colors.randomColor());
     }
@@ -66,17 +67,24 @@ public abstract class Scene implements GameLoopImpl {
 
     @Override
     public void update(double deltaTime) {
+
         for (GameObject gameObject : gameObjects) {
-            gameObject.update(deltaTime);
-            cameraFollow(gameObject);
-            collisionManager.update(gameObject);
+            gameObject.update(deltaTime); // game object update
+            collisionManager.update(gameObject); // collision update
+
+            // camera follow update - camera follow this.toFollow
+            if (gameObject.name.equalsIgnoreCase(this.toFollow) && !Screen.getInstance().isInEditorPhase) {
+                camera.follow(gameObject);
+            }
         }
     }
 
+    @Override
     public void resetCamera() {
         this.camera.position.x = 0;
     }
 
+    @Override
     public void backgroundColor(Color bgColor, Color groundColor) {
         if (bgColor != null) {
             this.bgColor = bgColor;
@@ -88,19 +96,8 @@ public abstract class Scene implements GameLoopImpl {
         }
     }
 
-    private void cameraFollow(GameObject gameObject) {
-        if (gameObject.name.equalsIgnoreCase(this.toFollow) && !Screen.getInstance().isInEditorPhase) {
-            camera.follow(gameObject);
-        }
-    }
 
-    /**
-     * This will show the game object in the scene (on the screen)<br>
-     * Add game object to total alive game objects.<br>
-     * Add game object to {@link Renderer}.
-     *
-     * @param gameObject {@link GameObject}
-     */
+    @Override
     public void addGameObjectToScene(GameObject gameObject) {
         gameObjects.add(gameObject);
         renderer.add(gameObject);
@@ -110,16 +107,13 @@ public abstract class Scene implements GameLoopImpl {
         }
     }
 
-    /**
-     * Removes a game object from the game objects list of this scene and {@link Renderer}
-     *
-     * @param gameObject
-     */
+    @Override
     public void removeGameObjectToScene(GameObject gameObject) {
         gameObjects.remove(gameObject);
         renderer.remove(gameObject);
     }
 
+    @Override
     public void initBackgrounds(int nrOfBackgrounds, String filenameBackground, String filenameGround) {
 
         GameObject[] backgrounds = new GameObject[nrOfBackgrounds];
@@ -139,6 +133,18 @@ public abstract class Scene implements GameLoopImpl {
             addGameObjectToScene(background);
             addGameObjectToScene(groundBg);
         }
+    }
+
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
+    }
+
+    public Renderer getRenderer() {
+        return renderer;
+    }
+
+    public void setToFollow(String toFollow) {
+        this.toFollow = toFollow;
     }
 
     @Override

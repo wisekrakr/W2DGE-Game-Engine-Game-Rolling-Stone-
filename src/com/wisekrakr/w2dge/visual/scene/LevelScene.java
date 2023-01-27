@@ -29,13 +29,11 @@ public class LevelScene extends Scene {
         addGameObjectToScene(player);
         addGameObjectToScene(ground);
 
-        Screen.currentScreen.inputListener.setController(this.player);
+        Screen.getInputListener().setController(this.player);
 
         initBackgrounds(7, "bg04-hd.png", "ground02.png");
 
         FileUtils.importFileToLevel("Test", this);
-
-
     }
 
     @Override
@@ -46,7 +44,7 @@ public class LevelScene extends Scene {
 
         camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y);
 
-        Screen.getInstance().inputListener.update();
+        Screen.getInputListener().update();
     }
 
     @Override
@@ -56,7 +54,7 @@ public class LevelScene extends Scene {
         g2d.setColor(bgColor);
         g2d.fillRect(0, 0, GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
 
-        this.renderer.render(g2d);
+        getRenderer().render(g2d);
     }
 
 

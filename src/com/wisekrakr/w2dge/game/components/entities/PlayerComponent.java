@@ -8,7 +8,6 @@ import com.wisekrakr.w2dge.game.components.physics.RigidBodyComponent;
 import com.wisekrakr.w2dge.game.loops.Graphics;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.assets.AssetManager;
-import com.wisekrakr.w2dge.visual.scene.Scene;
 
 import java.awt.*;
 
@@ -16,6 +15,7 @@ public class PlayerComponent extends Component<PlayerComponent> implements Actio
 
     private Graphics graphics;
     public boolean grounded = true;
+    public boolean elevate = false;
 
     private Color playerColor;
     private Color bgColor;
@@ -31,13 +31,11 @@ public class PlayerComponent extends Component<PlayerComponent> implements Actio
 
     @Override
     public void update(double deltaTime) {
-        Scene scene = Screen.getScene();
 
         // rotate while jumping
         if (!grounded) {
             this.gameObject.transform.rotation += GameConstants.ROTATION_SPEED * deltaTime;
-
-            scene.backgroundColor(this.bgColor, this.groundColor);
+            Screen.getScene().backgroundColor(this.bgColor, this.groundColor);
         } else {
             // snaps rotation between 0-360 degrees
             this.gameObject.transform.rotation = gameObject.transform.rotation % 360;
@@ -47,8 +45,9 @@ public class PlayerComponent extends Component<PlayerComponent> implements Actio
             } else if (gameObject.transform.rotation > 0 && gameObject.transform.rotation < 180) {
                 gameObject.transform.rotation = 0;
             }
-            scene.backgroundColor(null,null);
+            Screen.getScene().backgroundColor(null,null);
         }
+
     }
 
     @Override
@@ -67,7 +66,8 @@ public class PlayerComponent extends Component<PlayerComponent> implements Actio
 
     @Override
     public void climb() {
-
+        this.gameObject.getComponent(RigidBodyComponent.class).velocity.x = 0;
+        this.gameObject.getComponent(RigidBodyComponent.class).velocity.y = GameConstants.JUMP_FORCE;
     }
 
     @Override

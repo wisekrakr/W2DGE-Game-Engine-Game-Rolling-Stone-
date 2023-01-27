@@ -8,6 +8,7 @@ import com.wisekrakr.w2dge.math.Vector2;
 
 public class BoxBoundsComponent extends BoundsComponent<BoxBoundsComponent> {
 
+
     public BoxBoundsComponent(Dimension dimension) {
         super(dimension);
 

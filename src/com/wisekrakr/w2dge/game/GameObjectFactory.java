@@ -5,14 +5,16 @@ import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.constants.ZIndexes;
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
 import com.wisekrakr.w2dge.game.components.entities.GroundComponent;
 import com.wisekrakr.w2dge.game.components.entities.PlayerComponent;
 import com.wisekrakr.w2dge.game.components.graphics.BackgroundComponent;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
 import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
 import com.wisekrakr.w2dge.game.components.physics.RigidBodyComponent;
-import com.wisekrakr.w2dge.game.components.regions.SnapToGridComponent;
+import com.wisekrakr.w2dge.game.components.ui.ClickableComponent;
 import com.wisekrakr.w2dge.game.components.ui.MenuItemComponent;
+import com.wisekrakr.w2dge.game.components.ui.MenuItemControlComponent;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
@@ -99,7 +101,8 @@ public class GameObjectFactory {
 
     /**
      * Creates a new MenuItem - MENU_ITEM -> is non-serializable<br>
-     * Contains the following Components: {@link SpriteComponent}, {@link MenuItemComponent},
+     * Contains the following Components: {@link SpriteComponent}, {@link MenuItemComponent}, {@link ClickableComponent},
+     * {@link GameItemComponent}
      * <br>
      * This GameObject has the TAG -> GAME_ITEM, because the moment the menu item is placed on the scene it is no longer
      * a menu item but an object in the game --> named GAME_ITEM
@@ -109,7 +112,7 @@ public class GameObjectFactory {
      * @param components
      * @return
      */
-    public static GameObject menuItem(Vector2 position, Renderer renderer, Component<?>...components) {
+    public static GameObject menuItem(Vector2 position, Renderer renderer, Component<?>... components) {
         GameObject menuItem = new GameObject(
                 Tags.GAME_ITEM,
                 new Transform(position),
@@ -120,9 +123,22 @@ public class GameObjectFactory {
         renderer.partOfUI(menuItem);
         menuItem.setNonSerializable();
 
+        SpriteComponent sprite = null;
+
         for (Component<?> component : components) {
             menuItem.addComponent(component);
+
+            if (component instanceof SpriteComponent){
+                sprite = (SpriteComponent) component.copy();
+            }
         }
+
+        menuItem.addComponent(new ClickableComponent());
+        menuItem.addComponent(new GameItemComponent(
+                menuItem.transform.copy(),
+                menuItem.dimension.copy(),
+                sprite)
+        ); // add the GameItem component
 
         return menuItem;
     }
@@ -152,7 +168,7 @@ public class GameObjectFactory {
 
     /**
      * Creates a new GameObject - CURSOR<br>
-     * Consists of the following components: {@link SnapToGridComponent}, {@link SpriteComponent}
+     * Consists of the following components: {@link MenuItemControlComponent}
      *
      * @return new cursor GameObject
      */
@@ -160,7 +176,22 @@ public class GameObjectFactory {
         return new GameObject(Tags.CURSOR, new Transform(new Vector2()),
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
                 ZIndexes.FRONT,
-                new SnapToGridComponent()
+                new MenuItemControlComponent()
+        );
+    }
+
+    /**
+     * Creates a new GameObject - CURSOR<br>
+     * Consists of the following components: {@link MenuItemControlComponent}
+     * This cursor will be placed on top of a Game Object that has just been cleared (for Level Editing purposes)
+     * @param parent Game object that was just cleared
+     * @return new cursor GameObject
+     */
+    public static GameObject mouserCursor(GameObject parent) {
+        return new GameObject(Tags.CURSOR, parent.transform.copy(),
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                parent.zIndex,
+                parent.getComponent(MenuItemControlComponent.class)
         );
     }
 }

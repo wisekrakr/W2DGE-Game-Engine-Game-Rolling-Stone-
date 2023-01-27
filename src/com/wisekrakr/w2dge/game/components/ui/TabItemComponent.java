@@ -2,6 +2,7 @@ package com.wisekrakr.w2dge.game.components.ui;
 
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
+import com.wisekrakr.w2dge.input.GameInputListener;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.visual.Screen;
@@ -17,10 +18,10 @@ public class TabItemComponent extends LevelEditMenuItemComponent<TabItemComponen
 
     @Override
     public void update(double deltaTime) {
-        Screen screen = Screen.getInstance();
+        GameInputListener inputListener = Screen.getInputListener();
 
         // when clicked
-        if (screen.mouseListener.mousePressed && screen.mouseListener.mouseButton == MouseEvent.BUTTON1) {
+        if (inputListener.mouseListener.mousePressed && inputListener.mouseListener.mouseButton == MouseEvent.BUTTON1) {
             if (!isSelected && this.gameObject.inMouseBounds()) {
                 isSelected = true;
                 this.parentContainer.setFocusedTab(this.gameObject);

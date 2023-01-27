@@ -12,13 +12,13 @@ import java.awt.*;
 import java.awt.geom.Line2D;
 
 
-public class Grid extends Component<Grid> {
+public class GridComponent extends Component<GridComponent> {
 
     Camera camera;
     public Dimension dimension;
 
-    public Grid() {
-        this.camera = Screen.getInstance().getCurrentScene().camera;
+    public GridComponent() {
+        this.camera = Screen.getScene().camera;
         this.dimension = new Dimension(GameConstants.GRID_WIDTH, GameConstants.GRID_HEIGHT);
     }
 
@@ -32,7 +32,7 @@ public class Grid extends Component<Grid> {
         g2d.setColor(new Color(0.2f,0.2f,0.2f, 0.45f));
 
         // Look for the GROUND game object
-        GameObject ground = Screen.getInstance().getCurrentScene().ground;
+        GameObject ground = Screen.getScene().ground;
         if (ground == null){
             ground = GameObjectFactory.ground();
         }
@@ -60,8 +60,8 @@ public class Grid extends Component<Grid> {
     }
 
     @Override
-    public Component<Grid> copy() {
-        return new Grid();
+    public Component<GridComponent> copy() {
+        return new GridComponent();
     }
 
     @Override

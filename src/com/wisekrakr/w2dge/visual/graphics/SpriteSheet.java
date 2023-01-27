@@ -1,6 +1,6 @@
 package com.wisekrakr.w2dge.visual.graphics;
 
-import com.wisekrakr.w2dge.game.components.graphics.Sprite;
+import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.visual.assets.AssetManager;
 
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpriteSheet {
-    public List<Sprite> sprites;
+    public List<SpriteComponent> sprites;
     public final Dimension dimension;
     public final int spacing;
     public String path;
@@ -26,7 +26,7 @@ public class SpriteSheet {
         this.spacing = spacing;
         this.sprites = new ArrayList<>();
 
-        Sprite parent = AssetManager.getSprite(fileName);
+        SpriteComponent parent = AssetManager.getSprite(fileName);
         int row = 0; // starting row in the sprite sheet
         int count = 0; // how many sprites are loaded so far
 
@@ -37,7 +37,7 @@ public class SpriteSheet {
                 // top left corner of the image of the y-axis
                 int imgY = (int) ((row * dimension.height) + (row * spacing)); // sprite height + spacing between sprites
 
-                sprites.add(new Sprite(
+                sprites.add(new SpriteComponent(
                         parent.image.getSubimage(imgX, imgY, (int) dimension.width, (int) dimension.height),
                         dimension,
                         row, column, count, fileName));

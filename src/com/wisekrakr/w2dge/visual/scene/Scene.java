@@ -3,7 +3,6 @@ package com.wisekrakr.w2dge.visual.scene;
 import com.wisekrakr.main.Game;
 import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.constants.Colors;
-import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
@@ -12,6 +11,7 @@ import com.wisekrakr.w2dge.math.CollisionManager;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Camera;
 import com.wisekrakr.w2dge.visual.Screen;
+import com.wisekrakr.w2dge.visual.graphics.DebugRenderer;
 import com.wisekrakr.w2dge.visual.graphics.Renderer;
 
 import java.awt.*;
@@ -26,6 +26,7 @@ public abstract class Scene implements GameLoopImpl {
     public List<GameObject> gameObjects;
     private CollisionManager collisionManager;
     public Renderer renderer;
+    public DebugRenderer debugRenderer;
     public GameObject player;
     public GameObject ground;
     private String toFollow;
@@ -39,7 +40,8 @@ public abstract class Scene implements GameLoopImpl {
         this.name = name;
         this.camera = new Camera(new Vector2());
         this.gameObjects = new ArrayList<>();
-        this.renderer = new Renderer(this.camera);
+        this.debugRenderer = new DebugRenderer();
+        this.renderer = new Renderer(this.camera, debugRenderer);
         this.collisionManager = new CollisionManager();
         this.toFollow = Tags.PLAYER;
 
@@ -48,6 +50,8 @@ public abstract class Scene implements GameLoopImpl {
 
     @Override
     public void init() {
+        renderer.isDebugging = false;
+
         for (GameObject gameObject : gameObjects) {
             gameObject.init();
         }
@@ -69,12 +73,9 @@ public abstract class Scene implements GameLoopImpl {
         }
     }
 
-    public void resetToStart() {
-        this.player.transform.position.x = GameConstants.PLAYER_START_X;
-        this.player.transform.position.y = GameConstants.PLAYER_START_Y;
+    public void resetCamera() {
         this.camera.position.x = 0;
     }
-
 
     public void backgroundColor(Color bgColor, Color groundColor) {
         if (bgColor != null) {

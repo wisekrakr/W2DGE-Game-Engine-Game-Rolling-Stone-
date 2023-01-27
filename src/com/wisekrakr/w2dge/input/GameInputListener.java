@@ -3,8 +3,8 @@ package com.wisekrakr.w2dge.input;
 import com.wisekrakr.main.Game;
 import com.wisekrakr.util.FileUtils;
 import com.wisekrakr.w2dge.game.GameObject;
-import com.wisekrakr.w2dge.game.components.entities.Block;
-import com.wisekrakr.w2dge.game.components.entities.Player;
+import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
+import com.wisekrakr.w2dge.game.components.entities.PlayerComponent;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
@@ -71,7 +71,7 @@ public class GameInputListener {
         inputsOnAllScenes();
 
         Screen screen = Screen.getInstance();
-        Player p = player.getComponent(Player.class);
+        PlayerComponent p = player.getComponent(PlayerComponent.class);
 
 
         switch (screen.keyListener.keyCode) {
@@ -97,13 +97,13 @@ public class GameInputListener {
                 }
             }
             // Camera controls
-            case KeyEvent.VK_R -> screen.getCurrentScene().resetToStart();
+            case KeyEvent.VK_R -> player.getComponent(PlayerComponent.class).reset();
             // Level controls
             case KeyEvent.VK_G -> {
-                for (GameObject gameObject : screen.getCurrentScene().gameObjects) {
-                    if (gameObject.getComponent(Block.class) != null) {
+                for (GameObject gameObject : screen.currentScene.gameObjects) {
+                    if (gameObject.getComponent(GameItemComponent.class) != null) {
                         // todo block change color
-                        gameObject.getComponent(Block.class).changeColor();
+                        gameObject.getComponent(GameItemComponent.class).changeColor();
                         System.out.println("changeye");
                     }
                 }

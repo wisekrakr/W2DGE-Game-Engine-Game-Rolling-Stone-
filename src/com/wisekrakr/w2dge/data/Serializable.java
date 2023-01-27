@@ -2,10 +2,11 @@ package com.wisekrakr.w2dge.data;
 
 public abstract class Serializable {
     public static class Names {
-        public static final String GAMEOBJECT  = "GameObject";
+        public static final String GAME_OBJECT = "GameObject";
         public static final String SPRITE  = "Sprite";
-        public static final String BOXBOUNDS  = "BoxBounds";
-        public static final String BLOCK = "Block";
+        public static final String BOX_BOUNDS = "BoxBounds";
+        public static final String TRIANGLE_BOUNDS = "TriangleBounds";
+        public static final String GAME_ITEM = "Game Item";
         public static final String TRANSFORM  = "Transform";
         public static final String DIMENSION  = "Dimension";
         public static final String VECTOR2  = "Vector2";

@@ -2,6 +2,7 @@ package com.wisekrakr.w2dge.visual.assets;
 
 import com.wisekrakr.util.AssetFinder;
 import com.wisekrakr.w2dge.constants.GameConstants;
+import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.visual.graphics.SpriteSheet;
 
@@ -10,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AssetManager {
-    public static Map<String, com.wisekrakr.w2dge.game.components.graphics.Sprite> sprites = new HashMap<>();
+    public static Map<String, SpriteComponent> sprites = new HashMap<>();
     public static Map<String, SpriteSheet> spritesheets = new HashMap<>();
 
     public static SpriteSheet layerOne;
@@ -37,16 +38,16 @@ public class AssetManager {
      * Get a sprite out of the sprite pool. If Sprite is not yet in the pool, create it and throw it in the pool.
      *
      * @param fileName name of the file to load
-     * @return {@link com.wisekrakr.w2dge.game.components.graphics.Sprite}
+     * @return {@link SpriteComponent}
      */
-    public static com.wisekrakr.w2dge.game.components.graphics.Sprite getSprite(String fileName) {
+    public static SpriteComponent getSprite(String fileName) {
         File file = new File(fileName);
 
         if (!AssetManager.hasSprite(file.getAbsolutePath())) {
-            com.wisekrakr.w2dge.game.components.graphics.Sprite sprite = new com.wisekrakr.w2dge.game.components.graphics.Sprite(file.getAbsolutePath());
+            SpriteComponent spriteComponent = new SpriteComponent(file.getAbsolutePath());
             // TODO i don't like this sitting here - Dimension should not be initialized here
-            sprite.dimension = new Dimension(sprite.image.getWidth(), sprite.image.getHeight());
-            AssetManager.addSprite(fileName, sprite);
+            spriteComponent.dimension = new Dimension(spriteComponent.image.getWidth(), spriteComponent.image.getHeight());
+            AssetManager.addSprite(fileName, spriteComponent);
         }
         return AssetManager.sprites.get(file.getAbsolutePath());
     }
@@ -73,14 +74,14 @@ public class AssetManager {
      * If the sprite is not yet added to the AssetManager sprite pool, add it.
      *
      * @param fileName The absolute path to the image file.
-     * @param sprite   Sprite to get the image from
+     * @param spriteComponent   Sprite to get the image from
      */
-    public static void addSprite(String fileName, com.wisekrakr.w2dge.game.components.graphics.Sprite sprite) {
+    public static void addSprite(String fileName, SpriteComponent spriteComponent) {
         File file = new File(fileName);
 
         // If the sprite is not yet added to the AssetManager sprite pool
         if (!AssetManager.hasSprite(file.getAbsolutePath())) {
-            AssetManager.sprites.put(file.getAbsolutePath(), sprite);
+            AssetManager.sprites.put(file.getAbsolutePath(), spriteComponent);
         } else {
             System.err.println("Asset Manager already has asset: " + file.getAbsolutePath());
         }
@@ -115,18 +116,21 @@ public class AssetManager {
         layerThree = AssetFinder.spriteSheet(AssetFinder.ImageType.PLAYER, "layerThree.png",
                 new Dimension(GameConstants.PLAYER_WIDTH, GameConstants.PLAYER_HEIGHT), 13, 13 * 5);
 
+        groundSheet = new SpriteSheet("assets/spritesheets/tiles/spritesheet_tiles_11x22.png",
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT), 4,
+                11, 22);
 //        groundSheet = AssetFinder.spriteSheet(
 //                AssetFinder.ImageType.TILES,
 //                "spritesheet_tiles_blue_10x10.png",
 //                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
 //                10, 10
 //        );
-        groundSheet = AssetFinder.spriteSheet(
-                AssetFinder.ImageType.TILES,
-                "ground.png",
-                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
-                6, 12
-        );
+//        groundSheet = AssetFinder.spriteSheet(
+//                AssetFinder.ImageType.TILES,
+//                "ground.png",
+//                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+//                6, 12
+//        );
 
         buttonSheet = AssetFinder.spriteSheet(
                 AssetFinder.ImageType.BUTTONS,

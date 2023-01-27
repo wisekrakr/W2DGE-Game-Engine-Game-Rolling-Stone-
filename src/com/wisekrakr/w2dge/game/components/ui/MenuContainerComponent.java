@@ -5,8 +5,9 @@ import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.game.components.Component;
-import com.wisekrakr.w2dge.game.components.graphics.Sprite;
-import com.wisekrakr.w2dge.game.components.physics.BoxBounds;
+import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
+import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
+import com.wisekrakr.w2dge.game.components.physics.TriangleBoundsComponent;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
@@ -20,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 
-public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
+public class MenuContainerComponent extends Component<MenuContainerComponent> {
 
     private final LevelEditorScene levelEditorScene;
 
-    private final Sprite containerBg;
+    private final SpriteComponent containerBg;
     private final List<GameObject> menuItems;
     private final List<GameObject> tabs;
     private final Map<GameObject, List<GameObject>> tabsMap;
@@ -32,7 +33,7 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
     private GameObject focusedTab = null;
     private GameObject focusedButton = null;
 
-    public LevelEditMenuContainer(LevelEditorScene levelEditorScene) {
+    public MenuContainerComponent(LevelEditorScene levelEditorScene) {
         this.levelEditorScene = levelEditorScene;
         this.menuItems = new ArrayList<>();
         this.tabs = new ArrayList<>();
@@ -44,7 +45,7 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
 
     private void start() {
         for (int i = 0; i < AssetManager.tabsSheet.sprites.size(); i++) {
-            Sprite currentTab = AssetManager.tabsSheet.sprites.get(i);
+            SpriteComponent currentTab = AssetManager.tabsSheet.sprites.get(i);
 
             int x = (int) (GameConstants.TAB_OFFSET_X + (currentTab.column * GameConstants.TAB_WIDTH) +
                     (currentTab.column * GameConstants.TAB_HORIZONTAL_SPACING));
@@ -53,7 +54,7 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
             GameObject tab = GameObjectFactory.menuItemTab(
                     new Vector2(x, y),
                     levelEditorScene.renderer,
-                    new TabItem(
+                    new TabItemComponent(
                             new Transform(new Vector2(x, y)),
                             new Dimension(GameConstants.TAB_WIDTH, GameConstants.TAB_HEIGHT), this,
                             currentTab
@@ -67,7 +68,7 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
         }
 
         this.focusedTab = this.tabs.get(0);
-        this.focusedTab.getComponent(TabItem.class).isSelected = true;
+        this.focusedTab.getComponent(TabItemComponent.class).isSelected = true;
 
         addTabObjects();
     }
@@ -88,14 +89,14 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
         for (GameObject g : this.tabsMap.get(focusedTab)) {
             g.update(deltaTime);
 
-            MenuItem menuItem = g.getComponent(MenuItem.class);
+            MenuItemComponent menuItem = g.getComponent(MenuItemComponent.class);
             if (g != focusedButton && menuItem.isSelected) {
                 menuItem.isSelected = false;
             }
         }
 
         for (GameObject g : this.tabs) {
-            TabItem tabItem = g.getComponent(TabItem.class);
+            TabItemComponent tabItem = g.getComponent(TabItemComponent.class);
             if (g != focusedTab && tabItem.isSelected) {
                 tabItem.isSelected = false;
             }
@@ -115,18 +116,18 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
     private void addTabObjects() {
         // Creates a menu item component that contains sprite
         for (int i = 0; i < AssetManager.groundSheet.sprites.size(); i++) {
-            Sprite currentSprite = AssetManager.groundSheet.sprites.get(i);
+            SpriteComponent currentSpriteComponent = AssetManager.groundSheet.sprites.get(i);
 
-            int x = (int) (GameConstants.BUTTON_OFFSET_X + (currentSprite.column * GameConstants.BUTTON_WIDTH) +
-                    (currentSprite.column * GameConstants.BUTTON_HORIZONTAL_SPACING));
-            int y = (int) (GameConstants.BUTTON_OFFSET_Y + (currentSprite.row * GameConstants.BUTTON_HEIGHT) +
-                    (currentSprite.row * GameConstants.BUTTON_VERTICAL_SPACING));
+            int x = (int) (GameConstants.BUTTON_OFFSET_X + (currentSpriteComponent.column * GameConstants.BUTTON_WIDTH) +
+                    (currentSpriteComponent.column * GameConstants.BUTTON_HORIZONTAL_SPACING));
+            int y = (int) (GameConstants.BUTTON_OFFSET_Y + (currentSpriteComponent.row * GameConstants.BUTTON_HEIGHT) +
+                    (currentSpriteComponent.row * GameConstants.BUTTON_VERTICAL_SPACING));
 
             // Adding first tab container objects
             Vector2 position = new Vector2(x, y);
 
             // Menu item button
-            MenuItem menuItem = new MenuItem(
+            MenuItemComponent menuItem = new MenuItemComponent(
                     new Transform(position), new Dimension(GameConstants.BUTTON_WIDTH, GameConstants.BUTTON_HEIGHT),
                     this, AssetManager.buttonSheet.sprites.get(0), AssetManager.buttonSheet.sprites.get(1)
             );
@@ -135,9 +136,9 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
             GameObject object = GameObjectFactory.menuItem(
                     position,
                     this.levelEditorScene.renderer,
-                    currentSprite.copy(),
+                    currentSpriteComponent.copy(),
                     menuItem,
-                    new BoxBounds(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT)) // dimensions of Game Item
+                    new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT)) // dimensions of Game Item
             );
             this.tabsMap.get(this.tabs.get(0)).add(object);
 
@@ -152,7 +153,7 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
                 );
 
                 if (i == 0) {
-                    object.addComponent(new BoxBounds(new Dimension(GameConstants.TILE_WIDTH, 16)));
+                    object.addComponent(new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, 16)));
                 }
 
                 this.tabsMap.get(this.tabs.get(1)).add(object);
@@ -160,20 +161,16 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
 
             // Adding fourth tab container objects
             if (i < AssetManager.spikesSheet.sprites.size()) {
-
+                SpriteComponent spriteComponent = AssetManager.spikesSheet.sprites.get(i);
                 object = GameObjectFactory.menuItem(
                         position,
                         this.levelEditorScene.renderer,
-                        AssetManager.spikesSheet.sprites.get(i),
-                        menuItem.copy()
+                        spriteComponent,
+                        menuItem.copy(),
+                        new TriangleBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT))
                 );
 
-                if (i == 0) {
-                    object.addComponent(new BoxBounds(new Dimension(GameConstants.TILE_WIDTH, 16)));
-                }
-
                 this.tabsMap.get(this.tabs.get(3)).add(object);
-
             }
 
             // Adding fifth tab container objects
@@ -183,7 +180,7 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
                         this.levelEditorScene.renderer,
                         AssetManager.bigSpritesSheet.sprites.get(i),
                         menuItem.copy(),
-                        new BoxBounds(new Dimension(GameConstants.TILE_WIDTH * 2, 56))
+                        new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH * 2, 56))
                 );
 
                 this.tabsMap.get(tabs.get(4)).add(object);
@@ -196,7 +193,7 @@ public class LevelEditMenuContainer extends Component<LevelEditMenuContainer> {
                         this.levelEditorScene.renderer,
                         AssetManager.portalSheet.sprites.get(i),
                         menuItem.copy(),
-                        new BoxBounds(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT * 2))
+                        new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT * 2))
                 );
 
                 //todo portal should not collide with player (BoxBounds)

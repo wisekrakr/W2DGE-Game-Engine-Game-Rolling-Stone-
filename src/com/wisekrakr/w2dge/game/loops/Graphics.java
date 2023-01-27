@@ -1,8 +1,8 @@
-package com.wisekrakr.w2dge.game.player;
+package com.wisekrakr.w2dge.game.loops;
 
 import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.game.GameObject;
-import com.wisekrakr.w2dge.game.components.graphics.Sprite;
+import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -10,21 +10,21 @@ import java.awt.geom.AffineTransform;
 public class Graphics implements GameLoopImpl {
 
     private final GameObject parent;
-    public Sprite layerOne;
-    public Sprite layerTwo;
-    public Sprite layerThree;
+    public SpriteComponent layerOne;
+    public SpriteComponent layerTwo;
+    public SpriteComponent layerThree;
     private final Color colorOne;
     private final Color colorTwo;
-    private final Sprite[] layers;
+    private final SpriteComponent[] layers;
 
-    public Graphics(GameObject parent, Sprite layerOne, Sprite layerTwo, Sprite layerThree, Color colorOne, Color colorTwo) {
+    public Graphics(GameObject parent, SpriteComponent layerOne, SpriteComponent layerTwo, SpriteComponent layerThree, Color colorOne, Color colorTwo) {
         this.parent = parent;
         this.layerOne = layerOne;
         this.layerTwo = layerTwo;
         this.layerThree = layerThree;
         this.colorOne = colorOne;
         this.colorTwo = colorTwo;
-        this.layers = new Sprite[]{this.layerOne, this.layerTwo, this.layerThree};
+        this.layers = new SpriteComponent[]{this.layerOne, this.layerTwo, this.layerThree};
 
         init();
     }
@@ -80,7 +80,7 @@ public class Graphics implements GameLoopImpl {
 
     @Override
     public void render(Graphics2D g2d) {
-        for (Sprite layer : layers) {
+        for (SpriteComponent layer : layers) {
             g2d.drawImage(layer.image, transform(), null);
         }
     }

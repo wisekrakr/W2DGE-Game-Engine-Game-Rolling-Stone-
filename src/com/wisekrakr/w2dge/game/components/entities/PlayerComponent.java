@@ -4,15 +4,15 @@ import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.entities.properties.Actions;
-import com.wisekrakr.w2dge.game.components.physics.RigidBody;
-import com.wisekrakr.w2dge.game.player.Graphics;
+import com.wisekrakr.w2dge.game.components.physics.RigidBodyComponent;
+import com.wisekrakr.w2dge.game.loops.Graphics;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.assets.AssetManager;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
 import java.awt.*;
 
-public class Player extends Component<Player> implements Actions {
+public class PlayerComponent extends Component<PlayerComponent> implements Actions {
 
     private Graphics graphics;
     public boolean grounded = true;
@@ -31,7 +31,7 @@ public class Player extends Component<Player> implements Actions {
 
     @Override
     public void update(double deltaTime) {
-        Scene scene = Screen.getInstance().getCurrentScene();
+        Scene scene = Screen.getScene();
 
         // rotate while jumping
         if (!grounded) {
@@ -72,14 +72,19 @@ public class Player extends Component<Player> implements Actions {
 
     @Override
     public void jump() {
-        if (gameObject.getComponent(RigidBody.class).velocity.y == 0){
-            this.gameObject.getComponent(RigidBody.class).velocity.y = GameConstants.JUMP_FORCE;
+        if (gameObject.getComponent(RigidBodyComponent.class).velocity.y == 0){
+            this.gameObject.getComponent(RigidBodyComponent.class).velocity.y = GameConstants.JUMP_FORCE;
         }
     }
 
     @Override
     public void reset() {
-        Screen.getInstance().getCurrentScene().resetToStart();
+        this.gameObject.transform.position.x = GameConstants.PLAYER_START_X;
+        this.gameObject.transform.position.y = GameConstants.PLAYER_START_Y;
+        this.gameObject.getComponent(RigidBodyComponent.class).velocity.y = 0;
+        this.gameObject.transform.rotation = 0;
+
+        Screen.getScene().resetCamera();
     }
 
     @Override

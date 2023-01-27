@@ -4,9 +4,9 @@ import com.wisekrakr.main.Game;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
-import com.wisekrakr.w2dge.game.components.controls.CameraControls;
-import com.wisekrakr.w2dge.game.components.regions.Grid;
-import com.wisekrakr.w2dge.game.components.ui.LevelEditMenuContainer;
+import com.wisekrakr.w2dge.game.components.controls.CameraControlsComponent;
+import com.wisekrakr.w2dge.game.components.regions.GridComponent;
+import com.wisekrakr.w2dge.game.components.ui.MenuContainerComponent;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
 
@@ -16,9 +16,9 @@ public class LevelEditorScene extends Scene {
 
     public GameObject cursor;
 
-    private Grid grid;
-    private CameraControls cameraControls;
-    private LevelEditMenuContainer editingContainer;
+    private GridComponent gridComponent;
+    private CameraControlsComponent cameraControlsComponent;
+    private MenuContainerComponent editingContainer;
 
     public LevelEditorScene(String name) {
         super.createScene(name);
@@ -30,9 +30,9 @@ public class LevelEditorScene extends Scene {
     public void init() {
         super.init();
 
-        grid = new Grid();
-        cameraControls = new CameraControls();
-        editingContainer = new LevelEditMenuContainer(this);
+        gridComponent = new GridComponent();
+        cameraControlsComponent = new CameraControlsComponent();
+        editingContainer = new MenuContainerComponent(this);
 
         cursor = GameObjectFactory.mouserCursor();
         player = GameObjectFactory.player(new Vector2(100, 300), Screen.getInstance().isInEditorPhase);
@@ -40,6 +40,7 @@ public class LevelEditorScene extends Scene {
 
         addGameObjectToScene(player);
         addGameObjectToScene(ground);
+
     }
 
     @Override
@@ -48,12 +49,14 @@ public class LevelEditorScene extends Scene {
 
         camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y + 100);
 
-        grid.update(deltaTime);
-        cameraControls.update(deltaTime);
+        gridComponent.update(deltaTime);
+        cameraControlsComponent.update(deltaTime);
         editingContainer.update(deltaTime);
         cursor.update(deltaTime);
 
         Screen.getInstance().inputListener.update(gameObjects, this);
+
+
     }
 
 
@@ -65,7 +68,7 @@ public class LevelEditorScene extends Scene {
         g2d.fillRect(0, 0, GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
 
         renderer.render(g2d);
-        grid.render(g2d);
+        gridComponent.render(g2d);
         editingContainer.render(g2d);
 
         // Cursor always rendered last - so it is on top of everything

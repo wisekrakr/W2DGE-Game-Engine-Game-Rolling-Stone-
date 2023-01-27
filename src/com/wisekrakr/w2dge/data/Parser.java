@@ -2,9 +2,10 @@ package com.wisekrakr.w2dge.data;
 
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
-import com.wisekrakr.w2dge.game.components.entities.Block;
-import com.wisekrakr.w2dge.game.components.graphics.Sprite;
-import com.wisekrakr.w2dge.game.components.physics.BoxBounds;
+import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
+import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
+import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
+import com.wisekrakr.w2dge.game.components.physics.TriangleBoundsComponent;
 
 public class Parser {
     private static int offset = 0;
@@ -182,13 +183,16 @@ public class Parser {
 
         switch (componentTitle) {
             case Serializable.Names.SPRITE -> {
-                return Sprite.deserialize();
+                return SpriteComponent.deserialize();
             }
-            case Serializable.Names.BOXBOUNDS -> {
-                return BoxBounds.deserialize();
+            case Serializable.Names.BOX_BOUNDS -> {
+                return BoxBoundsComponent.deserialize();
             }
-            case Serializable.Names.BLOCK -> {
-                return Block.deserialize();
+            case Serializable.Names.TRIANGLE_BOUNDS -> {
+                return TriangleBoundsComponent.deserialize();
+            }
+            case Serializable.Names.GAME_ITEM -> {
+                return GameItemComponent.deserialize();
             }
 
             default -> {

@@ -10,7 +10,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class Sprite extends Component<Sprite> {
+public class SpriteComponent extends Component<SpriteComponent> {
 
     /**
      * Image that will be loaded from a SpriteSheet
@@ -37,7 +37,7 @@ public class Sprite extends Component<Sprite> {
      * Sprite of a single file.
      * @param fileName image file name in resources folder
      */
-    public Sprite(String fileName) {
+    public SpriteComponent(String fileName) {
         this.fileName = fileName;
 
         try {
@@ -57,14 +57,14 @@ public class Sprite extends Component<Sprite> {
      * @param image sprite image
      * @param fileName name of the file
      */
-    public Sprite(BufferedImage image, String fileName){
+    public SpriteComponent(BufferedImage image, String fileName){
         this.image = image;
         this.fileName = fileName;
         this.dimension = new Dimension(image.getWidth(), image.getHeight());
     }
 
 
-    public Sprite(BufferedImage image, Dimension dimension, int row, int column, int index, String fileName) {
+    public SpriteComponent(BufferedImage image, Dimension dimension, int row, int column, int index, String fileName) {
         this.image = image;
         this.dimension = dimension;
         this.row = row;
@@ -84,11 +84,11 @@ public class Sprite extends Component<Sprite> {
     }
 
     @Override
-    public Component<Sprite> copy() {
+    public Component<SpriteComponent> copy() {
         if (!isSubSprite){
-            return new Sprite(this.image, this.fileName);
+            return new SpriteComponent(this.image, this.fileName);
         }else {
-            return new Sprite(this.image, this.dimension, this.row, this.column, this.index, this.fileName);
+            return new SpriteComponent(this.image, this.dimension, this.row, this.column, this.index, this.fileName);
         }
     }
 
@@ -119,7 +119,7 @@ public class Sprite extends Component<Sprite> {
         return builder.toString();
     }
 
-    public static Sprite deserialize() {
+    public static SpriteComponent deserialize() {
         boolean isSubSprite = Parser.consumeBooleanProperty("isSubSprite");
         Parser.consume(',');
         String filePath = Parser.consumeStringProperty("FilePath");
@@ -142,7 +142,7 @@ public class Sprite extends Component<Sprite> {
 
             Parser.consumeEndObjectProperty();
 
-            return (Sprite) AssetManager.getSpriteSheet(filePath).sprites.get(index).copy();
+            return (SpriteComponent) AssetManager.getSpriteSheet(filePath).sprites.get(index).copy();
         }
 
         Parser.consume(',');
@@ -156,7 +156,7 @@ public class Sprite extends Component<Sprite> {
         }
         Parser.consumeEndObjectProperty();
 
-        return (Sprite) AssetManager.getSprite(filePath).copy();
+        return (SpriteComponent) AssetManager.getSprite(filePath).copy();
     }
 
     @Override

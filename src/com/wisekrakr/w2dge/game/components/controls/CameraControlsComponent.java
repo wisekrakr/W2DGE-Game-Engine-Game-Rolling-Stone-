@@ -7,11 +7,11 @@ import com.wisekrakr.w2dge.visual.Screen;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public class CameraControls extends Component<CameraControls> {
+public class CameraControlsComponent extends Component<CameraControlsComponent> {
 
     private Vector2 prevPosition;
 
-    public CameraControls() {
+    public CameraControlsComponent() {
         this.prevPosition = new Vector2(0,0);
     }
 
@@ -26,8 +26,8 @@ public class CameraControls extends Component<CameraControls> {
             float dx = screen.mouseListener.position.x + screen.mouseListener.dx - prevPosition.x;
             float dy = screen.mouseListener.position.y + screen.mouseListener.dy - prevPosition.y;
 
-            screen.getCurrentScene().camera.position.x -= dx;
-            screen.getCurrentScene().camera.position.y -= dy;
+            screen.currentScene.camera.position.x -= dx;
+            screen.currentScene.camera.position.y -= dy;
         }
 
         prevPosition.x = screen.mouseListener.position.x + screen.mouseListener.dx;
@@ -35,8 +35,8 @@ public class CameraControls extends Component<CameraControls> {
     }
 
     @Override
-    public Component<CameraControls> copy() {
-        CameraControls cameraControls = new CameraControls();
+    public Component<CameraControlsComponent> copy() {
+        CameraControlsComponent cameraControls = new CameraControlsComponent();
         cameraControls.prevPosition = prevPosition.copy();
         return cameraControls;
     }

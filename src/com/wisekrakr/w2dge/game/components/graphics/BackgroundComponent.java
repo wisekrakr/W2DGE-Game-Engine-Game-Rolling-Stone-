@@ -3,7 +3,7 @@ package com.wisekrakr.w2dge.game.components.graphics;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
-import com.wisekrakr.w2dge.game.components.entities.Ground;
+import com.wisekrakr.w2dge.game.components.entities.GroundComponent;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.visual.Camera;
 import com.wisekrakr.w2dge.visual.Screen;
@@ -11,23 +11,23 @@ import com.wisekrakr.w2dge.visual.assets.AssetManager;
 
 import java.awt.*;
 
-public class Background extends Component<Background> {
+public class BackgroundComponent extends Component<BackgroundComponent> {
 
     public Dimension dimension;
-    public Sprite sprite;
+    public SpriteComponent spriteComponent;
     public GameObject[] backgrounds;
     public int timeStep = 0;
     private float speed = GameConstants.BG_SPEED;
 
-    private final Ground ground;
+    private final GroundComponent groundComponent;
     private final boolean followGround;
 
-    public Background(String filename, GameObject[] backgrounds, Ground ground, boolean followGround) {
+    public BackgroundComponent(String filename, GameObject[] backgrounds, GroundComponent groundComponent, boolean followGround) {
         this.backgrounds = backgrounds;
-        this.ground = ground;
+        this.groundComponent = groundComponent;
         this.followGround = followGround;
-        this.sprite = AssetManager.getSprite(filename);
-        this.dimension = new Dimension(this.sprite.image.getWidth(), this.sprite.image.getHeight());
+        this.spriteComponent = AssetManager.getSprite(filename);
+        this.dimension = new Dimension(this.spriteComponent.image.getWidth(), this.spriteComponent.image.getHeight());
 
         if (followGround) {
             this.speed = GameConstants.PLAYER_SPEED - GameConstants.BG_LESSER_SPEED;
@@ -50,7 +50,7 @@ public class Background extends Component<Background> {
             for (GameObject background : backgrounds) {
                 if (background.transform.position.x > maxX){
                     maxX = background.transform.position.x; // set to this background x
-                    otherTimeStep = background.getComponent(Background.class).timeStep; // set to this background time step
+                    otherTimeStep = background.getComponent(BackgroundComponent.class).timeStep; // set to this background time step
                 }
             }
 
@@ -62,7 +62,7 @@ public class Background extends Component<Background> {
         }
 
         if (this.followGround) {
-            this.gameObject.transform.position.y = ground.gameObject.transform.position.y;
+            this.gameObject.transform.position.y = groundComponent.gameObject.transform.position.y;
         }
     }
 
@@ -71,22 +71,22 @@ public class Background extends Component<Background> {
         Camera camera = Screen.getInstance().getCamera();
         if (this.followGround) {
             g2d.drawImage(
-                    this.sprite.image,
+                    this.spriteComponent.image,
                     (int) this.gameObject.transform.position.x,
                     (int) (this.gameObject.transform.position.y - camera.position.y),
                     (int) this.gameObject.dimension.width, (int) this.gameObject.dimension.height,
                     null
             );
         } else {
-            int y = (int) Math.min(ground.gameObject.transform.position.y - camera.position.y, GameConstants.SCREEN_HEIGHT);
+            int y = (int) Math.min(groundComponent.gameObject.transform.position.y - camera.position.y, GameConstants.SCREEN_HEIGHT);
 
             g2d.drawImage(
-                    this.sprite.image,
+                    this.spriteComponent.image,
                     (int) this.gameObject.transform.position.x, (int) this.gameObject.transform.position.y,
                     (int) this.dimension.width, GameConstants.SCREEN_HEIGHT,
                     null
             );
-            g2d.setColor(Screen.getInstance().getCurrentScene().groundColor);
+            g2d.setColor(Screen.getScene().groundColor);
             g2d.fillRect((int) this.gameObject.transform.position.x, y, (int) this.dimension.width, GameConstants.SCREEN_HEIGHT);
         }
     }
@@ -103,7 +103,7 @@ public class Background extends Component<Background> {
 
         builder.append(addBooleanProperty("followGround", followGround, tabSize + 1, true, true));
 
-        builder.append(addStringProperty("filename", sprite.fileName, tabSize + 1, true, true));
+        builder.append(addStringProperty("filename", spriteComponent.fileName, tabSize + 1, true, true));
 
 //        if (backgrounds.length > 0){
 //            builder.append(beginObjectProperty("backgrounds", tabSize + 1));// Components
@@ -136,8 +136,8 @@ public class Background extends Component<Background> {
 
 
     @Override
-    public Component<Background> copy() {
-        return new Background(sprite.fileName, backgrounds, ground, followGround);
+    public Component<BackgroundComponent> copy() {
+        return new BackgroundComponent(spriteComponent.fileName, backgrounds, groundComponent, followGround);
     }
 
     @Override

@@ -11,7 +11,6 @@ import java.awt.*;
 
 public class LevelScene extends Scene {
 
-
     public LevelScene(String name) {
         super.createScene(name);
         this.type = Game.SceneType.LEVEL_1;
@@ -32,9 +31,10 @@ public class LevelScene extends Scene {
 
         Screen.currentScreen.inputListener.setController(this.player);
 
-        initBackgrounds(7, "bg_04-hd.png", "ground_02");
+        initBackgrounds(7, "bg04-hd.png", "ground02.png");
 
         FileUtils.importFileToLevel("Test", this);
+
 
     }
 
@@ -58,6 +58,7 @@ public class LevelScene extends Scene {
 
         this.renderer.render(g2d);
     }
+
 
     @Override
     public void terminate() {

@@ -47,12 +47,8 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
         this.setLocationRelativeTo(null);
     }
 
-    public Scene getCurrentScene() {
-        return Screen.getInstance().currentScene;
-    }
-
     public Camera getCamera(){
-        return Screen.getInstance().getCurrentScene().camera;
+        return Screen.getScene().camera;
     }
 
     public void changeScene(Game.SceneType scene) {

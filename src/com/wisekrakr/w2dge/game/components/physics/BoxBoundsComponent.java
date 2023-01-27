@@ -1,27 +1,24 @@
 package com.wisekrakr.w2dge.game.components.physics;
 
 import com.wisekrakr.w2dge.data.Parser;
-import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
-import com.wisekrakr.w2dge.math.CollisionManager;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Vector2;
 
 
-public class BoxBounds extends Bounds<BoxBounds> {
+public class BoxBoundsComponent extends BoundsComponent<BoxBoundsComponent> {
 
-    public Dimension dimension;
-    public Dimension halfDimension;
-    public Vector2 center;
+    public BoxBoundsComponent(Dimension dimension) {
+        super(dimension);
 
-    public BoxBounds(Dimension dimension) {
-        this.dimension = dimension;
-        this.halfDimension = new Dimension(dimension.width / 2.0f, dimension.height / 2.0f);
         this.type = BoundsType.BOX;
     }
 
     @Override
-    protected void calculateCenter() {
+    protected void initialCalculations() {
+        this.enclosingRadius = (float) Math.sqrt((this.halfDimension.width * this.halfDimension.width) +
+                (this.halfDimension.height * this.halfDimension.height));
+
         this.center = new Vector2(
                 this.gameObject.transform.position.x + this.halfDimension.width,
                 this.gameObject.transform.position.y + this.halfDimension.height
@@ -29,9 +26,9 @@ public class BoxBounds extends Bounds<BoxBounds> {
     }
 
     @Override
-    public boolean collision(BoxBounds b1, BoxBounds b2) {
-        b1.calculateCenter();
-        b2.calculateCenter();
+    public boolean collision(BoundsComponent<?> b1, BoundsComponent<?> b2) {
+        b1.initialCalculations();
+        b2.initialCalculations();
 
         float dx = b2.center.x - b1.center.x;
         float dy = b2.center.y - b1.center.y;
@@ -48,24 +45,15 @@ public class BoxBounds extends Bounds<BoxBounds> {
 
 
     @Override
-    public void resolveColliding(GameObject player, CollisionManager.HitType type) {
-        BoxBounds playerBounds = player.getComponent(BoxBounds.class);
-        playerBounds.calculateCenter();
-        this.calculateCenter();
-
-        CollisionManager.collisionResolver(this.gameObject, player, type);
-    }
-
-    @Override
-    public Component<BoxBounds> copy() {
-        return new BoxBounds(dimension.copy());
+    public Component<BoxBoundsComponent> copy() {
+        return new BoxBoundsComponent(dimension.copy());
     }
 
     @Override
     public String serialize(int tabSize) {
         StringBuilder builder = new StringBuilder();
 
-        builder.append(beginObjectProperty("BoxBounds", tabSize));
+        builder.append(beginObjectProperty(Names.BOX_BOUNDS, tabSize));
         builder.append(dimension.serialize(tabSize + 1));
         builder.append(addEnding(true, false));
         builder.append(closeObjectProperty(tabSize));
@@ -73,15 +61,17 @@ public class BoxBounds extends Bounds<BoxBounds> {
         return builder.toString();
     }
 
-    public static BoxBounds deserialize() {
+    public static BoxBoundsComponent deserialize() {
         Dimension d = Dimension.deserialize();
         Parser.consumeEndObjectProperty();
 
-        return new BoxBounds(d);
+        return new BoxBoundsComponent(d);
     }
 
     @Override
     public String name() {
         return getClass().getName();
     }
+
+
 }

@@ -2,6 +2,7 @@ package com.wisekrakr.w2dge.visual;
 
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.math.Dimension;
+import com.wisekrakr.w2dge.visual.scene.Scene;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +24,10 @@ public class Screen extends AbstractScreen {
             );
         }
         return (Screen) currentScreen;
+    }
+
+    public static Scene getScene(){
+        return getInstance().currentScene;
     }
 
     @Override

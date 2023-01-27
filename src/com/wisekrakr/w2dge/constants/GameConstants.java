@@ -31,10 +31,10 @@ public class GameConstants {
     // =======================================================
     // Player constants
     // =======================================================
-    public static final float PLAYER_START_X = 0;
-    public static final float PLAYER_START_Y = 100;
-    public static final float PLAYER_WIDTH = WIDTH;
-    public static final float PLAYER_HEIGHT = HEIGHT;
+    public static final float PLAYER_START_X = 500;
+    public static final float PLAYER_START_Y = 350;
+    public static final float PLAYER_WIDTH = WIDTH - 2;
+    public static final float PLAYER_HEIGHT = HEIGHT - 2;
     public static final int PLAYER_SPEED = 350;
     public static final float ROTATION_SPEED = 10f;
     public static final float JUMP_FORCE = -650f;

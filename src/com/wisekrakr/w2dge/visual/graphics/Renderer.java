@@ -1,5 +1,6 @@
 package com.wisekrakr.w2dge.visual.graphics;
 
+import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
@@ -11,27 +12,32 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Renderer {
+public class Renderer implements GameLoopImpl {
 
     private final Map<Integer, List<GameObject>> gameObjects;
     private final Camera camera;
+    private DebugRenderer debugRenderer;
     private final List<GameObject> uiGameObjects;
 
-    public Renderer(Camera camera) {
+    public boolean isDebugging;
+
+    public Renderer(Camera camera, DebugRenderer debugRenderer) {
         this.camera = camera;
+        this.debugRenderer = debugRenderer;
         this.gameObjects = new HashMap<>();
         this.uiGameObjects = new ArrayList<>();
     }
 
-    public void add(GameObject gameObject) {
-        this.gameObjects.computeIfAbsent(gameObject.zIndex, index -> new ArrayList<>());
-        this.gameObjects.get(gameObject.zIndex).add(gameObject);
+    @Override
+    public void init() {
+
     }
 
-    public void remove(GameObject gameObject) {
-        this.gameObjects.remove(gameObject.zIndex);
+    @Override
+    public void update(double deltaTime) {
     }
 
+    @Override
     public void render(Graphics2D g2d) {
         int lowestZIndex = Integer.MAX_VALUE;
         int highestZIndex = Integer.MIN_VALUE;
@@ -72,10 +78,23 @@ public class Renderer {
 
                     gameObject.render(g2d);
                     gameObject.transform = oldTransform;
+
+                    if (isDebugging){
+                        debugRenderer.render(g2d, gameObject);
+                    }
                 }
             }
             currentZIndex++;
         }
+    }
+
+    public void add(GameObject gameObject) {
+        this.gameObjects.computeIfAbsent(gameObject.zIndex, index -> new ArrayList<>());
+        this.gameObjects.get(gameObject.zIndex).add(gameObject);
+    }
+
+    public void remove(GameObject gameObject) {
+        this.gameObjects.remove(gameObject.zIndex);
     }
 
     /**
@@ -86,4 +105,11 @@ public class Renderer {
     public void partOfUI(GameObject uiObject) {
         uiGameObjects.add(uiObject);
     }
+
+    @Override
+    public void terminate() {
+        this.gameObjects.clear();
+        this.uiGameObjects.clear();
+    }
+
 }

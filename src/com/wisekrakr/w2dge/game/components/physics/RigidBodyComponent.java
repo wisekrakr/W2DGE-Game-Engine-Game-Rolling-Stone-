@@ -4,11 +4,11 @@ import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.math.Vector2;
 
-public class RigidBody extends Component<RigidBody> {
+public class RigidBodyComponent extends Component<RigidBodyComponent> {
 
     public Vector2 velocity;
 
-    public RigidBody(Vector2 velocity) {
+    public RigidBodyComponent(Vector2 velocity) {
         this.velocity = velocity;
     }
 
@@ -26,8 +26,8 @@ public class RigidBody extends Component<RigidBody> {
     }
 
     @Override
-    public Component<RigidBody> copy() {
-        return new RigidBody(velocity.copy());
+    public Component<RigidBodyComponent> copy() {
+        return new RigidBodyComponent(velocity.copy());
     }
 
     @Override

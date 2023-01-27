@@ -147,7 +147,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(beginObjectProperty(Names.GAMEOBJECT, tabSize)); // Game Object
+        builder.append(beginObjectProperty(Names.GAME_OBJECT, tabSize)); // Game Object
 
         builder.append(transform.serialize(tabSize + 1)); // Transform
         builder.append(addEnding(true, true));
@@ -189,7 +189,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
     }
 
     public static GameObject deserialize() {
-        Parser.consumeBeginObjectProperty(Names.GAMEOBJECT);
+        Parser.consumeBeginObjectProperty(Names.GAME_OBJECT);
 
         Transform t = Transform.deserialize();
         Parser.consume(',');

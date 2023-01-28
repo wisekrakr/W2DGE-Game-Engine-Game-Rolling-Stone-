@@ -5,6 +5,9 @@ import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.math.CollisionManager;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Vector2;
+import com.wisekrakr.w2dge.visual.Screen;
+
+import java.awt.*;
 
 
 public abstract class BoundsComponent<T> extends Component<T> implements BoundsComponentImpl {
@@ -34,6 +37,13 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
     @Override
     public void init() {
         initialCalculations();
+    }
+
+    @Override
+    public void render(Graphics2D g2d) {
+        if (Screen.getScene().getRenderer().isDebugging) {
+            Screen.getScene().getRenderer().debugRenderer.render(g2d, this.gameObject);
+        }
     }
 
     @Override

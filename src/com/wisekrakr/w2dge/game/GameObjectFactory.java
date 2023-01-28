@@ -144,6 +144,51 @@ public class GameObjectFactory {
     }
 
     /**
+     * Creates a new MenuItem - MENU_ITEM -> is non-serializable<br>
+     * Contains the following Components: {@link SpriteComponent}, {@link MenuItemComponent}, {@link ClickableComponent},
+     * {@link GameItemComponent}
+     * <br>
+     * This GameObject has the TAG -> GAME_ITEM, because the moment the menu item is placed on the scene it is no longer
+     * a menu item but an object in the game --> named GAME_ITEM
+     *
+     * @param position
+     * @param dimension
+     * @param renderer
+     * @param components
+     * @return
+     */
+    public static GameObject menuItem(Vector2 position, Dimension dimension, Renderer renderer, Component<?>... components) {
+        GameObject menuItem = new GameObject(
+                Tags.GAME_ITEM,
+                new Transform(position),
+                dimension,
+                ZIndexes.BACK
+        );
+
+        renderer.partOfUI(menuItem);
+        menuItem.setNonSerializable();
+
+        SpriteComponent sprite = null;
+
+        for (Component<?> component : components) {
+            menuItem.addComponent(component);
+
+            if (component instanceof SpriteComponent){
+                sprite = (SpriteComponent) component.copy();
+            }
+        }
+
+        menuItem.addComponent(new ClickableComponent());
+        menuItem.addComponent(new GameItemComponent(
+                menuItem.transform.copy(),
+                menuItem.dimension.copy(),
+                sprite)
+        ); // add the GameItem component
+
+        return menuItem;
+    }
+
+    /**
      * Creates a new GameObject with name TAB -> object is non-serializable
      *
      * @param sprite

@@ -18,7 +18,7 @@ public class CameraControlsComponent extends Component<CameraControlsComponent> 
         GameInputListener inputListener = Screen.getInputListener();
 
         // Right Button = dragging camera
-        if (inputListener.middleMousePressed()) {
+        if (inputListener.rightMousePressed()) {
             float dx = inputListener.mouseListener.position.x + inputListener.mouseListener.dx - prevPosition.x;
             float dy = inputListener.mouseListener.position.y + inputListener.mouseListener.dy - prevPosition.y;
 

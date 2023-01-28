@@ -6,6 +6,7 @@ import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
+import com.wisekrakr.w2dge.game.components.physics.BoundsComponent;
 import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
 import com.wisekrakr.w2dge.game.components.physics.TriangleBoundsComponent;
 import com.wisekrakr.w2dge.math.Dimension;
@@ -115,9 +116,52 @@ public class MenuContainerComponent extends Component<MenuContainerComponent> {
     }
 
     private void addTabObjects() {
-        // Creates a menu item component that contains sprite
-        for (int i = 0; i < AssetManager.groundSheet.sprites.size(); i++) {
-            SpriteComponent currentSpriteComponent = AssetManager.groundSheet.sprites.get(i);
+
+        // Adding first tab container objects
+        addingTabContainerWithMenuItems(
+                AssetManager.groundSheet.sprites,
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                0, BoundsComponent.BoundsType.BOX
+        );
+
+        // Adding second tab container objects
+        addingTabContainerWithMenuItems(
+                AssetManager.smallBlockSheet.sprites,
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                1, BoundsComponent.BoundsType.BOX
+        );
+
+        // Adding third tab container objects
+
+
+        // Adding fourth tab container objects
+        addingTabContainerWithMenuItems(
+                AssetManager.spikesSheet.sprites,
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                3, BoundsComponent.BoundsType.TRIANGLE
+        );
+
+        // Adding fifth tab container objects
+        addingTabContainerWithMenuItems(
+                AssetManager.bigSpritesSheet.sprites,
+                new Dimension(GameConstants.TILE_WIDTH * 2, GameConstants.TILE_HEIGHT * 2),
+                4, BoundsComponent.BoundsType.BOX
+        );
+
+        // Adding sixth tab container objects
+        addingTabContainerWithMenuItems(
+                AssetManager.portalSheet.sprites,
+                new Dimension(GameConstants.TILE_WIDTH, (GameConstants.TILE_HEIGHT * 2)),
+                5, BoundsComponent.BoundsType.BOX
+        );
+    }
+
+
+    private void addingTabContainerWithMenuItems(List<SpriteComponent> sprites, Dimension dimension,
+                                                 int tabNr, BoundsComponent.BoundsType type) {
+
+        for (int i = 0; i < sprites.size(); i++) {
+            SpriteComponent currentSpriteComponent = sprites.get(i);
 
             int x = (int) (GameConstants.BUTTON_OFFSET_X + (currentSpriteComponent.column * GameConstants.BUTTON_WIDTH) +
                     (currentSpriteComponent.column * GameConstants.BUTTON_HORIZONTAL_SPACING));
@@ -133,76 +177,15 @@ public class MenuContainerComponent extends Component<MenuContainerComponent> {
                     this, AssetManager.buttonSheet.sprites.get(0), AssetManager.buttonSheet.sprites.get(1)
             );
 
-            // Menu item object within the button
             GameObject object = GameObjectFactory.menuItem(
                     position,
+                    dimension,
                     currentScene.getRenderer(),
-                    currentSpriteComponent.copy(),
-                    menuItem,
-                    new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT)) // dimensions of Game Item
+                    currentSpriteComponent,
+                    menuItem.copy(),
+                    type.equals(BoundsComponent.BoundsType.BOX) ? new BoxBoundsComponent(dimension) : new TriangleBoundsComponent(dimension)
             );
-            this.tabsMap.get(this.tabs.get(0)).add(object);
-
-            // Adding second tab container objects
-            if (i < AssetManager.smallBlockSheet.sprites.size()) {
-
-                object = GameObjectFactory.menuItem(
-                        position,
-                        currentScene.getRenderer(),
-                        AssetManager.smallBlockSheet.sprites.get(i),
-                        menuItem.copy(),
-                        new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, 16))
-                );
-
-//                if (i == 0) {
-//                    object.addComponent(new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, 16)));
-//                }
-
-                this.tabsMap.get(this.tabs.get(1)).add(object);
-            }
-
-            // Adding fourth tab container objects
-            if (i < AssetManager.spikesSheet.sprites.size()) {
-                SpriteComponent spriteComponent = AssetManager.spikesSheet.sprites.get(i);
-                object = GameObjectFactory.menuItem(
-                        position,
-                        currentScene.getRenderer(),
-                        spriteComponent,
-                        menuItem.copy(),
-                        new TriangleBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT))
-                );
-
-                this.tabsMap.get(this.tabs.get(3)).add(object);
-            }
-
-            // Adding fifth tab container objects
-            if (i == 0) {
-                object = GameObjectFactory.menuItem(
-                        new Vector2(x, y),
-                        currentScene.getRenderer(),
-                        AssetManager.bigSpritesSheet.sprites.get(i),
-                        menuItem.copy(),
-                        new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH * 2, 56))
-                );
-
-                this.tabsMap.get(tabs.get(4)).add(object);
-            }
-
-            // Adding sixth tab container objects
-            if (i < AssetManager.portalSheet.sprites.size()) {
-                object = GameObjectFactory.menuItem(
-                        new Vector2(x, y),
-                        currentScene.getRenderer(),
-                        AssetManager.portalSheet.sprites.get(i),
-                        menuItem.copy(),
-                        new BoxBoundsComponent(new Dimension(GameConstants.TILE_WIDTH, (GameConstants.TILE_HEIGHT * 2)))
-                );
-
-                //todo portal should not collide with player (BoxBounds)
-                //todo add portal component to portal object
-
-                this.tabsMap.get(tabs.get(5)).add(object);
-            }
+            this.tabsMap.get(tabs.get(tabNr)).add(object);
         }
     }
 

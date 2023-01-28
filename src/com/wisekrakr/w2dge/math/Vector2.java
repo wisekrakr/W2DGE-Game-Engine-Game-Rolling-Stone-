@@ -169,6 +169,16 @@ public class Vector2 extends com.wisekrakr.w2dge.data.Serializable implements Se
         return x1 * x2 + y1 * y2;
     }
 
+    /**
+     * Returns the angle of two vectors
+     * @param v1
+     * @param v2
+     * @return
+     */
+    public static float dot(Vector2 v1, Vector2 v2) {
+        return v1.x * v2.x + v1.y * v2.y;
+    }
+
     @Override
     public float dot(Vector2 v) {
         return x * v.x + y * v.y;

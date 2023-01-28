@@ -12,8 +12,7 @@ import java.awt.*;
 
 public class MenuItemComponent extends LevelEditMenuItemComponent<MenuItemComponent> {
 
-    private final SpriteComponent hoverSpriteComponent;
-
+    public final SpriteComponent hoverSpriteComponent;
 
     public MenuItemComponent(Transform transform, Dimension dimension, MenuContainerComponent parentContainer, SpriteComponent spriteComponent, SpriteComponent hoverSpriteComponent) {
         super(transform, dimension, parentContainer, spriteComponent);
@@ -42,6 +41,10 @@ public class MenuItemComponent extends LevelEditMenuItemComponent<MenuItemCompon
                 this.parentContainer.setFocusedButton(this.gameObject);
             }
         }
+
+        if (Screen.getInputListener().escapePressed()){
+            isSelected = false;
+        }
     }
 
     @Override
@@ -63,6 +66,7 @@ public class MenuItemComponent extends LevelEditMenuItemComponent<MenuItemCompon
             g2d.drawImage(hoverSpriteComponent.image,
                     (int) this.transform.position.x, (int) this.transform.position.y,
                     (int) this.dimension.width, (int) this.dimension.height, null);
+
         }
     }
 

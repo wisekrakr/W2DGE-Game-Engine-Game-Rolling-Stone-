@@ -34,6 +34,9 @@ public class LevelScene extends Scene {
         initBackgrounds(7, "bg04-hd.png", "ground02.png");
 
         FileUtils.importFileToLevel("Test", this);
+
+        getRenderer().isDebugging = true;
+
     }
 
     @Override

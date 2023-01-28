@@ -1,5 +1,6 @@
 package com.wisekrakr.w2dge.game.components.entities;
 
+import com.wisekrakr.util.ImageUtils;
 import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
@@ -20,22 +21,28 @@ public class GameItemComponent extends Component<GameItemComponent> {
         this.transform = transform;
         this.dimension = dimension;
         this.spriteComponent = spriteComponent;
-
     }
-
 
     @Override
     public void render(Graphics2D g2d) {
-        SpriteComponent sprite = (SpriteComponent) spriteComponent.copy();
-        BufferedImage image = sprite.image;
+
         if (changeColor) {
-            Graphics2D g2dd = image.createGraphics();
-            g2dd.setColor(Color.GREEN);
-            g2dd.fillRect(
-                    (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
-                    (int) gameObject.dimension.width, (int) gameObject.dimension.height
-            );
-            g2dd.drawImage(sprite.image, 0, 0, null);
+            SpriteComponent sprite = (SpriteComponent) spriteComponent.copy();
+            BufferedImage image = sprite.image;
+
+//            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            ImageUtils.changeColor(image);
+
+            System.out.println("CGanging color");
+
+//            Graphics2D g2dd = image.createGraphics();
+//            g2dd.setColor(Color.WHITE);
+//            g2dd.fillRect((int) transform.position.x, (int) transform.position.y,
+//                    (int) dimension.width, (int) dimension.height
+//            );
+//            g2dd.drawImage(sprite.image, 0, 0, null);
+
+
 
             changeColor = false;
         }

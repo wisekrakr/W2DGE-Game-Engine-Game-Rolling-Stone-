@@ -28,7 +28,7 @@ public class GameInputListener extends AbstractGameInputListener{
         inputsOnAllScenes();
 
         // Keyboard inputs
-        switch (Screen.getInputListener().keyListener.keyCode) {
+        switch (this.keyListener.keyCode) {
             case KeyEvent.VK_F1 -> Screen.getInstance().changeScene(Game.SceneType.LEVEL_1);
             case KeyEvent.VK_F5 -> {
                 System.out.println("Export file");
@@ -65,7 +65,7 @@ public class GameInputListener extends AbstractGameInputListener{
 
         PlayerComponent p = player.getComponent(PlayerComponent.class);
 
-        switch (Screen.getInputListener().keyListener.keyCode) {
+        switch (this.keyListener.keyCode) {
             // UI controls
             case KeyEvent.VK_F2 -> Screen.getInstance().changeScene(Game.SceneType.EDITOR);
             case KeyEvent.VK_P -> Game.isPaused = !Game.isPaused;
@@ -93,7 +93,7 @@ public class GameInputListener extends AbstractGameInputListener{
 
     private void inputsOnAllScenes() {
         // UI controls
-        switch (Screen.getInputListener().keyListener.keyCode) {
+        switch (this.keyListener.keyCode) {
             case KeyEvent.VK_Q -> System.exit(1);
         }
     }

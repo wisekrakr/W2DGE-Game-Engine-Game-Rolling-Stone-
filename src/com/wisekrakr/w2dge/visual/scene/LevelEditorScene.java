@@ -40,6 +40,7 @@ public class LevelEditorScene extends Scene {
         addGameObjectToScene(ground);
 
 //        FileUtils.importFileToLevel("Test", this);
+        getRenderer().isDebugging = true;
 
     }
 

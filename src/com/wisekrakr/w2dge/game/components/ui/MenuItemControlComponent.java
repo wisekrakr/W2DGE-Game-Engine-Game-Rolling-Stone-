@@ -97,8 +97,6 @@ public class MenuItemControlComponent extends Component<MenuItemControlComponent
         }
     }
 
-
-
     private void updateSpritePosition(GameInputListener inputListener, Camera camera) {
         worldPosition.x = (float) Math.floor((inputListener.mouseListener.position.x + camera.position.x +
                 inputListener.mouseListener.dx) / this.gameObject.dimension.width);
@@ -159,7 +157,7 @@ public class MenuItemControlComponent extends Component<MenuItemControlComponent
 
         for (GameObject g : Screen.getScene().getGameObjects()) {
             ClickableComponent clickable = g.getComponent(ClickableComponent.class);
-            if (clickable != null && clickable.inBounds(mousePosition)) {
+            if (clickable != null && clickable.inBounds(g,mousePosition)) {
                 this.selectedGameObjects.add(g);
                 clickable.isSelected = true;
                 break;

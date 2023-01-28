@@ -16,7 +16,7 @@ public class Renderer implements GameLoopImpl {
 
     private final Map<Integer, List<GameObject>> gameObjects;
     private final Camera camera;
-    private DebugRenderer debugRenderer;
+    public DebugRenderer debugRenderer;
     private final List<GameObject> uiGameObjects;
 
     public boolean isDebugging;
@@ -78,10 +78,6 @@ public class Renderer implements GameLoopImpl {
 
                     gameObject.render(g2d);
                     gameObject.transform = oldTransform;
-
-                    if (isDebugging){
-                        debugRenderer.render(g2d, gameObject);
-                    }
                 }
             }
             currentZIndex++;

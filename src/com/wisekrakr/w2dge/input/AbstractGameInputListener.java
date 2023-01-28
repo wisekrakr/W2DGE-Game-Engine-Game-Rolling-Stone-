@@ -1,8 +1,8 @@
 package com.wisekrakr.w2dge.input;
 
 import com.wisekrakr.w2dge.game.GameObject;
-import com.wisekrakr.w2dge.visual.Screen;
 
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 public abstract class AbstractGameInputListener {
@@ -20,19 +20,26 @@ public abstract class AbstractGameInputListener {
         this.player = gameObject;
     }
 
-
+    //*****************************//
+    //          Mouse inputs
+    //*****************************//
     public boolean leftMousePressed(){
-        return Screen.getInputListener().mouseListener.mousePressed &&
-                Screen.getInputListener().mouseListener.mouseButton == MouseEvent.BUTTON1;
+        return mouseListener.mousePressed && mouseListener.mouseButton == MouseEvent.BUTTON1;
     }
 
     public boolean middleMousePressed(){
-        return Screen.getInputListener().mouseListener.mousePressed &&
-                Screen.getInputListener().mouseListener.mouseButton == MouseEvent.BUTTON2;
+        return mouseListener.mousePressed &&  mouseListener.mouseButton == MouseEvent.BUTTON2;
     }
 
     public boolean rightMousePressed(){
-        return Screen.getInputListener().mouseListener.mousePressed &&
-                Screen.getInputListener().mouseListener.mouseButton == MouseEvent.BUTTON3;
+        return mouseListener.mousePressed && mouseListener.mouseButton == MouseEvent.BUTTON3;
+    }
+
+    //*****************************//
+    //          Keyboard inputs
+    //*****************************//
+
+    public boolean escapePressed(){
+        return keyListener.isKeyPressed(KeyEvent.VK_ESCAPE);
     }
 }

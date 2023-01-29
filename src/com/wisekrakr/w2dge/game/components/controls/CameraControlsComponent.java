@@ -39,6 +39,6 @@ public class CameraControlsComponent extends Component<CameraControlsComponent> 
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

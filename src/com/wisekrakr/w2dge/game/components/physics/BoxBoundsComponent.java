@@ -71,7 +71,7 @@ public class BoxBoundsComponent extends BoundsComponent<BoxBoundsComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 
 

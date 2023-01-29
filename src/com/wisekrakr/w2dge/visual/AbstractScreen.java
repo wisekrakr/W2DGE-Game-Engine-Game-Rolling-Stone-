@@ -108,6 +108,7 @@ public abstract class AbstractScreen extends JFrame implements Runnable, GameLoo
     public void update(double deltaTime) {
         Screen.getScene().update(deltaTime);
         render((Graphics2D) getGraphics());
+        this.inputListener.update(deltaTime);
     }
 
     @Override

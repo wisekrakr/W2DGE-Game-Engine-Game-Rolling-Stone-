@@ -10,6 +10,7 @@ import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.visual.Screen;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
         for (Component<?> component : components) {
             component.render(g2d);
         }
+        transform(0, 0);
     }
 
     @Override
@@ -138,6 +140,22 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
                 inputListener.mouseListener.position.x <= this.transform.position.x + this.dimension.width &&
                 inputListener.mouseListener.position.y > this.transform.position.y &&
                 inputListener.mouseListener.position.y <= this.transform.position.y + this.dimension.height;
+    }
+
+    @Override
+    public AffineTransform transform(int bufferX, int bufferY) {
+
+        AffineTransform affineTransform = new AffineTransform();
+        affineTransform.setToIdentity(); // reset transform
+        affineTransform.translate(this.transform.position.x + bufferX, this.transform.position.y + bufferY);
+        affineTransform.rotate(
+                this.transform.rotation,
+                this.dimension.width * this.transform.scale.x / 2.0f,
+                this.dimension.height * this.transform.scale.y / 2.0f
+        );
+        affineTransform.scale(this.transform.scale.x, this.transform.scale.y);
+
+        return affineTransform;
     }
 
     @Override

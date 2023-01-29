@@ -3,7 +3,6 @@ package com.wisekrakr.w2dge.visual.scene;
 import com.wisekrakr.main.Game;
 import com.wisekrakr.w2dge.constants.Colors;
 import com.wisekrakr.w2dge.constants.GameConstants;
-import com.wisekrakr.w2dge.visual.Screen;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,8 +27,6 @@ public class PauseScene extends Scene{
     @Override
     public void update(double deltaTime) {
         super.update(deltaTime);
-
-        Screen.getInputListener().update();
     }
 
     @Override

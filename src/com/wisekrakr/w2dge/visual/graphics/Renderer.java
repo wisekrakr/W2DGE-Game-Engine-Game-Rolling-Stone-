@@ -7,6 +7,7 @@ import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Camera;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,20 +45,20 @@ public class Renderer implements GameLoopImpl {
 
         // making sure everything is in the proper order
         // looping through lowest and highest zIndexes
-        for (Integer i: gameObjects.keySet()){
-            if (i < lowestZIndex){
+        for (Integer i : gameObjects.keySet()) {
+            if (i < lowestZIndex) {
                 lowestZIndex = i;
             }
-            if (i > highestZIndex){
+            if (i > highestZIndex) {
                 highestZIndex = i;
             }
         }
 
         int currentZIndex = lowestZIndex;
 
-        while (currentZIndex <= highestZIndex){
+        while (currentZIndex <= highestZIndex) {
             // if there is no container yet
-            if (gameObjects.get(currentZIndex) == null){
+            if (gameObjects.get(currentZIndex) == null) {
                 // increment and keep searching
                 currentZIndex++;
                 continue;
@@ -82,6 +83,10 @@ public class Renderer implements GameLoopImpl {
             }
             currentZIndex++;
         }
+    }
+
+    public void drawImage(Graphics2D g2d, BufferedImage image, GameObject gameObject, int bufferX, int bufferY) {
+        g2d.drawImage(image, gameObject.transform(bufferX, bufferY), null);
     }
 
     public void add(GameObject gameObject) {

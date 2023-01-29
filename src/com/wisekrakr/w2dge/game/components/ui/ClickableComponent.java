@@ -103,7 +103,7 @@ public class ClickableComponent extends Component<ClickableComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 
 }

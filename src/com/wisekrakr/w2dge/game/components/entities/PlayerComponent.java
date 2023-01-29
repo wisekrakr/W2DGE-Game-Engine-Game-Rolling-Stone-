@@ -36,6 +36,7 @@ public class PlayerComponent extends Component<PlayerComponent> implements Actio
         if (!grounded) {
             this.gameObject.transform.rotation += GameConstants.ROTATION_SPEED * deltaTime;
             Screen.getScene().backgroundColor(this.bgColor, this.groundColor);
+            Screen.getScene().gameItemColor(true);
         } else {
             // snaps rotation between 0-360 degrees
             this.gameObject.transform.rotation = gameObject.transform.rotation % 360;
@@ -46,8 +47,8 @@ public class PlayerComponent extends Component<PlayerComponent> implements Actio
                 gameObject.transform.rotation = 0;
             }
             Screen.getScene().backgroundColor(null,null);
+            Screen.getScene().gameItemColor(false);
         }
-
     }
 
     @Override
@@ -89,6 +90,6 @@ public class PlayerComponent extends Component<PlayerComponent> implements Actio
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

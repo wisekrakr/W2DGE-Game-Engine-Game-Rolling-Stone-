@@ -33,15 +33,22 @@ public class TabItemComponent extends LevelEditMenuItemComponent<TabItemComponen
     public void render(Graphics2D g2d) {
 
         if (isSelected){
-            g2d.drawImage(spriteComponent.image, (int)transform.position.x,(int) transform.position.y,
-                    (int)dimension.width,(int) dimension.height,null);
+//            g2d.drawImage(spriteComponent.image, (int)transform.position.x,(int) transform.position.y,
+//                    (int)dimension.width,(int) dimension.height,null);
+            Screen.getScene().getRenderer().drawImage(
+                    g2d,
+                    spriteComponent.image,
+                    this.gameObject,
+                    0,0
+            );
         }else {
             AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f); // transparent until placement
             g2d.setComposite(composite);
-            g2d.drawImage(spriteComponent.image,
-                    (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
-                    (int) gameObject.dimension.width, (int) gameObject.dimension.height,
-                    null
+            Screen.getScene().getRenderer().drawImage(
+                    g2d,
+                    spriteComponent.image,
+                    this.gameObject,
+                    0,0
             );
             composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
             g2d.setComposite(composite);
@@ -56,6 +63,6 @@ public class TabItemComponent extends LevelEditMenuItemComponent<TabItemComponen
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

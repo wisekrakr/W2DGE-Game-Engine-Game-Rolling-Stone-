@@ -30,6 +30,6 @@ public class LevelEditMenuItemComponent<T> extends Component<T> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

@@ -5,7 +5,6 @@ import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 
 public class Graphics implements GameLoopImpl {
 
@@ -55,33 +54,11 @@ public class Graphics implements GameLoopImpl {
 
     }
 
-    /**
-     * A method that helps with drawing a {@link com.wisekrakr.w2dge.game.GameObject} rotation. <br>
-     * We also set the rotation of a GameObjects with this method.
-     *
-     * @return {@link AffineTransform}
-     */
-    private AffineTransform transform() {
-
-        AffineTransform affineTransform = new AffineTransform();
-        affineTransform.setToIdentity(); // reset transform
-        affineTransform.translate(parent.transform.position.x, parent.transform.position.y);
-//        affineTransform.rotate(parent.transform.rotation, parent.dimension.center.x, parent.dimension.center.y);
-        affineTransform.rotate(
-                parent.transform.rotation,
-                parent.dimension.width * parent.transform.scale.x / 2.0f,
-                parent.dimension.height * parent.transform.scale.y / 2.0f
-        );
-        affineTransform.scale(parent.transform.scale.x, parent.transform.scale.y);
-
-        return affineTransform;
-    }
-
 
     @Override
     public void render(Graphics2D g2d) {
         for (SpriteComponent layer : layers) {
-            g2d.drawImage(layer.image, transform(), null);
+            g2d.drawImage(layer.image, this.parent.transform(0,0), null);
         }
     }
 

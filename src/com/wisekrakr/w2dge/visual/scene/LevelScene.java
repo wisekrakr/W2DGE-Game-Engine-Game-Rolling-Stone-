@@ -35,7 +35,7 @@ public class LevelScene extends Scene {
 
         FileUtils.importFileToLevel("Test", this);
 
-        getRenderer().isDebugging = true;
+        getRenderer().isDebugging = false;
 
     }
 
@@ -47,7 +47,6 @@ public class LevelScene extends Scene {
 
         camera.bounds(null, GameConstants.CAMERA_OFFSET_GROUND_Y);
 
-        Screen.getInputListener().update();
     }
 
     @Override

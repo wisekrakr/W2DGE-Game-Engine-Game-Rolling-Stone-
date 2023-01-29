@@ -7,6 +7,7 @@ import com.wisekrakr.w2dge.constants.Tags;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
 import com.wisekrakr.w2dge.math.CollisionManager;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Camera;
@@ -67,8 +68,8 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
 
     @Override
     public void update(double deltaTime) {
-
         for (GameObject gameObject : gameObjects) {
+
             gameObject.update(deltaTime); // game object update
             collisionManager.update(gameObject); // collision update
 
@@ -96,6 +97,14 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
         }
     }
 
+    @Override
+    public void gameItemColor(boolean changeColor) {
+        for (GameObject gameObject : getGameObjects()) {
+            if (gameObject.getComponent(GameItemComponent.class) != null) {
+                gameObject.getComponent(GameItemComponent.class).changeColor = changeColor;
+            }
+        }
+    }
 
     @Override
     public void addGameObjectToScene(GameObject gameObject) {

@@ -10,6 +10,7 @@ import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
 
 import java.awt.*;
+import java.util.Random;
 
 public class LevelEditorScene extends Scene {
 
@@ -17,8 +18,13 @@ public class LevelEditorScene extends Scene {
     private CameraControlsComponent cameraControlsComponent;
     private MenuContainerComponent editingContainer;
 
+    private Random random;
+
+
     public LevelEditorScene(String name) {
         super.createScene(name);
+
+        this.random = new Random();
 
         this.type = Game.SceneType.EDITOR;
     }
@@ -55,7 +61,6 @@ public class LevelEditorScene extends Scene {
         editingContainer.update(deltaTime);
         levelEditMouseCursor.update(deltaTime);
 
-        Screen.getInputListener().update(getGameObjects(), this);
     }
 
 

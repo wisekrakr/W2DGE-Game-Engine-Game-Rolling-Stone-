@@ -76,9 +76,13 @@ public class SpriteComponent extends Component<SpriteComponent> {
 
     @Override
     public void render(Graphics2D g2d) {
+//        g2d.drawImage(this.image,
+//                (int)gameObject.transform.position.x, (int)gameObject.transform.position.y,
+//                image.getWidth(), image.getHeight(),
+//                null
+//        );
         g2d.drawImage(this.image,
-                (int)gameObject.transform.position.x, (int)gameObject.transform.position.y,
-                image.getWidth(), image.getHeight(),
+                this.gameObject.transform(0,0),
                 null
         );
     }
@@ -161,7 +165,7 @@ public class SpriteComponent extends Component<SpriteComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 
     @Override

@@ -3,6 +3,9 @@ package com.wisekrakr.w2dge.constants;
 import java.awt.*;
 
 public class GameConstants {
+    public static final float SCALE_X = 1.0f;
+    public static final float SCALE_Y = 1.0f;
+
     private static final float WIDTH = 42;
     private static final float HEIGHT = 42;
 
@@ -59,7 +62,7 @@ public class GameConstants {
     // Camera constants
     // =======================================================
     public static final int GROUND_Y = 714;
-    public static final float GROUND_HEIGHT = 3 * GameConstants.TILE_WIDTH;
+    public static final float GROUND_HEIGHT = 3 * TILE_WIDTH;
     public static final int CAMERA_OFFSET_Y = 350;
     public static final int CAMERA_OFFSET_X = 300;
     public static final int CAMERA_OFFSET_GROUND_Y = 200;

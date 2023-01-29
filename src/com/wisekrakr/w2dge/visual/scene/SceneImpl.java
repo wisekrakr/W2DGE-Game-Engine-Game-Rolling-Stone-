@@ -42,4 +42,10 @@ public interface SceneImpl {
      * @param gameObject
      */
     void removeGameObjectToScene(GameObject gameObject);
+
+    /**
+     * Changes game item color
+     * @param changeColor
+     */
+    void gameItemColor(boolean changeColor);
 }

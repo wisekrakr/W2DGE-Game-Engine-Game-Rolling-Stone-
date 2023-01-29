@@ -26,6 +26,6 @@ public class ElevateComponent extends Component<ElevateComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

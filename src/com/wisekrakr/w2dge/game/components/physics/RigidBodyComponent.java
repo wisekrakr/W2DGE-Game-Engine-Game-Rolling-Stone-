@@ -2,11 +2,14 @@ package com.wisekrakr.w2dge.game.components.physics;
 
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.math.Direction;
 import com.wisekrakr.w2dge.math.Vector2;
 
 public class RigidBodyComponent extends Component<RigidBodyComponent> {
 
     public Vector2 velocity;
+
+    public Direction direction = Direction.RIGHT;
 
     public RigidBodyComponent(Vector2 velocity) {
         this.velocity = velocity;
@@ -14,10 +17,17 @@ public class RigidBodyComponent extends Component<RigidBodyComponent> {
 
     @Override
     public void update(double deltaTime) {
-        gameObject.transform.position.x += velocity.x * deltaTime;
+        switch (direction){
+
+//            case UP -> gameObject.transform.position.y += velocity.y * deltaTime;
+//            case DOWN -> gameObject.transform.position.y -= velocity.y * deltaTime;
+            case LEFT -> gameObject.transform.position.x -= velocity.x * deltaTime;
+            case RIGHT -> gameObject.transform.position.x += velocity.x * deltaTime;
+        }
+
+//        gameObject.transform.position.x += velocity.x * deltaTime;
         gameObject.transform.position.y += velocity.y * deltaTime;
 
-//        velocity.x += Dimensions.GRAVITY * deltaTime;
         velocity.y += GameConstants.GRAVITY * deltaTime;
 
         if (Math.abs(velocity.y) > GameConstants.TERMINAL_VELOCITY){
@@ -32,6 +42,6 @@ public class RigidBodyComponent extends Component<RigidBodyComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

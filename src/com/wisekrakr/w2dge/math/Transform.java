@@ -1,6 +1,7 @@
 package com.wisekrakr.w2dge.math;
 
 import com.wisekrakr.w2dge.InterprocessImpl;
+import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.data.Serializable;
 
@@ -11,7 +12,7 @@ public class Transform extends Serializable implements  InterprocessImpl<Transfo
 
     public Transform(Vector2 position) {
         this.position = position;
-        this.scale = new Vector2(1.0f, 1.0f);
+        this.scale = new Vector2(GameConstants.SCALE_X, GameConstants.SCALE_Y);
         this.rotation = 0.0f;
     }
 

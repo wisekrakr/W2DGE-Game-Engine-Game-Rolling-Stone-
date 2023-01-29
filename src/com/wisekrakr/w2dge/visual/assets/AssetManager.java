@@ -24,6 +24,7 @@ public class AssetManager {
     public static SpriteSheet groundSheet;
     public static SpriteSheet tabsSheet;
     public static SpriteSheet portalSheet;
+    public static SpriteSheet fireworkSheet;
 
 
     public static boolean hasSprite(String fileName) {
@@ -172,6 +173,13 @@ public class AssetManager {
                 "portal.png",
                 new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT * 2),
                 2, 2
+        );
+
+        fireworkSheet = AssetFinder.spriteSheet(
+                AssetFinder.ImageType.OTHERS,
+                "yellow_firework.png",
+                new Dimension(GameConstants.TILE_WIDTH * 2, GameConstants.TILE_HEIGHT * 2),
+                6, 10
         );
     }
 

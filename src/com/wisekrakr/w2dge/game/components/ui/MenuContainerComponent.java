@@ -160,9 +160,7 @@ public class MenuContainerComponent extends Component<MenuContainerComponent> {
     private void addingTabContainerWithMenuItems(List<SpriteComponent> sprites, Dimension dimension,
                                                  int tabNr, BoundsComponent.BoundsType type) {
 
-        for (int i = 0; i < sprites.size(); i++) {
-            SpriteComponent currentSpriteComponent = sprites.get(i);
-
+        for (SpriteComponent currentSpriteComponent : sprites) {
             int x = (int) (GameConstants.BUTTON_OFFSET_X + (currentSpriteComponent.column * GameConstants.BUTTON_WIDTH) +
                     (currentSpriteComponent.column * GameConstants.BUTTON_HORIZONTAL_SPACING));
             int y = (int) (GameConstants.BUTTON_OFFSET_Y + (currentSpriteComponent.row * GameConstants.BUTTON_HEIGHT) +
@@ -183,7 +181,9 @@ public class MenuContainerComponent extends Component<MenuContainerComponent> {
                     currentScene.getRenderer(),
                     currentSpriteComponent,
                     menuItem.copy(),
-                    type.equals(BoundsComponent.BoundsType.BOX) ? new BoxBoundsComponent(dimension) : new TriangleBoundsComponent(dimension)
+                    type.equals(BoundsComponent.BoundsType.BOX) ?
+                            new BoxBoundsComponent(new Dimension(dimension.width, dimension.height-1)) :
+                            new TriangleBoundsComponent(new Dimension(dimension.width, dimension.height-1))
             );
             this.tabsMap.get(tabs.get(tabNr)).add(object);
         }
@@ -200,6 +200,6 @@ public class MenuContainerComponent extends Component<MenuContainerComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

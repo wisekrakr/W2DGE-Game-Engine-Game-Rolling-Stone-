@@ -4,7 +4,9 @@ import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.entities.GroundComponent;
+import com.wisekrakr.w2dge.game.components.physics.RigidBodyComponent;
 import com.wisekrakr.w2dge.math.Dimension;
+import com.wisekrakr.w2dge.math.Direction;
 import com.wisekrakr.w2dge.visual.Camera;
 import com.wisekrakr.w2dge.visual.Screen;
 import com.wisekrakr.w2dge.visual.assets.AssetManager;
@@ -38,10 +40,18 @@ public class BackgroundComponent extends Component<BackgroundComponent> {
     public void update(double deltaTime) {
         this.timeStep++; // keeps a hold on what background it is on
 
-        this.gameObject.transform.position.x -= deltaTime * speed;
+        GameObject player = Screen.getScene().player;
+
+        // make an int
+        if (player.getComponent(RigidBodyComponent.class).direction == Direction.RIGHT){
+            this.gameObject.transform.position.x -= deltaTime * speed;
+        }else{
+            this.gameObject.transform.position.x += deltaTime * speed;
+
+        }
         this.gameObject.transform.position.x = (float) Math.floor(this.gameObject.transform.position.x); // make an int
 
-        // if the background is no longer visible
+        // if the is no longer visible
         if (this.gameObject.transform.position.x < -dimension.width) {
             // move it back
             float maxX = 0; // maximum x value of the other backgrounds
@@ -59,6 +69,7 @@ public class BackgroundComponent extends Component<BackgroundComponent> {
             } else {
                 this.gameObject.transform.position.x = (float) Math.floor((maxX + dimension.width) - (deltaTime * speed));
             }
+
         }
 
         if (this.followGround) {
@@ -142,6 +153,6 @@ public class BackgroundComponent extends Component<BackgroundComponent> {
 
     @Override
     public String name() {
-        return null;
+        return getClass().getSimpleName();
     }
 }

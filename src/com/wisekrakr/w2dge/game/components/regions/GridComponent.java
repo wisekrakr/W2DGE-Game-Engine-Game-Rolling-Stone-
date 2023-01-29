@@ -66,6 +66,6 @@ public class GridComponent extends Component<GridComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

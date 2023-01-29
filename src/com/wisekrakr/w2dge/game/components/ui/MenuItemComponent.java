@@ -52,20 +52,25 @@ public class MenuItemComponent extends LevelEditMenuItemComponent<MenuItemCompon
         int bufferX = (int) ((this.dimension.width / 2.0f) - (this.gameObject.getComponent(SpriteComponent.class).dimension.width / 2.0f));
         int bufferY = (int) ((this.dimension.height / 2.0f) - (this.gameObject.getComponent(SpriteComponent.class).dimension.height / 2.0f));
 
-        g2d.drawImage(this.spriteComponent.image,
-                (int) this.transform.position.x, (int) this.transform.position.y,
-                (int) this.dimension.width, (int) this.dimension.height, null);
+        Screen.getScene().getRenderer().drawImage(g2d, this.spriteComponent.image, this.gameObject,0,0);
+        Screen.getScene().getRenderer().drawImage(
+                g2d, this.gameObject.getComponent(SpriteComponent.class).image, this.gameObject, bufferX, bufferY);
 
-        g2d.drawImage(this.gameObject.getComponent(SpriteComponent.class).image,
-                (int) this.transform.position.x + bufferX, (int) this.transform.position.y + bufferY,
-                (int) this.gameObject.getComponent(SpriteComponent.class).dimension.width,
-                (int) this.gameObject.getComponent(SpriteComponent.class).dimension.height,
-                null);
+//        g2d.drawImage(this.spriteComponent.image,
+//                (int) this.transform.position.x, (int) this.transform.position.y,
+//                (int) this.dimension.width, (int) this.dimension.height, null);
+//
+//        g2d.drawImage(this.gameObject.getComponent(SpriteComponent.class).image,
+//                (int) this.transform.position.x + bufferX, (int) this.transform.position.y + bufferY,
+//                (int) this.gameObject.getComponent(SpriteComponent.class).dimension.width,
+//                (int) this.gameObject.getComponent(SpriteComponent.class).dimension.height,
+//                null);
 
         if (isSelected) {
-            g2d.drawImage(hoverSpriteComponent.image,
-                    (int) this.transform.position.x, (int) this.transform.position.y,
-                    (int) this.dimension.width, (int) this.dimension.height, null);
+            Screen.getScene().getRenderer().drawImage(g2d, hoverSpriteComponent.image, this.gameObject,0,0);
+//            g2d.drawImage(hoverSpriteComponent.image,
+//                    (int) this.transform.position.x, (int) this.transform.position.y,
+//                    (int) this.dimension.width, (int) this.dimension.height, null);
 
         }
     }
@@ -77,6 +82,6 @@ public class MenuItemComponent extends LevelEditMenuItemComponent<MenuItemCompon
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

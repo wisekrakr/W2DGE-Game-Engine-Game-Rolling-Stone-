@@ -1,5 +1,7 @@
 package com.wisekrakr.w2dge.game;
 
+import java.awt.geom.AffineTransform;
+
 public interface GameObjectImpl {
 
     /**
@@ -13,4 +15,12 @@ public interface GameObjectImpl {
      * @return this game object's copy
      */
     GameObject copy();
+
+    /**
+     * A method that helps with drawing a {@link com.wisekrakr.w2dge.game.GameObject} rotation. <br>
+     * We also set the rotation of a GameObjects with this method.
+     *
+     * @return {@link AffineTransform}
+     */
+    AffineTransform transform(int bufferX, int bufferY);
 }

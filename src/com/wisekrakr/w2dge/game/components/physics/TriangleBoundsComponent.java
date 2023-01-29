@@ -117,6 +117,6 @@ public class TriangleBoundsComponent extends BoundsComponent<TriangleBoundsCompo
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

@@ -11,6 +11,7 @@ public abstract class AbstractGameInputListener {
     public KeyListener keyListener;
     public GameObject player;
 
+
     public AbstractGameInputListener() {
         this.mouseListener = new MouseListener();
         this.keyListener = new KeyListener();

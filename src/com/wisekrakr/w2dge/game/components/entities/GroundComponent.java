@@ -31,6 +31,6 @@ public class GroundComponent extends Component<GroundComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

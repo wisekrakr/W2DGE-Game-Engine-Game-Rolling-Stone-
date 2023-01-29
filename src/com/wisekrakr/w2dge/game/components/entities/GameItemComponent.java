@@ -1,6 +1,5 @@
 package com.wisekrakr.w2dge.game.components.entities;
 
-import com.wisekrakr.util.ImageUtils;
 import com.wisekrakr.w2dge.data.Parser;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
@@ -8,14 +7,15 @@ import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class GameItemComponent extends Component<GameItemComponent> {
 
     private final Transform transform;
     private final Dimension dimension;
     private final SpriteComponent spriteComponent;
+    private int[][] originalRGB;
     public boolean changeColor = false;
+    private int width, height;
 
     public GameItemComponent(Transform transform, Dimension dimension, SpriteComponent spriteComponent) {
         this.transform = transform;
@@ -24,28 +24,49 @@ public class GameItemComponent extends Component<GameItemComponent> {
     }
 
     @Override
-    public void render(Graphics2D g2d) {
+    public void init() {
+        // Get the width and height of the image
+        width = spriteComponent.image.getWidth();
+        height = spriteComponent.image.getHeight();
 
-        if (changeColor) {
-            SpriteComponent sprite = (SpriteComponent) spriteComponent.copy();
-            BufferedImage image = sprite.image;
-
-//            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
-            ImageUtils.changeColor(image);
-
-            System.out.println("CGanging color");
-
-//            Graphics2D g2dd = image.createGraphics();
-//            g2dd.setColor(Color.WHITE);
-//            g2dd.fillRect((int) transform.position.x, (int) transform.position.y,
-//                    (int) dimension.width, (int) dimension.height
-//            );
-//            g2dd.drawImage(sprite.image, 0, 0, null);
-
-
-
-            changeColor = false;
+        // Store the original RGB values in a separate array
+        originalRGB = new int[width][height];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                originalRGB[x][y] = spriteComponent.image.getRGB(x, y);
+            }
         }
+    }
+
+    @Override
+    public void render(Graphics2D g2d) {
+//        AlphaComposite composite;
+//        if (changeColor) {
+//            SpriteComponent spriteComponent = gameObject.getComponent(SpriteComponent.class);
+//            if (spriteComponent != null) {
+////                BufferedImage image = spriteComponent.image;
+////                ImageUtils.changeColor(image,this,  Colors.babyBlue);
+//
+//
+////                composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f); // transparent until placement
+////                g2d.setComposite(composite);
+////                g2d.drawImage(spriteComponent.image,
+////                        (int) gameObject.transform.position.x, (int) gameObject.transform.position.y,
+////                        (int) gameObject.dimension.width, (int) gameObject.dimension.height,
+////                        null
+////                );
+////            }
+//        }else{
+//            // Reset the image back to its original state
+////            for (int x = 0; x < width; x++) {
+////                for (int y = 0; y < height; y++) {
+////                    spriteComponent.image.setRGB(x, y, originalRGB[x][y]);
+////                }
+////            }
+//
+////            composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f);
+////            g2d.setComposite(composite);
+//        }
     }
 
     @Override
@@ -94,6 +115,6 @@ public class GameItemComponent extends Component<GameItemComponent> {
 
     @Override
     public String name() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 }

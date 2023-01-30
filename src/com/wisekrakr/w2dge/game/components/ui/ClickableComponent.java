@@ -6,6 +6,7 @@ import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
 import com.wisekrakr.w2dge.game.components.physics.TriangleBoundsComponent;
+import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Camera;
 import com.wisekrakr.w2dge.visual.Screen;
@@ -61,7 +62,13 @@ public class ClickableComponent extends Component<ClickableComponent> {
 
     }
 
-    public boolean inBounds(GameObject g, Vector2 position) {
+    public boolean inDragBounds(GameObject g, Vector2 position, Dimension dragDimension){
+        return g.transform.position.x + g.dimension.width <= position.x + dragDimension.width &&
+                g.transform.position.y + g.dimension.height <= position.y + dragDimension.height &&
+                g.transform.position.x >= position.x && g.transform.position.y >= position.y;
+    }
+
+    public boolean inClickBounds(GameObject g, Vector2 position) {
         if (g.getComponent(BoxBoundsComponent.class)!= null){
             return position.x > this.gameObject.transform.position.x &&
                     position.x < this.gameObject.transform.position.x + this.gameObject.dimension.width &&

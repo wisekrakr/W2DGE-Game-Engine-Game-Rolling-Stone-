@@ -33,6 +33,7 @@ public class GameInputListener extends AbstractGameInputListener implements Game
     private float debounceTimeLeft = 0.0f;
 
     public boolean shiftKeyPressed = false;
+    public boolean controlKeyPressed = false;
 
     @Override
     public void init() {
@@ -46,7 +47,7 @@ public class GameInputListener extends AbstractGameInputListener implements Game
         inputsOnAllScenes();
 
         // Inputs LevelEditorScene
-        if (Screen.getScene() instanceof LevelEditorScene){
+        if (Screen.getScene() instanceof LevelEditorScene) {
 
             keyJustPressed(this.keyListener.keyCode);
 
@@ -70,18 +71,35 @@ public class GameInputListener extends AbstractGameInputListener implements Game
                 case KeyEvent.VK_D -> { // D
                     Screen.getScene().levelEditMouseCursor.getComponent(MenuItemControlComponent.class).direction = Direction.RIGHT;
                 }
+                case KeyEvent.VK_UP -> Screen.getScene().camera.position.y -= 3;
+                case KeyEvent.VK_DOWN -> Screen.getScene().camera.position.y += 3;
+                case KeyEvent.VK_LEFT -> Screen.getScene().camera.position.x -= 3;
+                case KeyEvent.VK_RIGHT -> Screen.getScene().camera.position.x += 3;
+                case KeyEvent.VK_C -> { // C duplicate objects
+                    Screen.getScene().levelEditMouseCursor.getComponent(MenuItemControlComponent.class).duplicate();
+                }
+                case KeyEvent.VK_DELETE -> { // DELETE delete objects
+                    Screen.getScene().levelEditMouseCursor.getComponent(MenuItemControlComponent.class).delete();
+                }
+                case KeyEvent.VK_Q -> { // Q rotate to the left
+                    Screen.getScene().levelEditMouseCursor.getComponent(MenuItemControlComponent.class).rotate(45f);
+                }
+                case KeyEvent.VK_E -> { // E rotate to the right
+                    Screen.getScene().levelEditMouseCursor.getComponent(MenuItemControlComponent.class).rotate(-45f);
+                }
             }
 
 
-        // Inputs LevelScene
-        }else if (Screen.getScene() instanceof LevelScene){
+            // Inputs LevelScene
+        } else if (Screen.getScene() instanceof LevelScene) {
             PlayerComponent p = player.getComponent(PlayerComponent.class);
             RigidBodyComponent rigidPlayer = player.getComponent(RigidBodyComponent.class);
 
             // Keyboard
             switch (this.keyListener.keyCode) {
                 // UI controls
-                case KeyEvent.VK_F2 -> Screen.getInstance().changeScene(Game.SceneType.EDITOR); // go to level editor scene
+                case KeyEvent.VK_F2 ->
+                        Screen.getInstance().changeScene(Game.SceneType.EDITOR); // go to level editor scene
                 case KeyEvent.VK_P -> keyJustPressed(KeyEvent.VK_P); // pausing and un-pausing the game
 
                 // Player controls
@@ -97,7 +115,7 @@ public class GameInputListener extends AbstractGameInputListener implements Game
                 case KeyEvent.VK_D -> rigidPlayer.direction = Direction.RIGHT;
 
                 // Camera controls
-                case KeyEvent.VK_R ->keyJustPressed(KeyEvent.VK_R); // reset player and camera to start
+                case KeyEvent.VK_R -> keyJustPressed(KeyEvent.VK_R); // reset player and camera to start
 
                 // Level controls
                 case KeyEvent.VK_G -> keyJustPressed(KeyEvent.VK_G); // change game item color
@@ -108,8 +126,9 @@ public class GameInputListener extends AbstractGameInputListener implements Game
     private void getComponentAndSetBoolean(Class<? extends Component> component, boolean b) {
         for (GameObject gameObject : Screen.getScene().getGameObjects()) {
             if (gameObject.getComponent(component) != null) {
-                switch (component.getSimpleName()){
-                    case "GameItemComponent"->gameObject.getComponent(GameItemComponent.class).changeColor = b;
+                switch (component.getSimpleName()) {
+                    case "GameItemComponent" -> gameObject.getComponent(GameItemComponent.class).changeColor = b;
+
                 }
             }
         }
@@ -124,23 +143,27 @@ public class GameInputListener extends AbstractGameInputListener implements Game
     private void inputsOnAllScenes() {
         // UI controls
         switch (this.keyListener.keyCode) {
-            case KeyEvent.VK_Q -> System.exit(1);
+            case KeyEvent.VK_0 -> System.exit(1);
             case KeyEvent.VK_SHIFT -> shiftKeyPressed = true;
+            case KeyEvent.VK_CONTROL -> controlKeyPressed = true;
         }
 
-        if (!keyListener.isKeyPressed(KeyEvent.VK_SHIFT)){
+        if (!keyListener.isKeyPressed(KeyEvent.VK_SHIFT)) {
             shiftKeyPressed = false;
+        }
+        if (!keyListener.isKeyPressed(KeyEvent.VK_CONTROL)) {
+            controlKeyPressed = false;
         }
     }
 
     /**
      * Method that makes it so the user can't hold down a key
      */
-    private void keyJustPressed(int keyCode){
-        if (debounceTimeLeft < 0){
+    private void keyJustPressed(int keyCode) {
+        if (debounceTimeLeft < 0) {
             debounceTimeLeft = debounceTime;
 
-            switch (keyCode){
+            switch (keyCode) {
                 case KeyEvent.VK_F5 -> { // export a level file
                     System.out.println("Export file");
                     Thread exportThread = new Thread(() -> {
@@ -161,7 +184,8 @@ public class GameInputListener extends AbstractGameInputListener implements Game
                 }
                 case KeyEvent.VK_P -> Game.isPaused = !Game.isPaused; // pause the game
                 case KeyEvent.VK_R -> player.getComponent(PlayerComponent.class).reset(); // reset player to start
-                case KeyEvent.VK_G -> getComponentAndSetBoolean(GameItemComponent.class, true); // change color game item
+                case KeyEvent.VK_G ->
+                        getComponentAndSetBoolean(GameItemComponent.class, true); // change color game item
             }
         }
     }

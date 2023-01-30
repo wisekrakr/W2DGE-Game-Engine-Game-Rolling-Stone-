@@ -25,6 +25,7 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
     public Game.SceneType type;
     public Camera camera;
     private List<GameObject> gameObjects;
+    private List<GameObject> gameObjectsToRemove;
     private CollisionManager collisionManager;
     private Renderer renderer;
     private DebugRenderer debugRenderer;
@@ -42,6 +43,7 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
         this.name = name;
         this.camera = new Camera(new Vector2());
         this.gameObjects = new ArrayList<>();
+        this.gameObjectsToRemove = new ArrayList<>();
         this.debugRenderer = new DebugRenderer();
         this.renderer = new Renderer(this.camera, debugRenderer);
         this.collisionManager = new CollisionManager();
@@ -78,6 +80,15 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
                 camera.follow(gameObject);
             }
         }
+
+        if (!gameObjectsToRemove.isEmpty()){
+            for (GameObject gameObject: gameObjectsToRemove){
+                gameObjects.remove(gameObject);
+                renderer.remove(gameObject);
+            }
+            gameObjectsToRemove.clear();
+        }
+
     }
 
     @Override
@@ -118,8 +129,7 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
 
     @Override
     public void removeGameObjectToScene(GameObject gameObject) {
-        gameObjects.remove(gameObject);
-        renderer.remove(gameObject);
+        gameObjectsToRemove.add(gameObject);
     }
 
     @Override

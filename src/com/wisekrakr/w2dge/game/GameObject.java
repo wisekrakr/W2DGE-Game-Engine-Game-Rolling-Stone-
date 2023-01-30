@@ -149,7 +149,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
         affineTransform.setToIdentity(); // reset transform
         affineTransform.translate(this.transform.position.x + bufferX, this.transform.position.y + bufferY);
         affineTransform.rotate(
-                this.transform.rotation,
+                Math.toRadians(this.transform.rotation),
                 this.dimension.width * this.transform.scale.x / 2.0f,
                 this.dimension.height * this.transform.scale.y / 2.0f
         );

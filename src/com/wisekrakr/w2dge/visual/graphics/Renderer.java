@@ -95,7 +95,7 @@ public class Renderer implements GameLoopImpl {
     }
 
     public void remove(GameObject gameObject) {
-        this.gameObjects.remove(gameObject.zIndex);
+        this.gameObjects.get(gameObject.zIndex).remove(gameObject);
     }
 
     /**

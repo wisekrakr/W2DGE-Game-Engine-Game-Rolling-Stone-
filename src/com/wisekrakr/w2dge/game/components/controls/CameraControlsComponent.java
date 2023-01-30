@@ -7,7 +7,7 @@ import com.wisekrakr.w2dge.visual.Screen;
 
 public class CameraControlsComponent extends Component<CameraControlsComponent> {
 
-    private Vector2 prevPosition;
+    public Vector2 prevPosition;
 
     public CameraControlsComponent() {
         this.prevPosition = new Vector2(0, 0);

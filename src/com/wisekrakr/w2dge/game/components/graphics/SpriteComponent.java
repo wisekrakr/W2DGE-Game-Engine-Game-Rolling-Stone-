@@ -35,18 +35,19 @@ public class SpriteComponent extends Component<SpriteComponent> {
 
     /**
      * Sprite of a single file.
+     *
      * @param fileName image file name in resources folder
      */
     public SpriteComponent(String fileName) {
         this.fileName = fileName;
 
         try {
-            if (AssetManager.hasSprite(fileName)){
+            if (AssetManager.hasSprite(fileName)) {
                 throw new Exception("Asset already exists: " + fileName);
             }
             this.image = ImageIO.read(new File(fileName));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Could not create Sprite: " + fileName);
         }
@@ -54,10 +55,11 @@ public class SpriteComponent extends Component<SpriteComponent> {
 
     /**
      * Sprite of a {@link com.wisekrakr.w2dge.visual.graphics.SpriteSheet}
-     * @param image sprite image
+     *
+     * @param image    sprite image
      * @param fileName name of the file
      */
-    public SpriteComponent(BufferedImage image, String fileName){
+    public SpriteComponent(BufferedImage image, String fileName) {
         this.image = image;
         this.fileName = fileName;
         this.dimension = new Dimension(image.getWidth(), image.getHeight());
@@ -76,22 +78,14 @@ public class SpriteComponent extends Component<SpriteComponent> {
 
     @Override
     public void render(Graphics2D g2d) {
-//        g2d.drawImage(this.image,
-//                (int)gameObject.transform.position.x, (int)gameObject.transform.position.y,
-//                image.getWidth(), image.getHeight(),
-//                null
-//        );
-        g2d.drawImage(this.image,
-                this.gameObject.transform(0,0),
-                null
-        );
+        g2d.drawImage(this.image, this.gameObject.transform(0, 0), null);
     }
 
     @Override
     public Component<SpriteComponent> copy() {
-        if (!isSubSprite){
+        if (!isSubSprite) {
             return new SpriteComponent(this.image, this.fileName);
-        }else {
+        } else {
             return new SpriteComponent(this.image, this.dimension, this.row, this.column, this.index, this.fileName);
         }
     }
@@ -103,7 +97,7 @@ public class SpriteComponent extends Component<SpriteComponent> {
         builder.append(beginObjectProperty(Names.SPRITE, tabSize));
         builder.append(addBooleanProperty("isSubSprite", isSubSprite, tabSize + 1, true, true));
 
-        if (isSubSprite){
+        if (isSubSprite) {
             builder.append(addStringProperty("FilePath", fileName, tabSize + 1, true, true));
             builder.append(addFloatProperty("tileWidth", dimension.width, tabSize + 1, true, true));
             builder.append(addFloatProperty("tileHeight", dimension.height, tabSize + 1, true, true));
@@ -128,7 +122,7 @@ public class SpriteComponent extends Component<SpriteComponent> {
         Parser.consume(',');
         String filePath = Parser.consumeStringProperty("FilePath");
 
-        if (isSubSprite){
+        if (isSubSprite) {
             Parser.consume(',');
             Parser.consumeFloatProperty("tileWidth");
             Parser.consume(',');
@@ -139,7 +133,7 @@ public class SpriteComponent extends Component<SpriteComponent> {
             Parser.consumeIntProperty("column");
             Parser.consume(',');
             int index = Parser.consumeIntProperty("index");
-            if (!AssetManager.hasSpriteSheet(filePath)){
+            if (!AssetManager.hasSpriteSheet(filePath)) {
                 System.err.println("SpriteSheet: " + filePath + " has not been loaded yet");
                 System.exit(-1);
             }
@@ -154,7 +148,7 @@ public class SpriteComponent extends Component<SpriteComponent> {
         Parser.consume(',');
         Parser.consumeIntProperty("tileHeight");
 
-        if (!AssetManager.hasSprite(filePath)){
+        if (!AssetManager.hasSprite(filePath)) {
             System.err.println("Sprite: " + filePath + " has not been loaded yet");
             System.exit(-1);
         }

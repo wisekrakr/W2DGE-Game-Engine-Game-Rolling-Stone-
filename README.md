@@ -15,17 +15,40 @@ Box and triangle bounds for now, but circle bounds will get added as well.
 
 The engine will create one Screen (JFrame) and the user will add "Scenes" to create different kind of "Screens" were the user could edit the level or load a level.
 
+<ul>
+<li>
 Save level - f5
+</li>
+<li>
 Load level - f9
+</li>
+<li>
 To level edit - f2
+</li>
+<li>
 to level - f1
-
+</li>
+<li>
 Right mouse to drag camera in level edit.
+</li>
+<li>
 Left mouse click to add to scene.
+</li>
+<li>
 Left mouse+shift to select item.
+</li>
+<li>
 Mouse drag to select multiple items.
+</li>
+<li>
 Delete to delete selected items.
+</li>
+<li>
 C to copy selected items.
+</li>
+<li>
 Q + R to rotate selected items.
+</li>
+</ul>
 
 I will work further on this project to be able to built platformer and/or arcade games in the future (maybe).

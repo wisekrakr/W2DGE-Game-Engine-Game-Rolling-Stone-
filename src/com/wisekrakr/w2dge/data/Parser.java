@@ -3,14 +3,16 @@ package com.wisekrakr.w2dge.data;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
+import com.wisekrakr.w2dge.game.components.entities.PortalComponent;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
 import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
 import com.wisekrakr.w2dge.game.components.physics.ElevateComponent;
 import com.wisekrakr.w2dge.game.components.physics.TriangleBoundsComponent;
+import com.wisekrakr.w2dge.game.components.physics.TriggerComponent;
 
 public class Parser {
-    private static int offset = 0;
-    private static int line = 1;
+    public static int offset = 0;
+    public static int line = 1;
     public static byte[] bytes;
 
     public static void skipWhitespace() {
@@ -195,6 +197,12 @@ public class Parser {
             case Serializable.Names.ELEVATE -> {
                 return ElevateComponent.deserialize();
             }
+            case Serializable.Names.TRIGGER -> {
+                return TriggerComponent.deserialize();
+            }
+            case Serializable.Names.PORTAL -> {
+                return PortalComponent.deserialize();
+            }
             case Serializable.Names.GAME_ITEM -> {
                 return GameItemComponent.deserialize();
             }
@@ -209,37 +217,6 @@ public class Parser {
         return null;
     }
 
-
-    //    public static JComponent parseJComponent() {
-//        String componentTitle = Parser.parseString();
-//        skipWhitespace();
-//        Parser.consume(':');
-//        skipWhitespace();
-//        Parser.consume('{');
-//
-//        switch (componentTitle) {
-//            case "Button":
-//                return Button.deserialize();
-//            case "FileExplorerButton":
-//                return FileExplorerButton.deserialize();
-//            case "SaveLevelButton":
-//                return SaveLevelButton.deserialize();
-//            case "ZIndexButton":
-//                return ZIndexButton.deserialize();
-//            case "LineBreak":
-//                return LineBreak.deserialize();
-//            case "NewLevelButton":
-//                return NewLevelButton.deserialize();
-//            case "TestLevelButton":
-//                return TestLevelButton.deserialize();
-//            case "ButtonQuestionBlock":
-//                return ButtonQuestionBlock.deserialize();
-//            default:
-//                assert false : "Could not find component '" + componentTitle + "' at line: " + Parser.line;
-//        }
-//
-//        return null;
-//    }
 
     public static String consumeStringProperty(String name) {
         skipWhitespace();

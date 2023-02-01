@@ -24,7 +24,8 @@ public class AssetManager {
     public static SpriteSheet groundSheet;
     public static SpriteSheet tabsSheet;
     public static SpriteSheet portalSheet;
-    public static SpriteSheet fireworkSheet;
+    public static SpriteSheet explosionSheet;
+    public static SpriteComponent spaceship;
 
 
     public static boolean hasSprite(String fileName) {
@@ -175,12 +176,14 @@ public class AssetManager {
                 2, 2
         );
 
-        fireworkSheet = AssetFinder.spriteSheet(
+        explosionSheet = AssetFinder.spriteSheet(
                 AssetFinder.ImageType.OTHERS,
-                "yellow_firework.png",
-                new Dimension(GameConstants.TILE_WIDTH * 2, GameConstants.TILE_HEIGHT * 2),
-                6, 10
+                "explosion.png",
+                new Dimension(GameConstants.TILE_WIDTH, GameConstants.TILE_HEIGHT),
+                8, 8*5
         );
+
+        spaceship = getSprite(AssetFinder.image(AssetFinder.ImageType.PLAYER, "spaceship.png"));
     }
 
 }

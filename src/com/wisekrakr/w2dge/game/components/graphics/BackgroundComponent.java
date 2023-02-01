@@ -46,9 +46,9 @@ public class BackgroundComponent extends Component<BackgroundComponent> {
         if (player.getComponent(RigidBodyComponent.class).direction == Direction.RIGHT){
             this.gameObject.transform.position.x -= deltaTime * speed;
         }else{
-            this.gameObject.transform.position.x += deltaTime * speed;
-
+//            this.gameObject.transform.position.x += deltaTime * speed;
         }
+
         this.gameObject.transform.position.x = (float) Math.floor(this.gameObject.transform.position.x); // make an int
 
         // if the is no longer visible
@@ -115,28 +115,6 @@ public class BackgroundComponent extends Component<BackgroundComponent> {
         builder.append(addBooleanProperty("followGround", followGround, tabSize + 1, true, true));
 
         builder.append(addStringProperty("filename", spriteComponent.fileName, tabSize + 1, true, true));
-
-//        if (backgrounds.length > 0){
-//            builder.append(beginObjectProperty("backgrounds", tabSize + 1));// Components
-//        }
-//
-//        int i = 0;
-//        for (GameObject bg : backgrounds) {
-//            String str = bg.serialize(tabSize + 2); // get background string
-//            if (str.compareTo("") != 0) { // if not empty
-//                builder.append(str); // add to StringBuilder
-//                if (i != backgrounds.length - 1) {
-//                    builder.append(addEnding(true, true)); // if there are more backgrounds - keep it
-//                } else {
-//                    builder.append(addEnding(true, false));// if there are no more backgrounds - close it
-//                }
-//            }
-//            i++;
-//        }
-//
-//        if (backgrounds.length > 0) {
-//            builder.append(closeObjectProperty(tabSize + 1));
-//        }
 
         builder.append(addEnding(true, false));
         builder.append(closeObjectProperty(tabSize));

@@ -78,7 +78,7 @@ public class SpriteComponent extends Component<SpriteComponent> {
 
     @Override
     public void render(Graphics2D g2d) {
-        g2d.drawImage(this.image, this.gameObject.transform(0, 0), null);
+        g2d.drawImage(this.image, this.gameObject.transform(0, 0, true), null);
     }
 
     @Override

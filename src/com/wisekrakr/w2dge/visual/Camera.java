@@ -18,18 +18,9 @@ public class Camera {
      * @param gameObject
      */
     public void follow(GameObject gameObject) {
-
-        // camera follows player
-//        if (gameObject.transform.position.x - position.x > GameConstants.CAMERA_OFFSET_X) {
-//            position.x = (float) (gameObject.transform.position.x + (rotation * Math.PI / 180) - GameConstants.CAMERA_OFFSET_X);
-//        }
+        // camera follows game object
         position.x = (float) (gameObject.transform.position.x + (rotation * Math.PI / 180) - GameConstants.CAMERA_OFFSET_X);
-
-
-        if (gameObject.transform.position.y - position.y > GameConstants.CAMERA_OFFSET_Y) {
-            position.y = (float) (gameObject.transform.position.y + (rotation * Math.PI / 180) - GameConstants.CAMERA_OFFSET_Y);
-        }
-
+        position.y = (float) (gameObject.transform.position.y + (rotation * Math.PI / 180) - GameConstants.CAMERA_OFFSET_Y);
     }
 
     /**

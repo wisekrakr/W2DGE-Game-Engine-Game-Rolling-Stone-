@@ -5,7 +5,6 @@ import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.math.CollisionManager;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Vector2;
-import com.wisekrakr.w2dge.visual.Screen;
 
 import java.awt.*;
 
@@ -27,11 +26,13 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
     public Dimension dimension;
     public Dimension halfDimension;
     public Vector2 center;
+    public Vector2 buffer;
     protected float enclosingRadius;
 
     public BoundsComponent(Dimension dimension) {
         this.dimension = dimension;
         this.halfDimension = new Dimension(dimension.width / 2.0f, dimension.height / 2.0f);
+        this.buffer = new Vector2();
     }
 
     @Override
@@ -41,9 +42,6 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
 
     @Override
     public void render(Graphics2D g2d) {
-        if (Screen.getScene().getRenderer().isDebugging) {
-            Screen.getScene().getRenderer().debugRenderer.render(g2d, this.gameObject);
-        }
     }
 
     @Override
@@ -53,8 +51,11 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
 
     @Override
     public void resolveCollision(BoundsComponent<?> boundsComponent, GameObject gameObject, CollisionManager.HitType type) {
-        BoxBoundsComponent playerBounds = gameObject.getComponent(BoxBoundsComponent.class);
-        playerBounds.initialCalculations();
+        if (boundsComponent.gameObject.getComponent(TriggerComponent.class) != null) {
+            return;
+        }
+
+        boundsComponent.initialCalculations();
         this.initialCalculations();
         CollisionManager.collisionResolver(this.gameObject, gameObject, type);
     }
@@ -95,19 +96,19 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
         int code2 = computeRegionCode(p2, bounds);
 
         // Check if the line is inside or outside or half in and half out
-        if (code1 == 0 && code2 == 0){
+        if (code1 == 0 && code2 == 0) {
             // Line is inside
             return true;
         } else if ((code1 & code2) != 0) {
             // Line is outside
             return false;
-        }else if (code1 == 0 || code2 == 0){
+        } else if (code1 == 0 || code2 == 0) {
             // One point is inside and one point is outside
             return true;
         }
 
         // If there is no intersection we have to clip it and rerun the algorithm
-        int xMax = (int)(position.x + bounds.dimension.width);
+        int xMax = (int) (position.x + bounds.dimension.width);
         int xMin = (int) position.x;
 
         // y = slopeX + intersect
@@ -120,12 +121,12 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
         return isIntersecting(p1, p2, ++depth, bounds, position);
     }
 
-    private float calculateFinalYIntersect(int code, Vector2 p, float min, float max, float slope, float intersect){
+    private float calculateFinalYIntersect(int code, Vector2 p, float min, float max, float slope, float intersect) {
         // Compute where to clip
-        if ((code & LEFT) == LEFT){ // if the point is on the left
+        if ((code & LEFT) == LEFT) { // if the point is on the left
             // Add 1 to ensure we're inside the clipping polygon
             p.x = min + 1;
-        }else if ((code & RIGHT) == RIGHT){ // if the point is on the right
+        } else if ((code & RIGHT) == RIGHT) { // if the point is on the right
             // Subtract 1 to ensure we're inside the clipping polygon
             p.x = max - 1;
         }
@@ -134,6 +135,7 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
 
     /**
      * Compute at what region point the bounds are colliding
+     *
      * @param point
      * @param bounds
      * @return
@@ -143,14 +145,14 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
         Vector2 topLeft = bounds.gameObject.transform.position;
 
         // Check if the point is to the left or right of bounds
-        if (point.x < topLeft.x){
+        if (point.x < topLeft.x) {
             code |= LEFT;
         } else if (point.x > topLeft.x + bounds.dimension.width) {
             code |= RIGHT;
         }
 
         // Check if the point is to the top or bottom of bounds
-        if (point.y < topLeft.y){
+        if (point.y < topLeft.y) {
             code |= TOP;
         } else if (point.y > topLeft.y + bounds.dimension.height) {
             code |= BOTTOM;
@@ -173,6 +175,7 @@ public abstract class BoundsComponent<T> extends Component<T> implements BoundsC
 
     /**
      * is a line intersection with any bounds positions
+     *
      * @param b
      * @return
      */

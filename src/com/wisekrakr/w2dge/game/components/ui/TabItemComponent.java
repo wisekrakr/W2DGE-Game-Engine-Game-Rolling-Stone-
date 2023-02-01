@@ -33,8 +33,6 @@ public class TabItemComponent extends LevelEditMenuItemComponent<TabItemComponen
     public void render(Graphics2D g2d) {
 
         if (isSelected){
-//            g2d.drawImage(spriteComponent.image, (int)transform.position.x,(int) transform.position.y,
-//                    (int)dimension.width,(int) dimension.height,null);
             Screen.getScene().getRenderer().drawImage(
                     g2d,
                     spriteComponent.image,

@@ -4,11 +4,14 @@ import com.wisekrakr.util.AssetFinder;
 import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObject;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
+import com.wisekrakr.w2dge.game.PlayerState;
 import com.wisekrakr.w2dge.game.components.Component;
+import com.wisekrakr.w2dge.game.components.entities.PortalComponent;
 import com.wisekrakr.w2dge.game.components.graphics.SpriteComponent;
 import com.wisekrakr.w2dge.game.components.physics.BoundsComponent;
 import com.wisekrakr.w2dge.game.components.physics.BoxBoundsComponent;
 import com.wisekrakr.w2dge.game.components.physics.TriangleBoundsComponent;
+import com.wisekrakr.w2dge.game.components.physics.TriggerComponent;
 import com.wisekrakr.w2dge.math.Dimension;
 import com.wisekrakr.w2dge.math.Transform;
 import com.wisekrakr.w2dge.math.Vector2;
@@ -17,10 +20,8 @@ import com.wisekrakr.w2dge.visual.assets.AssetManager;
 import com.wisekrakr.w2dge.visual.scene.Scene;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class MenuContainerComponent extends Component<MenuContainerComponent> {
@@ -144,7 +145,7 @@ public class MenuContainerComponent extends Component<MenuContainerComponent> {
         // Adding fifth tab container objects
         addingTabContainerWithMenuItems(
                 AssetManager.bigSpritesSheet.sprites,
-                new Dimension(GameConstants.TILE_WIDTH * 2, GameConstants.TILE_HEIGHT * 2),
+                new Dimension(GameConstants.TILE_WIDTH * 2, GameConstants.TILE_HEIGHT + (GameConstants.TILE_HEIGHT / 2)),
                 4, BoundsComponent.BoundsType.BOX
         );
 
@@ -152,13 +153,14 @@ public class MenuContainerComponent extends Component<MenuContainerComponent> {
         addingTabContainerWithMenuItems(
                 AssetManager.portalSheet.sprites,
                 new Dimension(GameConstants.TILE_WIDTH, (GameConstants.TILE_HEIGHT * 2)),
-                5, BoundsComponent.BoundsType.BOX
+                5, BoundsComponent.BoundsType.BOX,
+                new TriggerComponent()
         );
     }
 
 
     private void addingTabContainerWithMenuItems(List<SpriteComponent> sprites, Dimension dimension,
-                                                 int tabNr, BoundsComponent.BoundsType type) {
+                                                 int tabNr, BoundsComponent.BoundsType type, Component<?>... components) {
 
         for (SpriteComponent currentSpriteComponent : sprites) {
             int x = (int) (GameConstants.BUTTON_OFFSET_X + (currentSpriteComponent.column * GameConstants.BUTTON_WIDTH) +
@@ -182,9 +184,28 @@ public class MenuContainerComponent extends Component<MenuContainerComponent> {
                     currentSpriteComponent,
                     menuItem.copy(),
                     type.equals(BoundsComponent.BoundsType.BOX) ?
-                            new BoxBoundsComponent(new Dimension(dimension.width, dimension.height-1)) :
-                            new TriangleBoundsComponent(new Dimension(dimension.width, dimension.height-1))
+                            new BoxBoundsComponent(new Dimension(dimension.width, dimension.height - 1)) :
+                            new TriangleBoundsComponent(new Dimension(dimension.width, dimension.height - 1))
             );
+
+            Arrays.stream(components).forEachOrdered(object::addComponent);
+
+            if (tabNr == 1){
+                BoxBoundsComponent bounds = object.getComponent(BoxBoundsComponent.class);
+                if (bounds != null){
+                    bounds.buffer = new Vector2(0, GameConstants.TILE_HEIGHT - 16);
+                }
+            }
+
+            // TODO not nice looking. WE need a way to tell what portal was placed on the scene
+            if (tabNr == 5){
+                if (currentSpriteComponent.equals(sprites.get(0))){
+                    object.addComponent(new PortalComponent(PlayerState.NORMAL));
+                }else if (currentSpriteComponent.equals(sprites.get(1))){
+                    object.addComponent(new PortalComponent(PlayerState.FLYING));
+                }
+            }
+
             this.tabsMap.get(tabs.get(tabNr)).add(object);
         }
     }

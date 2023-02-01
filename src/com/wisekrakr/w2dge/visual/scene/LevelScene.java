@@ -6,6 +6,7 @@ import com.wisekrakr.w2dge.constants.GameConstants;
 import com.wisekrakr.w2dge.game.GameObjectFactory;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
+import com.wisekrakr.w2dge.visual.graphics.DebugRenderer;
 
 import java.awt.*;
 
@@ -35,8 +36,7 @@ public class LevelScene extends Scene {
 
         FileUtils.importFileToLevel("Test", this);
 
-        getRenderer().isDebugging = false;
-
+        getRenderer().initDebugging();
     }
 
     @Override
@@ -57,6 +57,12 @@ public class LevelScene extends Scene {
         g2d.fillRect(0, 0, GameConstants.SCREEN_WIDTH, GameConstants.SCREEN_HEIGHT);
 
         getRenderer().render(g2d);
+
+        if (getRenderer().isDebugging){
+            getRenderer().debugRenderer.render(g2d, getGameObjects(),
+                    DebugRenderer.DebugType.DISTANCE, DebugRenderer.DebugType.BORDER);
+        }
+
     }
 
 

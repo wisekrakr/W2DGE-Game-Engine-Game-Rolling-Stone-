@@ -162,7 +162,7 @@ public class GameObjectFactory {
                 Tags.GAME_ITEM,
                 new Transform(position),
                 dimension,
-                ZIndexes.BACK
+                ZIndexes.FRONT
         );
 
         renderer.partOfUI(menuItem);
@@ -191,7 +191,6 @@ public class GameObjectFactory {
     /**
      * Creates a new GameObject with name TAB -> object is non-serializable
      *
-     * @param sprite
      * @param position
      * @param renderer
      * @return

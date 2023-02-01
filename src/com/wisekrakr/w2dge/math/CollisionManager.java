@@ -40,6 +40,7 @@ public class CollisionManager {
 
     public static void collisionResolver(GameObject parent, GameObject player, HitType type) {
         switch (type) {
+
             case TRIANGLE -> player.getComponent(PlayerComponent.class).reset();
             case BOX -> {
                 float dx = parent.getComponent(BoxBoundsComponent.class).center.x -
@@ -55,9 +56,10 @@ public class CollisionManager {
                 float overlapX = combinedHalfWidth - Math.abs(dx);
                 float overlapY = combinedHalfHeight - Math.abs(dy);
                 if (overlapX >= overlapY) {
-                    if (dy > 0.5f) {
+                    if (dy > 1f) {
                         // Collision on the bottom of the player
-                        player.transform.position.y = parent.transform.position.y - parent.dimension.height;
+                        player.transform.position.y = parent.transform.position.y - parent.dimension.height +
+                                parent.getComponent(BoxBoundsComponent.class).buffer.y;
                         player.getComponent(RigidBodyComponent.class).velocity.y = 0; //stop falling
                         player.getComponent(PlayerComponent.class).grounded = true;
                     } else {
@@ -67,7 +69,8 @@ public class CollisionManager {
                     // Collision on the left or the right
                 } else {
                     if (dx < 0 && dy <= 0.3f) {
-                        player.transform.position.y = parent.transform.position.y - parent.dimension.height;
+                        player.transform.position.y = parent.transform.position.y - parent.dimension.height +
+                                parent.getComponent(BoxBoundsComponent.class).buffer.y;
                         player.getComponent(RigidBodyComponent.class).velocity.y = 0; //stop falling
                         player.getComponent(PlayerComponent.class).grounded = true;
                     } else {

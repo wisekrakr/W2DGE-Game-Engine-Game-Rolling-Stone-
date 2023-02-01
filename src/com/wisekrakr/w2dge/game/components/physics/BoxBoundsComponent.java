@@ -8,7 +8,6 @@ import com.wisekrakr.w2dge.math.Vector2;
 
 public class BoxBoundsComponent extends BoundsComponent<BoxBoundsComponent> {
 
-
     public BoxBoundsComponent(Dimension dimension) {
         super(dimension);
 
@@ -21,8 +20,8 @@ public class BoxBoundsComponent extends BoundsComponent<BoxBoundsComponent> {
                 (this.halfDimension.height * this.halfDimension.height));
 
         this.center = new Vector2(
-                this.gameObject.transform.position.x + this.halfDimension.width,
-                this.gameObject.transform.position.y + this.halfDimension.height
+                this.gameObject.transform.position.x + this.buffer.x + this.halfDimension.width ,
+                this.gameObject.transform.position.y + this.buffer.y + this.halfDimension.height
         );
     }
 
@@ -47,7 +46,9 @@ public class BoxBoundsComponent extends BoundsComponent<BoxBoundsComponent> {
 
     @Override
     public Component<BoxBoundsComponent> copy() {
-        return new BoxBoundsComponent(dimension.copy());
+        BoxBoundsComponent bounds = new BoxBoundsComponent(dimension.copy());
+        bounds.buffer = new Vector2(this.buffer.x, this.buffer.y);
+        return bounds;
     }
 
     @Override
@@ -56,7 +57,8 @@ public class BoxBoundsComponent extends BoundsComponent<BoxBoundsComponent> {
 
         builder.append(beginObjectProperty(Names.BOX_BOUNDS, tabSize));
         builder.append(dimension.serialize(tabSize + 1));
-        builder.append(addEnding(true, false));
+        builder.append(addFloatProperty("xBuffer", this.buffer.x, tabSize + 1, true, true));
+        builder.append(addFloatProperty("yBuffer", this.buffer.y, tabSize + 1, true, false));
         builder.append(closeObjectProperty(tabSize));
 
         return builder.toString();
@@ -64,9 +66,15 @@ public class BoxBoundsComponent extends BoundsComponent<BoxBoundsComponent> {
 
     public static BoxBoundsComponent deserialize() {
         Dimension d = Dimension.deserialize();
+        float xBuffer = Parser.consumeFloatProperty("xBuffer");
+        Parser.consume(',');
+        float yBuffer = Parser.consumeFloatProperty("yBuffer");
         Parser.consumeEndObjectProperty();
 
-        return new BoxBoundsComponent(d);
+        BoxBoundsComponent bounds = new BoxBoundsComponent(d);
+        bounds.buffer = new Vector2(xBuffer, yBuffer);
+
+        return bounds;
     }
 
     @Override

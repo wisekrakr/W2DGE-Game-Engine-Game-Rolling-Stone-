@@ -2,6 +2,8 @@ package com.wisekrakr.util;
 
 
 
+import com.wisekrakr.w2dge.game.GameObject;
+
 import java.util.Random;
 
 /** Utility and fast math functions.
@@ -473,6 +475,13 @@ public final class MathUtils {
     /** @return the logarithm of value with base 2 */
     static public float log2 (float value) {
         return log(2, value);
+    }
+
+
+    public static float distance(GameObject thisGameObject, GameObject gameObject) {
+        int dx = (int) (thisGameObject.transform.position.x - gameObject.transform.position.x);
+        int dy = (int) (thisGameObject.transform.position.y - gameObject.transform.position.y);
+        return (float) Math.hypot(dx, dy);
     }
 }
 

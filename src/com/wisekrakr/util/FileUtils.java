@@ -52,7 +52,11 @@ public class FileUtils {
         if (!tmp.exists()) {
             return;
         }
+        Parser.offset = 0;
+        Parser.line = 1;
         Parser.bytes = FileUtils.fileToByteBuffer(filename).array();
+
+
     }
 
     /**

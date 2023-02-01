@@ -11,6 +11,8 @@ public abstract class Serializable {
         public static final String DIMENSION  = "Dimension";
         public static final String VECTOR2  = "Vector2";
         public static final String ELEVATE = "Elevate";
+        public static final String TRIGGER = "Trigger";
+        public static final String PORTAL = "Portal";
     }
 
     public abstract String serialize(int tabSize);

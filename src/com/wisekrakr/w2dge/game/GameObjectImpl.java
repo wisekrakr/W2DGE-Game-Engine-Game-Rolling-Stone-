@@ -22,5 +22,5 @@ public interface GameObjectImpl {
      *
      * @return {@link AffineTransform}
      */
-    AffineTransform transform(int bufferX, int bufferY);
+    AffineTransform transform(int bufferX, int bufferY, boolean toRadians);
 }

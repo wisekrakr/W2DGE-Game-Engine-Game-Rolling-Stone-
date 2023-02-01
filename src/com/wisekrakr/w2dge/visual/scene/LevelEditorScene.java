@@ -8,6 +8,7 @@ import com.wisekrakr.w2dge.game.components.regions.GridComponent;
 import com.wisekrakr.w2dge.game.components.ui.MenuContainerComponent;
 import com.wisekrakr.w2dge.math.Vector2;
 import com.wisekrakr.w2dge.visual.Screen;
+import com.wisekrakr.w2dge.visual.graphics.DebugRenderer;
 
 import java.awt.*;
 import java.util.Random;
@@ -46,7 +47,7 @@ public class LevelEditorScene extends Scene {
         addGameObjectToScene(ground);
 
 //        FileUtils.importFileToLevel("Test", this);
-        getRenderer().isDebugging = true;
+//        getRenderer().initDebugging();
 
     }
 
@@ -77,6 +78,10 @@ public class LevelEditorScene extends Scene {
 
         // Cursor always rendered last - so it is on top of everything
         levelEditMouseCursor.render(g2d);
+
+        if (getRenderer().isDebugging){
+            getRenderer().debugRenderer.render(g2d, getGameObjects(), DebugRenderer.DebugType.BORDER);
+        }
     }
 
     @Override

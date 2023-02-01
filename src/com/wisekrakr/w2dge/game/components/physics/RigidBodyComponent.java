@@ -9,7 +9,7 @@ public class RigidBodyComponent extends Component<RigidBodyComponent> {
 
     public Vector2 velocity;
 
-    public Direction direction = Direction.RIGHT;
+    public Direction direction = Direction.NONE;
 
     public RigidBodyComponent(Vector2 velocity) {
         this.velocity = velocity;
@@ -19,8 +19,8 @@ public class RigidBodyComponent extends Component<RigidBodyComponent> {
     public void update(double deltaTime) {
         switch (direction){
 
-//            case UP -> gameObject.transform.position.y += velocity.y * deltaTime;
-//            case DOWN -> gameObject.transform.position.y -= velocity.y * deltaTime;
+            case UP -> gameObject.transform.position.y += velocity.y * deltaTime;
+            case DOWN -> gameObject.transform.position.y -= velocity.y * deltaTime;
             case LEFT -> gameObject.transform.position.x -= velocity.x * deltaTime;
             case RIGHT -> gameObject.transform.position.x += velocity.x * deltaTime;
         }

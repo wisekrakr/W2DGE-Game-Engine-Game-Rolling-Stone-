@@ -58,7 +58,7 @@ public class Graphics implements GameLoopImpl {
     @Override
     public void render(Graphics2D g2d) {
         for (SpriteComponent layer : layers) {
-            g2d.drawImage(layer.image, this.parent.transform(0,0), null);
+            g2d.drawImage(layer.image, this.parent.transform(0,0,false), null);
         }
     }
 

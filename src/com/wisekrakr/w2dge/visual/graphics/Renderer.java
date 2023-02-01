@@ -20,7 +20,7 @@ public class Renderer implements GameLoopImpl {
     public DebugRenderer debugRenderer;
     private final List<GameObject> uiGameObjects;
 
-    public boolean isDebugging;
+    public boolean isDebugging = false;
 
     public Renderer(Camera camera, DebugRenderer debugRenderer) {
         this.camera = camera;
@@ -32,6 +32,10 @@ public class Renderer implements GameLoopImpl {
     @Override
     public void init() {
 
+    }
+
+    public void initDebugging(){
+        isDebugging = true;
     }
 
     @Override
@@ -86,7 +90,7 @@ public class Renderer implements GameLoopImpl {
     }
 
     public void drawImage(Graphics2D g2d, BufferedImage image, GameObject gameObject, int bufferX, int bufferY) {
-        g2d.drawImage(image, gameObject.transform(bufferX, bufferY), null);
+        g2d.drawImage(image, gameObject.transform(bufferX, bufferY, true), null);
     }
 
     public void add(GameObject gameObject) {
@@ -104,7 +108,7 @@ public class Renderer implements GameLoopImpl {
      * @param uiObject {@link GameObject}
      */
     public void partOfUI(GameObject uiObject) {
-        uiGameObjects.add(uiObject);
+        this.uiGameObjects.add(uiObject);
     }
 
     @Override

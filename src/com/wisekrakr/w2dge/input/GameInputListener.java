@@ -4,6 +4,7 @@ import com.wisekrakr.main.Game;
 import com.wisekrakr.util.FileUtils;
 import com.wisekrakr.w2dge.GameLoopImpl;
 import com.wisekrakr.w2dge.game.GameObject;
+import com.wisekrakr.w2dge.game.PlayerState;
 import com.wisekrakr.w2dge.game.components.Component;
 import com.wisekrakr.w2dge.game.components.entities.GameItemComponent;
 import com.wisekrakr.w2dge.game.components.entities.PlayerComponent;
@@ -106,6 +107,10 @@ public class GameInputListener extends AbstractGameInputListener implements Game
                 case KeyEvent.VK_SPACE -> { // player jump
                     if (p.grounded) {
                         p.jump();
+                        p.grounded = false;
+                    }
+                    if (p.state == PlayerState.FLYING){
+                        p.fly();
                         p.grounded = false;
                     }
                 }

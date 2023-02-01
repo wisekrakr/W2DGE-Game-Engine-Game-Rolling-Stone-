@@ -27,12 +27,15 @@ public class ClickableComponent extends Component<ClickableComponent> {
             g2d.setStroke(GameConstants.THICK_LINE);
 
             if (this.gameObject.getComponent(BoxBoundsComponent.class) != null){
+                BoxBoundsComponent box = this.gameObject.getComponent(BoxBoundsComponent.class);
                 g2d.draw(
                         new Rectangle2D.Float(
-                                this.gameObject.transform.position.x,
-                                this.gameObject.transform.position.y,
-                                this.gameObject.dimension.width,
-                                this.gameObject.dimension.height
+                                this.gameObject.transform.position.x + box.buffer.x,
+                                this.gameObject.transform.position.y + box.buffer.y,
+                                box.buffer == Vector2.Zero ? this.gameObject.dimension.width :
+                                        this.gameObject.dimension.width - box.buffer.x,
+                                box.buffer == Vector2.Zero ? this.gameObject.dimension.height :
+                                        this.gameObject.dimension.height - box.buffer.y
                         )
                 );
             }else if (this.gameObject.getComponent(TriangleBoundsComponent.class) != null){
@@ -70,10 +73,11 @@ public class ClickableComponent extends Component<ClickableComponent> {
 
     public boolean inClickBounds(GameObject g, Vector2 position) {
         if (g.getComponent(BoxBoundsComponent.class)!= null){
-            return position.x > this.gameObject.transform.position.x &&
-                    position.x < this.gameObject.transform.position.x + this.gameObject.dimension.width &&
-                    position.y > this.gameObject.transform.position.y &&
-                    position.y < this.gameObject.transform.position.y + this.gameObject.dimension.height;
+            BoxBoundsComponent box = g.getComponent(BoxBoundsComponent.class);
+            return position.x > this.gameObject.transform.position.x + box.buffer.x &&
+                    position.x < this.gameObject.transform.position.x + this.gameObject.dimension.width + box.buffer.x &&
+                    position.y > this.gameObject.transform.position.y + box.buffer.y &&
+                    position.y < this.gameObject.transform.position.y + this.gameObject.dimension.height + box.buffer.y;
 
         }else if (g.getComponent(TriangleBoundsComponent.class)!= null){
             TriangleBoundsComponent triangle = this.gameObject.getComponent(TriangleBoundsComponent.class);

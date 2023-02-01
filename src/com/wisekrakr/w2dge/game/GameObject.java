@@ -63,7 +63,7 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
         for (Component<?> component : components) {
             component.render(g2d);
         }
-        transform(0, 0);
+        transform(0, 0, true);
     }
 
     @Override
@@ -143,13 +143,13 @@ public class GameObject extends Serializable implements GameLoopImpl, ComponentI
     }
 
     @Override
-    public AffineTransform transform(int bufferX, int bufferY) {
+    public AffineTransform transform(int bufferX, int bufferY, boolean toRadians) {
 
         AffineTransform affineTransform = new AffineTransform();
         affineTransform.setToIdentity(); // reset transform
         affineTransform.translate(this.transform.position.x + bufferX, this.transform.position.y + bufferY);
         affineTransform.rotate(
-                Math.toRadians(this.transform.rotation),
+                toRadians ? Math.toRadians(this.transform.rotation) : this.transform.rotation,
                 this.dimension.width * this.transform.scale.x / 2.0f,
                 this.dimension.height * this.transform.scale.y / 2.0f
         );

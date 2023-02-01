@@ -54,8 +54,6 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
 
     @Override
     public void init() {
-        renderer.isDebugging = false;
-
         for (GameObject gameObject : gameObjects) {
             gameObject.init();
         }
@@ -66,6 +64,7 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
         for (GameObject gameObject : gameObjects) {
             gameObject.render(g2d);
         }
+
     }
 
     @Override
@@ -156,6 +155,10 @@ public abstract class Scene implements GameLoopImpl,SceneImpl {
 
     public List<GameObject> getGameObjects() {
         return gameObjects;
+    }
+
+    public List<GameObject> getGameObjectsToRemove() {
+        return gameObjectsToRemove;
     }
 
     public Renderer getRenderer() {
